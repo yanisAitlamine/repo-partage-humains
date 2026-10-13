@@ -4,7 +4,9 @@
 
 ## Machines et responsabilités
 
-Windows sert à la rédaction et au pilotage. La VM Kali est le contrôleur Ansible. Le Raspberry Pi héberge la production : n8n, ses task runners, le proxy HTTPS, le VPN, le DNS privé et l'interface de délégation OpenCode. L'arrêt de la VM ne coupe pas les workflows du Pi.
+Windows sert à la rédaction et au pilotage. La VM Kali Linux appartient exclusivement à Yanis et constitue son contrôleur Ansible personnel. Le Raspberry Pi héberge la production : n8n, ses task runners, le proxy HTTPS, le VPN, le DNS privé et l'interface de délégation OpenCode. L'arrêt de la VM ne coupe pas les workflows du Pi.
+
+**Périmètre personnel de Yanis :** cette VM ne fait pas partie des machines partagées avec Ilyes et ne sert pas d'environnement de travail aux agents du projet commun. Ilyes et les agents ne doivent pas tenter de s'y connecter, d'en vérifier l'accès ou d'y exécuter des commandes. Les essais et déploiements Ansible depuis cette VM sont réalisés par Yanis ; toute intervention d'un agent sur Kali exige une demande explicite de Yanis visant cette machine. La mention de Kali dans cette architecture explique son rôle et ne constitue aucune autorisation d'accès.
 
 GitHub conserve les sources et cette documentation publique. Les modèles IA, la messagerie et les services de construction ou d'hébergement sont des services externes ; les sites ne sont pas hébergés par le Pi.
 
