@@ -64,6 +64,6 @@ quatre références : architecture générale, inventaire de secrets sans valeur
 guide Ansible détaillé et configuration des agents (chats exclus).
 Les inventaires sensibles et les valeurs de secrets ne sont pas publiés ici.
 
-Dernier rapport Yanis : [organisation documentaire](documentation%20yanis/RAPPORT-27-documentation-privee-et-rapports-publics.md).
+Dernier rapport Yanis : [diagnostic complet du pipeline, livraison vérifiée et reprise de l’agent Ilyes](documentation%20yanis/RAPPORT-36-test-reel-maquette-et-validation.md), complété le 14 octobre 2026.
 
 La documentation précise aussi le versionnement et la sauvegarde de chaque fichier décrit. [Rapport 28](documentation%20yanis/RAPPORT-28-quatre-references-et-guide-ansible.md).
