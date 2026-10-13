@@ -42,3 +42,9 @@
 - [Rapport 32 — Maquette produite avant validation humaine](RAPPORT-32-pipeline-maquette-avant-validation.md)
 
 - [Rapport 33 — Ancien banc Gmail retiré et noms du pipeline](RAPPORT-33-ancien-banc-gmail-et-noms-pipeline.md)
+
+- [Rapport 34 — Permissions de coordination et reprise de construction](RAPPORT-34-blocage-coordination-construction.md)
+
+- [Rapport 35 — Lanceur manuel du cas club de foot](RAPPORT-35-lanceur-test-pipeline3-club-foot.md)
+
+- [Rapport 36 — Diagnostic complet, livraison vérifiée et reprise de l’agent Ilyes](RAPPORT-36-test-reel-maquette-et-validation.md)
