@@ -2,7 +2,7 @@
 
 # Rapport 07 — Neovim, affichage, dépôts et déploiement reproductible
 
-**Date : 10 octobre 2026 — Europe/Paris**  
+**Date : 10 octobre 2026 — Europe/Paris**
 **Période principale : après le rapport OpenCode du 9 octobre à 21:54, jusqu'à la livraison des dépôts puis à cet audit.**
 
 ## 1. Combien de lignes et combien de temps pour un senior ?
