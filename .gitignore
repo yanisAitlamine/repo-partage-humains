@@ -1,0 +1,8 @@
+*.pdf
+*.json
+*.pem
+*.key
+*.env*
+secrets/
+private/
+backups/
