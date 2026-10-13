@@ -38,3 +38,5 @@
 - [Rapport 28 — Quatre références privées et guide Ansible](RAPPORT-28-quatre-references-et-guide-ansible.md)
 
 - [Rapport 31 — Telegram : blocages et maquettes](RAPPORT-31-telegram-blocages-et-maquettes.md)
+
+- [Rapport 32 — Maquette produite avant validation humaine](RAPPORT-32-pipeline-maquette-avant-validation.md)
