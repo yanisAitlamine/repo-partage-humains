@@ -40,3 +40,5 @@
 - [Rapport 31 — Telegram : blocages et maquettes](RAPPORT-31-telegram-blocages-et-maquettes.md)
 
 - [Rapport 32 — Maquette produite avant validation humaine](RAPPORT-32-pipeline-maquette-avant-validation.md)
+
+- [Rapport 33 — Ancien banc Gmail retiré et noms du pipeline](RAPPORT-33-ancien-banc-gmail-et-noms-pipeline.md)
