@@ -33,7 +33,8 @@ comme des capacités actives. Aucun service n'exécute directement ce dépôt.
 
 Instruction explicite de Yanis : le dépôt personnel PRIVÉ
 `yanisAitlamine/projet-n8n-documentation-humaine` contient seulement
-`ARCHITECTURE.md` et `secrets.md`. L'architecture décrit machines, services,
+`ARCHITECTURE.md`, `secrets.md`, `GUIDE-ANSIBLE.md` et
+`CONFIGURATION-AGENTS.md`. L'architecture décrit machines, services,
 flux et fichiers fonctionnels : chemin, consommateur, entrées, sorties,
 utilité, but et limites de vérification. L'inventaire des secrets décrit
 emplacement, détenteur, producteur/créateur attesté, méthode de génération,
@@ -75,3 +76,12 @@ ne doivent ni s'y connecter ni sonder son accès sans demande explicite de
 Yanis visant cette machine. Le global Windows n'est modifié que pour cet
 ajout expressément demandé ; sa protection doit être rétablie après édition.
 <!-- END DOCUMENTATION-DESTINATIONS-20261013 -->
+
+Actualisation humaine du 13 octobre : répartir la documentation entre les
+quatre références privées, architecture plus légère. Le guide Ansible explique
+les appels et effets de chaque fichier. Le document agents couvre configurations
+Codex/OpenCode et règles partagées, sans fichiers de chat. Chaque fichier
+décrit doit préciser versionnement (source/copie active, commit/modification
+locale) et sauvegarde (preuve datée, copie indépendante ou non attestée).
+La limite historique de deux documents privés est remplacée par quatre.
+Les rapports restent exclusivement publics après anonymisation et revue.
