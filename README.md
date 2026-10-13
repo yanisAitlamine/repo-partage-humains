@@ -51,3 +51,16 @@ preuve de conformité, de fonctionnement ou d'économie.
 Avant une publication, relire le contenu et les liens, contrôler les données
 sensibles et vérifier la visibilité du dépôt. Un fichier supprimé du dernier
 arbre peut rester dans l'historique Git.
+
+## Nouvelle organisation documentaire — 13 octobre 2026
+
+Tous les nouveaux rapports sont publiés ici, après anonymisation et contrôle,
+dans le dossier de leur auteur. Chaque rapport décrit la demande et le résultat,
+l'orchestration et la délégation, puis la coopération et l'adaptation au contexte
+lu. Les consignes détaillées sont dans [AGENTS.md](AGENTS.md).
+
+Le dépôt personnel privé de Yanis, `projet-n8n-documentation-humaine`, conserve
+seulement une architecture détaillée et un inventaire de secrets sans valeurs.
+Les inventaires sensibles et les valeurs de secrets ne sont pas publiés ici.
+
+Dernier rapport Yanis : [organisation documentaire](documentation%20yanis/RAPPORT-27-documentation-privee-et-rapports-publics.md).

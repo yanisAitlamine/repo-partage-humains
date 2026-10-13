@@ -32,3 +32,5 @@
 - [RAPPORT-24-relance-gmail-deux-heures.md](RAPPORT-24-relance-gmail-deux-heures.md)
 - [RAPPORT-25-capacites-annoncees-aux-clients.md](RAPPORT-25-capacites-annoncees-aux-clients.md)
 - [RAPPORT-26-premiere-reponse-et-verification-pdf.md](RAPPORT-26-premiere-reponse-et-verification-pdf.md)
+
+- [Rapport 27 — Architecture privée et rapports publics](RAPPORT-27-documentation-privee-et-rapports-publics.md)
