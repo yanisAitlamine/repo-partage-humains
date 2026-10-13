@@ -36,3 +36,5 @@
 - [Rapport 27 — Architecture privée et rapports publics](RAPPORT-27-documentation-privee-et-rapports-publics.md)
 
 - [Rapport 28 — Quatre références privées et guide Ansible](RAPPORT-28-quatre-references-et-guide-ansible.md)
+
+- [Rapport 31 — Telegram : blocages et maquettes](RAPPORT-31-telegram-blocages-et-maquettes.md)
