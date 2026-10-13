@@ -1,0 +1,25 @@
+# Rapport 36 — Test réel de la maquette jusqu’à validation humaine
+
+## Demande et résultat
+
+Yanis signale une erreur de syntaxe du lanceur puis demande de corriger et relancer jusqu’à ce que le cas club de foot fonctionne. L’expression JSON imbriquée n’avait pas passé l’exécution réelle, malgré la validation de configuration précédente. Elle a été remplacée par un brief JSON statique et un nœud distinct qui crée la référence du test. Le prompt déjà produit est conservé, sans nouveau mail entrant ni dialogue commercial.
+
+Trois lancements réels ont été effectués après cette correction. Le premier a confirmé que le lanceur fonctionnait, puis révélé l’impossibilité du service de publier les annonces obligatoires. Le second a confirmé la publication mais montré que les agents s’arrêtaient après une vérification partielle de la cible. Le troisième a construit une nouvelle maquette, terminé sa revue indépendante et obtenu la preuve positive du vérificateur. Le pipeline attend maintenant la décision humaine après maquette; une demande Telegram avec choix a été enregistrée avec identifiant de message. Aucune réservation de livraison ni exécution du nœud Gmail au contrôle final.
+
+Corrections intégrées : exception d’écriture du service limitée au dossier des annonces, avec protections globales conservées; procédure explicite pour vérifier chemin canonique, composants sans symlink et identité des octets racine SSH/HTTPS; signature HTTP compatible avec l’hébergeur, qui refusait le client Python par défaut; distinction entre rapport du constructeur prêt pour revue et résultat final du planificateur. Pour un nouveau dossier, absence vérifiée et retour arrière par isolation; les exigences de sauvegarde restaurable restent avant remplacement d’un contenu existant.
+
+Preuves de fonctionnement : lanceur réussi, maquette accessible en HTTPS200, index autonome de 9 490 octets identique en SSH et HTTPS, marqueurs de travail/révision présents, revue indépendante positive, état vérifié admissible puis attente de confirmation humaine. L’index racine antérieur est resté identique. Le prototype présente équipes, joueurs, coachs et calendriers provisoires du club. Les interactions de navigateur et la livraison finale ne sont pas testées par ces preuves; la décision d’envoi appartient toujours à l’humain.
+
+Contrôles complémentaires limités : 21 tests hors ligne du runner réussis; validation des nœuds et mise à jour sans avertissement; publication d’une annonce réussie avec identité du service dans son namespace monté; vérifications ciblées des différences. Sauvegardes privées avant mutations, sources et copies de reprise actualisées, architecture privée actualisée. Aucun rôle Ansible, accès réseau, secret ou machine personnelle changé. Les historiques bloqués sont conservés, aucune incertitude de livraison réarmée.
+
+## Orchestration et délégation — Délégation
+
+Codex a corrigé directement le petit lanceur, les permissions du service, la procédure de contrôle et l’en-tête du vérificateur, puis lancé et suivi les essais explicitement demandés. Aucun nouvel agent de maintenance payant pour ces corrections ciblées.
+
+Chaque lancement de construction a utilisé les agents NOC existants : un planificateur, un constructeur, puis un réviseur indépendant, modèle Luna observé dans les traces. Les deux premiers travaux se sont arrêtés avant construction, sans livrable revendiqué. Le troisième constructeur a d’abord renvoyé un résultat bloqué sans explication suffisante; le planificateur lui a demandé une reprise diagnostique dans la même session. Cette reprise a effectué les contrôles complets puis construit la maquette. Le réviseur a contrôlé le chemin, les marqueurs, les permissions, le contenu et l’identité HTTP/SSH; le résultat est intégré et vérifié par le runner. Les prompts des rôles sont ensuite clarifiés pour éviter de demander au constructeur le contrat de succès final réservé au planificateur. Aucun coût ou gain estimé.
+
+## Coopération et adaptation au contexte — Collaboration
+
+Consignes, passation et annonces pertinentes examinées; intention puis extensions de la mission de correction publiées. Le nouveau droit d’écriture répond au montage du service effectivement observé, et non à une hypothèse sur les seules permissions OpenCode. Avant le redémarrage, absence de travail actif/en file confirmée. Les différences et sauvegardes préservent les modifications antérieures.
+
+Les agents du travail réussi ont publié leurs intentions, extension et fins dans la coordination locale, en limitant leurs écritures au nouveau dossier de maquette. La revue signale une lecture de message indisponible; la liste a été rafraîchie et aucun changement concurrent observé, sans revendiquer une lecture complète de tous les messages. Codex conserve cette limite dans le bilan. Les agents interviennent pour Yanis; le gel des agents Ilyes sur les workflows reste en place. Le prompt et les données du mail restent dans l’instance privée, absents du rapport et des exports publics. Les réservations de maintenance sont libérées par la fin de mission; la validation de la maquette reste ouverte pour Yanis.
