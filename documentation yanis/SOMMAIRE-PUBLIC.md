@@ -48,3 +48,6 @@
 - [Rapport 35 — Lanceur manuel du cas club de foot](RAPPORT-35-lanceur-test-pipeline3-club-foot.md)
 
 - [Rapport 36 — Diagnostic complet, livraison vérifiée et reprise de l’agent Ilyes](RAPPORT-36-test-reel-maquette-et-validation.md)
+
+- [Guide — Pipeline principal n8n](WORKFLOWS-PIPELINE-PRINCIPAL.md)
+- [Rapport 39 — Documentation des workflows](RAPPORT-39-documentation-workflows.md)
