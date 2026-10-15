@@ -2,6 +2,15 @@
 
 # Documentation publique
 
+## Comprendre le fonctionnement
+
+- [Les workflows expliqués étape par étape](WORKFLOWS-PIPELINE-PRINCIPAL.md) : réception, dialogue, décisions Telegram, maquette et livraison.
+- [L’architecture expliquée](ARCHITECTURE.md) : machines, services, données et sauvegardes.
+
+Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous conservent l’historique daté des interventions.
+
+## Historique et procédures
+
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 - [PASSATION.md](PASSATION.md)
 - [PROCEDURE-CONTINUITE-RUN.md](PROCEDURE-CONTINUITE-RUN.md)
@@ -51,3 +60,5 @@
 
 - [Guide — Pipeline principal n8n](WORKFLOWS-PIPELINE-PRINCIPAL.md)
 - [Rapport 39 — Documentation des workflows](RAPPORT-39-documentation-workflows.md)
+
+- [Rapport 40 — Guides réécrits en français clair](RAPPORT-40-documentation-en-francais-clair.md)

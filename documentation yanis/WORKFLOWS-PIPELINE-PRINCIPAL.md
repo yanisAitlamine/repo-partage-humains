@@ -1,79 +1,224 @@
-# Pipeline principal — guide public
+# Comprendre les workflows du projet
 
-**État documentaire au 14 octobre 2026.** Ce guide décrit la chaîne observée et ses limites ; ce n’est ni une procédure d’exploitation autonome ni une preuve de fonctionnement de bout en bout. Les noms ci-dessous sont les intitulés visibles des six workflows actifs observés.
+Le système échange par mail avec une personne qui souhaite un site. Il cherche à comprendre son besoin, demande des précisions si nécessaire et peut préparer une première maquette. Une personne vérifie ensuite cette maquette avant que le système envoie son lien au client.
 
-## Vue d’ensemble
+Un **workflow** est un enchaînement d’étapes dans n8n : recevoir un mail, vérifier son origine, demander une analyse à une IA, puis enregistrer le résultat, par exemple. Le **pipeline** désigne ici l’ensemble des workflows qui coopèrent pour réaliser ce parcours.
 
-```mermaid
-flowchart LR
-  M[Courriel entrant] --> G[Réception : gardes et file]
-  G -->|traitement interne| P[Dialogue commercial]
-  P -->|appel synchrone| J[Décision Jev]
-  J --> P
-  P -->|CONTINUE : question envoyée| W[Attente d’un nouveau courriel client]
-  W --> M
-  P -->|événement à traiter| L[Journal des événements]
-  L -. réveil asynchrone .-> R[Reprise ponctuelle]
-  R -. rappel ponctuel .-> G
-  L -. branche opérateur .-> T[Revue opérateur via Telegram]
-  T -->|Continuer| W
-  T -->|Stop| C[Conversation clôturée]
-  P -. READY : lancement asynchrone .-> B[Brief, sources et cible TEST vérifiés]
-  B --> O[Construction automatique du prototype]
-  O --> A[Artefact et révision contrôlés]
-  A --> H[Attente de la validation humaine finale]
-  H -->|approbation liée à l’artefact| D[Réservation de livraison et envoi client]
-  D --> S[Envoi confirmé]
-```
+Version du texte : 15 octobre 2026. Le fonctionnement décrit repose sur les observations et rapports du 14 octobre. Les interventions encore en cours ne sont pas considérées comme terminées dans ce guide.
 
-Les flèches pointillées représentent des déclenchements asynchrones, pas des étapes garanties dans une transaction atomique. L’appel à Jev est synchrone ; le lancement de la maquette depuis le dialogue est distinct et asynchrone. Le prototype peut donc être construit avant le clic humain : sa construction ne vaut ni approbation finale ni autorisation de publier un site complet. La branche « nouveau courriel client » exige une nouvelle entrée du client ; un texte écrit par l’opérateur Telegram ne devient pas un message du client.
+## Le parcours général
 
-## Les six workflows actifs
+1. Un mail arrive et passe les vérifications d’entrée.
+2. Le dialogue commercial lit la conversation et analyse le besoin.
+3. S’il manque des informations, le système pose des questions et attend la réponse du client.
+4. S’il ne peut pas décider de façon fiable, il demande l’aide d’une personne sur Telegram.
+5. Si le besoin est suffisamment clair, il lance la construction d’une maquette de test.
+6. Une personne examine la maquette et autorise ou refuse l’envoi de son lien par mail.
 
-Ordre de lecture par rôle architectural (pas un ordre d’exécution fixe : les événements déterminent le parcours). Les états et nombres de nœuds proviennent d’une lecture seule des définitions datée du 14 octobre ; aucune définition n’a été exécutée pour établir ce tableau.
+**La maquette peut être construite automatiquement avant cette dernière validation.** La décision de l’IA indiquant que le besoin est clair ne remplace pas l’autorisation humaine d’envoyer le résultat. Elle n’autorise pas non plus la mise en production d’un site complet.
 
-| Ordre | Workflow (nom UI exact) | État observé | Rôle et effet d’une modification |
-|---:|---|---|---|
-| 1 | `PIPELINE — 1. Réception des mails et suivi` | Actif, 89 nœuds | Entrée Gmail, gardes de source, file et verrou du processeur, routage et reprises. Une modification peut changer l’admission, le traitement d’un message ou le réarmement d’un fil. |
-| 2 | `PIPELINE — 2. Dialogue commercial et brief` | Actif, 94 nœuds | Rattachement, lecture du fil, décision Jev, échange commercial, mémoire source-liée et branches de résultat. Une modification peut changer une réponse, un état métier ou l’autorisation de soumettre un brief. |
-| 3 | `SERVICE — Décisions Jev du dialogue commercial` | Actif, 9 nœuds | Décision typée et choix des citations CLIENT. Une modification affecte les décisions prises par le dialogue ; aucun contrat de source documentaire distinct n’est établi ici. |
-| 4 | `PIPELINE — 3. Maquette puis validation humaine` | Actif, 28 nœuds publiés | Soumission et suivi d’un job de prototype, puis validation liée à l’artefact avant la livraison. Une modification touche le chemin le plus sensible de la construction et de l’envoi. Le brouillon lu diffère de la définition publiée malgré le même nombre de nœuds : ne pas le publier ni l’importer automatiquement. |
-| 5 | `SUPPORT PIPELINE — Journal des événements` | Actif, 11 nœuds | Persiste les événements et peut déclencher le réveil asynchrone de la branche opérateur. Une modification peut affecter la traçabilité ou le réveil. |
-| 6 | `SUPPORT PIPELINE — Reprise ponctuelle` | Actif, 4 nœuds | Attente ponctuelle puis rappel de la réception pour reprendre un traitement. Ce n’est pas un polling permanent. Une modification peut influer sur la reprise et le délai de traitement. |
+## Les six workflows et leur rôle
 
-Les cinq autres définitions avaient un brouillon identique à la définition publiée lors de cette lecture. Il s’agit d’un constat ponctuel, à rafraîchir avant toute intervention.
+Ces noms permettent de retrouver les workflows dans n8n. Le nombre d’étapes correspond à la version publiée observée le 14 octobre ; il pourra changer lors d’une évolution.
 
-## Entrée, suivi et reprise
+| Nom dans n8n | Ce qu’il fait | Étapes observées |
+| --- | --- | ---: |
+| PIPELINE — 1. Réception des mails et suivi | Sélectionne les mails autorisés, organise leur traitement et certaines reprises. | 89 |
+| PIPELINE — 2. Dialogue commercial et brief | Comprend le projet, prépare les réponses et décide de la suite avec Jev. | 94 |
+| SERVICE — Décisions Jev du dialogue commercial | Sélectionne les passages du client qui justifient une décision, puis rend cette décision. | 9 |
+| PIPELINE — 3. Maquette puis validation humaine | Fait construire une maquette, contrôle le résultat et attend la validation humaine avant livraison par mail. | 28 |
+| SUPPORT PIPELINE — Journal des événements | Enregistre ce qui se passe et peut déclencher la suite du traitement côté Telegram. | 11 |
+| SUPPORT PIPELINE — Reprise ponctuelle | Attend un délai, puis rappelle la réception pour reprendre un travail prévu. | 4 |
 
-1. La réception traite les entrées Gmail après ses gardes de compte TEST, date limite, source et auto-notifications, puis place les messages dans une file. Un verrou/claim évite que plusieurs processeurs prennent le même travail ; l’appel au dialogue est synchrone.
-2. Le bilan d’un message est `REPLIED`, `REVIEW`, `IGNORED` ou `ATTENTION`. Les reprises sont bornées aux erreurs IA ciblées ; ce n’est pas une permission de relancer aveuglément tout échec.
-3. Un déclenchement interne distingue le processeur, Telegram et une reprise explicite. Pour une discussion encore ouverte, une relance unique dans le fil après deux heures n’est possible qu’après confirmation de l’envoi précédent et sous gardes de source, verrou et outbox. `UNKNOWN` et `SENDING` ne sont jamais réarmés.
-4. Le journal persiste les événements et peut réveiller la branche Telegram de manière asynchrone. Le workflow de reprise ponctuelle attend puis rappelle la réception ; aucun cron de polling permanent supplémentaire n’est décrit ici. Cette revue opérateur est distincte du mécanisme natif de revue humaine.
+Ces six workflows étaient actifs lors de la lecture. Cela indique qu’ils étaient activés dans n8n ; cela ne prouve pas que tous les parcours ont été testés avec un vrai client.
 
-## Dialogue, décision et revue opérateur
+Leur ordre dans ce tableau n’est pas un ordre de passage obligatoire. Le journal peut être utilisé à plusieurs moments, et un mail ignoré ne passe pas par la construction.
 
-- Le dialogue rattache prudemment le client et le projet, lit le fil Gmail physique complet et vérifie la clôture. Un fil `CLOSED` est ignoré sans réponse ni maquette.
-- Le triage et le conseil GPT précèdent Jev. Jev choisit les citations CLIENT et renvoie une décision typée ; la rédaction GPT vient ensuite avec une sortie JSON stricte. Un message d’assistant marqué `SENT`, recopié à l’identique pour l’opérateur, n’ajoute aucune exigence client. Le HTML d’assistant est conservé littéralement.
-- Un HTML client sans version texte, une source ou une pièce jointe non attestée, des sources partielles ou un projet ambigu conduit à `REVIEW`. Le brief a six champs : objectif, public, type, pages, fonctions et contraintes ; l’absence d’un champ peut être explicite. `READY` n’est permis qu’après validation des sources, de leur probabilité et de la cohérence. `ACK` et `STATUS` ne lancent pas de nouveau build.
-- `CONTINUE` pose au plus deux questions, réserve puis envoie le courriel, enregistre la mémoire et attend un nouveau message client. `BLOCKED` passe en `REVIEW PENDING` et dans l’inbox `REVIEW`, puis attend le poller Telegram unique : l’opérateur reçoit le courriel complet avec `Stop` / `Continuer`, répond par texte via ForceReply et examine un aperçu `Envoyer` / `Modifier` / `Annuler`.
-- Avant l’action, l’acteur, le chat, le bot, la source, le projet, la révision, le délai et la réception Gmail doivent correspondre. `Stop` inscrit durablement `CLOSED` après `SENT`, sous lease, avant de marquer l’inbox `REPLIED`. `Continuer` attend un nouveau courriel CLIENT et reprend la même boucle ; le texte opérateur n’est jamais attribué au client. Un résultat `UNKNOWN` n’est pas retenté à l’aveugle. Un JSON de rédaction invalide devient `BLOCKED` et n’autorise pas de build.
+## La réception du mail
 
-## Prototype et validation finale
+### Vérifier que le mail peut être traité
 
-Quand le brief est `READY`, une mémoire liée à la source et le brief littéral alimentent la branche commerciale autorisée et le workflow de maquette séparé, asynchrone (`waitForSubWorkflow=false`). L’appel à Jev, lui, attend sa réponse. Le signal « brief suffisant » / `opencode_ready` autorise la préparation d’un prototype, pas un site complet ni sa publication finale. La première maquette TEST peut commencer automatiquement avant toute approbation humaine finale.
+La réception vérifie notamment le compte de test concerné, la date limite configurée, l’origine du message et les règles qui écartent les notifications automatiques. Le but est d’éviter de répondre à des messages hors du périmètre autorisé, à de vieux mails ou à certaines notifications produites par le système lui-même.
 
-Dans le workflow publié, le brief, la source et la cible TEST fixe doivent être contrôlés avant l’appel à l’API privée OpenCode. Le job est soumis une fois, puis suivi par polling borné sans nouvelle soumission. La suite exige un artefact avec révision, empreinte et revue attestées, une attente de validation humaine, puis une approbation liée au job et à l’artefact. Une réservation de livraison/outbox précède l’envoi client ; l’état `SENT` doit être confirmé. Aucun courriel client ne doit partir pour un artefact invalide ou non approuvé. L’approbation Jev `READY` ne publie pas un site final. Un exemple manuel bloqué et un formulaire opérateur existant sont distincts du parcours automatique.
+Un mail accepté rejoint une **file d’attente** : une liste de messages à traiter. Le système conserve ainsi le travail à faire même si le traitement ne commence pas immédiatement.
 
-## États, protections et modifications futures
+### Réserver le mail avant de travailler dessus
 
-`READY`, `CONTINUE`, `BLOCKED`, `CLOSED`, `REVIEW`, `IGNORED`, `ATTENTION`, `SENDING`, `UNKNOWN` et `SENT` ont des effets différents : ne pas les traiter comme des synonymes de succès ou de reprise.
+Avant de prendre un message, le système le réserve. Cette réservation est parfois appelée **claim**. Un **verrou** empêche les traitements qui respectent ce mécanisme de prendre simultanément le même travail.
 
-Ces protections sont des consignes de travail, pas une ACL ni une barrière technique à une mission humaine ultérieure. Pour toute évolution, exiger une mission humaine explicite, un plan de retour arrière et une sauvegarde adaptée avant tout changement de données/état ; repartir de versions fraîchement relues ; distinguer brouillon et publié ; examiner le graphe, les scopes d’appel, les credentials et les gardes de source ; effectuer une revue statique avant tout test que la mission autorise. Ne pas : élargir une whitelist globale, désactiver un lease, dédupliquer au seul corps du message, forcer `READY`, convertir `UNKNOWN`/`SENDING` en `PENDING`, ni importer un brouillon candidat. Garder le laboratoire et les candidats séparés, les essais isolés, et les workflows étrangers hors périmètre.
+Exemple : si deux déclenchements repèrent le même mail, la réservation doit empêcher qu’ils rédigent et envoient chacun une réponse. Cette protection ne couvre pas un autre programme qui enverrait des mails en contournant ces règles.
 
-Les intégrations documentaires Drive/PDF/mémoire candidates ne sont pas établies comme déployées dans le parent actif : aucun appel Drive effectif n’y a été constaté, le contrat de source Jev manque et le lecteur candidat est inactif/non publié. Ne pas présenter Drive, OCR ni la publication finale du site comme opérationnels.
+### Attendre le résultat du dialogue
 
-### Diagnostic et essai proposé
+La réception appelle le workflow de dialogue et attend sa réponse avant de poursuivre ce traitement. C’est le sens du mot **synchrone**.
 
-Avant toute relance, diagnostiquer dans cet ordre : source et publication, lease/verrou, réservation de travail, file, acteur et conversation Telegram, TTL/délai, puis fournisseur. Ne jamais copier un secret dans un rapport ni exposer sa valeur pour dépanner. Un essai contrôlé par humain pourrait utiliser un nouveau message dans un compte TEST, le bot Telegram sans VPN et l’interface n8n privée si nécessaire ; cet essai n’a pas été exécuté ici.
+À l’inverse, un appel **asynchrone** lance un autre travail sans attendre sa fin. C’est notamment le cas du lancement de la maquette depuis le dialogue commercial. Il faut donc suivre le résultat de cette construction séparément.
 
-**Limite de preuve :** les six définitions ont été lues en mode MCP lecture seule, pas exécutées. Les décisions de conception documentées ne prouvent pas un trajet réel client → Telegram → Gmail → client → maquette. Le nettoyage du rangement a été déclaré partiel, pas achevé. Le diagramme Mermaid est fourni en source ; son rendu visuel n’a pas été testé.
+### Enregistrer le bilan du mail
+
+| Bilan | Comment le lire |
+| --- | --- |
+| `REPLIED` | Le traitement classe le message comme ayant reçu une réponse. Pour vérifier un envoi réel, il faut aussi sa confirmation Gmail. |
+| `REVIEW` | Le message doit être examiné par une personne. |
+| `IGNORED` | Le message a été écarté ; ce n’est pas nécessairement une panne. |
+| `ATTENTION` | Le traitement signale une situation qui demande une attention particulière. Il faut lire le motif enregistré. |
+
+`REVIEW` et `ATTENTION` ne doivent pas être fusionnés. Les sources de cette synthèse ne donnent pas une liste exhaustive des situations classées `ATTENTION` ; ce statut seul ne permet donc pas de choisir une correction.
+
+## La compréhension du projet
+
+Le dialogue vérifie à quel client et à quel projet appartient le message. Il relit le fil Gmail réel, c’est-à-dire la conversation conservée par Gmail. Une discussion déjà marquée comme clôturée (`CLOSED`) est ignorée sans nouvelle réponse ni nouvelle maquette.
+
+GPT intervient pour trier, conseiller et rédiger. Jev sélectionne les passages du client qui appuient l’analyse et décide de la suite. Le dialogue attend la réponse de Jev avant de continuer.
+
+Le système doit distinguer **ce que le client a demandé** et **ce que l’assistant a proposé**. Une phrase de l’assistant, même réellement envoyée, n’est pas une nouvelle exigence du client. Cela vaut aussi pour une réponse écrite par une personne dans Telegram puis envoyée au client. Le HTML d’un message de l’assistant est conservé tel quel ; il ne devient pas une citation du client.
+
+Le **brief** est le résumé du besoin qui servira à construire la maquette. Il porte sur six sujets :
+
+- l’objectif du site ;
+- le public visé ;
+- le type de site ;
+- les pages souhaitées ;
+- les fonctions attendues ;
+- les contraintes à respecter.
+
+Un sujet peut être explicitement sans exigence particulière. Le système vérifie que le résumé est justifié par les sources et cohérent ; il ne doit pas remplir arbitrairement les informations manquantes.
+
+### Les décisions possibles
+
+| Décision | Ce qui se passe ensuite |
+| --- | --- |
+| `CONTINUE` | Le système pose au plus deux questions, enregistre l’échange et attend un nouveau mail du client. |
+| `READY` | Le besoin est jugé assez clair et les contrôles de sources et de cohérence permettent de préparer une première maquette de test. |
+| `BLOCKED` | Le système ne peut pas poursuivre de façon fiable ; le message passe en revue humaine. |
+
+Les catégories `ACK` et `STATUS` permettent aussi de reconnaître un accusé de réception ou une demande de suivi. Elles ne doivent pas lancer une nouvelle construction. Par exemple, « Merci, j’ai bien reçu votre message » n’est pas un nouveau cahier des charges.
+
+Une source incomplète, une pièce jointe dont la lecture n’est pas établie, un projet ambigu ou un mail client uniquement en HTML sans version texte peuvent conduire à une revue. La confiance de la décision et la cohérence du besoin doivent être vérifiées avant `READY`.
+
+La rédaction doit aussi respecter un format structuré appelé **JSON**, que le programme peut contrôler. Une réponse dans un format invalide bloque la suite : elle ne donne jamais le droit de construire.
+
+## La réponse humaine sur Telegram
+
+Cette intervention sert à répondre à un mail que le système ne sait pas traiter seul. Elle est différente de la validation finale d’une maquette.
+
+1. Le mail est placé dans la file de revue avec une demande en attente, appelée `REVIEW PENDING`.
+2. Le bot présente le mail complet et propose **Stop** ou **Continuer**.
+3. La personne choisit si elle veut terminer la discussion ou poursuivre l’échange.
+4. Elle écrit le texte à envoyer au client en répondant à la demande du bot. Le terme technique **ForceReply** désigne cette réponse rattachée à un message précis du bot.
+5. Le bot montre un aperçu exact du mail et propose **Envoyer**, **Modifier** ou **Annuler**.
+6. La confirmation autorise l’envoi du texte présenté, sous réserve des derniers contrôles.
+
+Le système vérifie que la personne, la conversation Telegram, le bot, le message d’origine, le projet et la version du travail correspondent toujours à la demande. Il vérifie également sa durée de validité. Une demande expirée ou un ancien bouton ne doit pas autoriser une nouvelle action.
+
+**Stop** ne ferme durablement la discussion qu’après confirmation de l’envoi Gmail prévu. La clôture est enregistrée sous verrou avant de classer le mail comme traité. **Continuer** laisse la discussion en attente d’un nouveau mail du client. Le texte rédigé par l’opérateur reste une réponse au client : il ne fournit pas artificiellement les exigences manquantes.
+
+Le service qui reçoit les réponses Telegram est unique. Il interroge Telegram pour récupérer les nouveaux événements : c’est le sens de **poller**. Ce fonctionnement permet d’utiliser Telegram depuis le téléphone sans ouvrir l’éditeur n8n à Internet.
+
+Les sources mentionnent aussi un mécanisme natif de revue humaine distinct. Elles ne détaillent pas ici tous ses usages. Un clic dans ce mécanisme ne doit pas être assimilé sans vérification à la confirmation Telegram décrite ci-dessus.
+
+## La construction et la livraison de la maquette
+
+Quand la décision est `READY`, le dialogue peut lancer le workflow de maquette sans attendre sa fin. Le résumé transmis reste lié aux messages qui le justifient.
+
+Le signal `opencode_ready` veut dire « le travail peut être soumis pour une première maquette ». Il ne signifie ni que la maquette est terminée, ni qu’un humain l’a approuvée.
+
+Le parcours documenté est le suivant :
+
+1. Vérifier le brief, ses sources et la cible de test autorisée, c’est-à-dire l’hébergement où la maquette peut être créée.
+2. Envoyer une seule demande de construction au service OpenCode. Cette demande devient un **job**, autrement dit un travail identifié et suivi.
+3. Consulter son avancement un nombre limité de fois, sans soumettre de nouveau la même construction à chaque consultation.
+4. Vérifier le résultat produit, sa version et la revue effectuée.
+5. Présenter la maquette à une personne pour validation finale.
+6. Après approbation du bon résultat, réserver sa livraison puis envoyer son lien au client.
+7. Vérifier la confirmation Gmail avant d’enregistrer l’envoi comme confirmé.
+
+Le mot **artefact** désigne ici le résultat construit, notamment la maquette et son fichier d’entrée. Chaque maquette possède une adresse et un dossier propres. Elle ne doit pas remplacer automatiquement la page d’accueil de l’hébergement ou une maquette précédente.
+
+La vérification compare notamment le fichier présent sur l’hébergement et celui réellement servi par HTTPS. Une **empreinte** est une valeur calculée à partir du contenu du fichier ; des empreintes identiques permettent de vérifier l’identité des contenus comparés. La **révision** désigne la version du travail concernée. L’approbation doit correspondre au bon job et au bon résultat : une approbation d’une ancienne version ne doit pas autoriser l’envoi d’une nouvelle.
+
+Ces contrôles ne garantissent pas que tous les boutons, images ou fonctions ont été testés dans un navigateur. La déclaration de revue et de sauvegarde des agents reste distincte des vérifications automatiques du fichier d’entrée.
+
+**L’ordre à retenir est : construire la maquette → la contrôler → obtenir la validation humaine → envoyer son lien.** Une maquette accessible pour examen reste un prototype de test ; cela n’équivaut pas à la mise en production d’un site complet.
+
+Le formulaire opérateur et l’exemple manuel bloqué mentionnés dans les sources sont des parcours distincts. Ils ne remplacent pas cette chaîne automatique.
+
+## La protection contre les envois en double
+
+Avant l’envoi, le système réserve l’action dans un registre des messages sortants, appelé **outbox**. Cette réservation et le verrou servent à empêcher deux traitements de lancer le même envoi.
+
+| État d’envoi | Signification | Conséquence |
+| --- | --- | --- |
+| `PENDING` | En attente. | Les contrôles du parcours restent nécessaires avant toute action. |
+| `SENDING` | L’envoi a commencé. | Ne pas le remettre automatiquement en attente pour recommencer. |
+| `SENT` | L’envoi a été confirmé. | Le conserver comme envoyé. Cela ne prouve pas la lecture par le destinataire. |
+| `UNKNOWN` | Le système ne sait pas conclure sur le résultat de l’envoi. | Vérifier ce qui s’est réellement passé avant toute décision. |
+
+Exemple : Gmail peut avoir accepté un mail juste avant une coupure. Si le système n’a pas reçu la confirmation, recommencer immédiatement pourrait envoyer le mail deux fois. C’est pourquoi `UNKNOWN` ne veut pas dire « certainement non envoyé ».
+
+Il n’existe pas de garantie absolue qu’une panne entre plusieurs services puisse être corrigée automatiquement sans risque. Les états incertains demandent une vérification ciblée. Restaurer un ancien registre d’envois après une livraison peut faire oublier un mail déjà parti et provoquer un doublon.
+
+## La différence entre reprise et relance
+
+### Reprendre un traitement après une erreur
+
+Certaines erreurs d’IA permettent un nouvel essai limité. Cela ne s’applique pas à tous les échecs et n’autorise pas à recommencer un envoi incertain.
+
+Le workflow de reprise ponctuelle attend un délai puis rappelle la réception. Le déclenchement interne distingue le traitement des mails, la branche Telegram et une reprise explicite afin de choisir la bonne branche.
+
+Ce workflow n’est pas une nouvelle tâche permanente qui rechercherait tous les échecs en boucle. Cela ne signifie pas qu’il n’existe aucune interrogation périodique ailleurs : la réception Gmail et le service Telegram ont leur propre fonctionnement.
+
+### Relancer une discussion sans réponse
+
+Pour une discussion encore ouverte, le système peut envoyer **une seule relance dans le même fil après deux heures**, si les conditions prévues sont remplies. Il doit notamment avoir confirmé l’envoi précédent et vérifier la source, le verrou et le registre des envois.
+
+Cette relance est un nouveau message de suivi. Elle est différente d’une nouvelle tentative du même envoi après une panne. Elle n’autorise pas à réarmer un ancien `SENDING` ou `UNKNOWN`.
+
+### Conserver les événements du traitement
+
+Le journal des événements garde les informations utiles au suivi. Il peut ensuite déclencher le traitement côté Telegram sans attendre sa fin.
+
+Une trace dans le journal prouve qu’un événement a été enregistré. Elle ne prouve pas à elle seule qu’une notification a été reçue ou qu’une réponse a été envoyée au client.
+
+## Les pièces jointes et les lecteurs Drive
+
+Il faut distinguer un lecteur existant, un candidat en développement et une capacité vérifiée dans le parcours concerné.
+
+Un lecteur de PDF contenant du texte avait été vérifié sur un document simple dans une version antérieure, comme l’explique le [rapport 26](RAPPORT-26-premiere-reponse-et-verification-pdf.md). Ce test ne prouve pas que le parcours Jev actuel exploite correctement toutes les pièces jointes. Si leur lecture ou leur source n’est pas établie, le message doit passer en revue.
+
+Les candidats Drive, PDF et mémoire documentaire développés séparément ne sont pas automatiquement intégrés à la chaîne active. La lecture du parent réalisée le 14 octobre n’a pas établi d’appel Drive opérationnel dans ce parcours. Le contrat permettant de transmettre séparément les citations de documents à Jev n’y était pas établi. La lecture des documents scannés par reconnaissance de caractères, appelée **OCR**, n’est pas validée non plus.
+
+Le laboratoire Jev est un environnement d’essai distinct du service Jev utilisé par le dialogue commercial. Son workflow était inactif et non publié lors de la lecture. Un résultat obtenu dans ce laboratoire ne prouve pas une intégration à la production.
+
+## Examiner un blocage avant de relancer
+
+L’ordre de diagnostic documenté est le suivant :
+
+1. Vérifier le message d’origine et la version publiée du workflow qui l’a traité.
+2. Vérifier si un traitement détient encore le verrou ou la réservation temporaire. Une réservation temporaire est aussi appelée **lease**.
+3. Examiner la réservation du travail et sa place dans la file d’attente.
+4. Pour Telegram, vérifier la personne, la conversation, le bot et la demande concernée.
+5. Vérifier si la demande a expiré. Le terme **TTL** désigne sa durée de validité.
+6. Examiner ensuite l’erreur éventuelle du fournisseur d’IA ou d’un autre service externe.
+
+Une erreur n’autorise pas à supprimer un verrou, élargir les destinataires autorisés, forcer `READY` ou remettre un envoi incertain en attente. Il faut comprendre le motif et disposer de l’autorisation adaptée à la correction. Comparer uniquement le corps de deux mails ne suffit pas non plus à décider qu’ils représentent le même travail.
+
+## Modifier un workflow sans confondre les versions
+
+Une **version publiée** est celle retenue pour le fonctionnement actif ; un **brouillon** est une version de travail. Le constructeur avait un brouillon différent de sa version publiée, bien que les deux comptent 28 étapes. Les cinq autres définitions correspondaient à leurs versions publiées lors de la lecture. Il faut refaire cette comparaison avant une modification.
+
+Avant une évolution autorisée, l’opérateur doit relire les versions courantes, vérifier les appels entre workflows, les permissions et les contrôles de sources, puis préparer un retour arrière et une sauvegarde adaptés. Les vérifications de configuration précèdent les essais réels autorisés. Un candidat ne doit pas être publié automatiquement parce qu’il existe dans un dossier de travail.
+
+Les essais doivent rester séparés des autres projets et conserver les contrôles des destinataires. Un essai avec un nouveau mail de test et les étapes Telegram pourrait vérifier le parcours complet ; cette réécriture ne le lance pas. Les rôles Ansible historiques restent soumis aux réserves documentées.
+
+## Les preuves disponibles
+
+Les rapports portent sur des périmètres différents :
+
+- Le [rapport 36](RAPPORT-36-test-reel-maquette-et-validation.md) décrit un essai réel de construction, validation humaine, livraison Gmail et notification. Il ne prouve pas la lecture du mail par le destinataire ni tous les usages du site.
+- Le [rapport 38](RAPPORT-38-jev-parcours-commercial-reel.md) décrit l’intégration de Jev, ses essais contrôlés et ses limites. Il ne valide pas le parcours complet d’un vrai échange client jusqu’à la maquette.
+- Le [rapport 39](RAPPORT-39-documentation-workflows.md) et la lecture des six définitions expliquent l’origine du guide initial. Lire une définition ne revient pas à exécuter le parcours.
+
+Cette réécriture ne produit aucun nouvel envoi ou site. Le rangement des fichiers évoqué dans les missions précédentes reste un travail distinct, déclaré partiel dans leur bilan.
+
+Pour comprendre où tournent les services, lire l’[architecture expliquée](ARCHITECTURE.md).
