@@ -1,5 +1,9 @@
 # Préparation d'un accès VPN dédié à un serveur — 15 octobre 2026
 
+Ce document conserve les étapes initiales de préparation et d'attente. L'état
+actif ultérieur est décrit dans le [rapport d'activation et de remise privée](RAPPORT-VPN-ACTIVATION-20261015.md) :
+certificat émis, identité admise, filtre ciblé appliqué et transfert client restant.
+
 ## Demande et résultat
 
 Yanis demande de traiter le mail de son collaborateur puis de lui répondre.
