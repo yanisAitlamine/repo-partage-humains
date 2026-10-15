@@ -83,3 +83,5 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 - [Rapport 46 — Références techniques du bridge et du worker, sources versionnées](RAPPORT-46-references-techniques-bridge-et-worker.md)
 
 - [Rapport 47 — Reprise du pipeline, validation humaine et livraison vérifiée](RAPPORT-47-reprise-pipeline-et-validation-maquette.md)
+
+- [Rapport 48 — Réponses humaines contrôlées, tests et rappels à six heures](RAPPORT-48-robustesse-reponses-et-rappels-six-heures.md)
