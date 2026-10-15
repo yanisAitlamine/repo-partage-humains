@@ -18,6 +18,15 @@ références utiles à la mission.
 
 Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous conservent l’historique daté des interventions.
 
+## Redéployer et restaurer
+
+- [Implémentation du site et du dashboard](GUIDE-IMPLEMENTATION.md) : fichiers nécessaires, effet des recettes et distinction code, workflows et données.
+- [Continuité](PROCEDURE-CONTINUITE-RUN.md) : diagnostic, redémarrage ciblé et fichiers de sauvegarde à récupérer.
+- [Reprise](PROCEDURE-REPRISE-ACTIVITE.md) : ordre de restauration sur une machine neuve et remise en service.
+- [Réécriture des procédures autour des commandes](RAPPORT-PROCEDURES-COMMANDES-20261015.md) : résultat et limites de la mise à jour.
+
+Les commandes propres à la production sont dans les guides privés correspondants.
+
 ## Historique et procédures
 
 - [Drive privé vers maquette livrée par mail — 15 octobre 2026](RAPPORT-DRIVE-MAIL-MAQUETTE-20261015.md) : trente pages, images et produits, construction revue, validation Telegram et réception du lien.

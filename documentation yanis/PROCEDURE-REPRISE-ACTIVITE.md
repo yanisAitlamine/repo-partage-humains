@@ -1,37 +1,43 @@
-> Documentation publique. Les paramètres réels, preuves privées et inventaires de secrets restent dans les espaces privés du Pi.
+# Restaurer les services après perte du serveur
 
-# Reprise après perte du serveur — procédure publique
+La reprise utilise les fichiers du socle et ceux des ajouts récents d'une même maintenance. Git redonne le code ; les archives privées redonnent les comptes, données, accès et décisions.
 
-## Préparer la reprise
+## Fichiers à récupérer
 
-Utiliser la dernière sauvegarde complète, chiffrée et vérifiée hors du Pi. Vérifier les autorisations et le point de récupération choisi. Annoncer la mission de reprise et ses réservations. Les inventaires, valeurs d'accès et commandes adaptées à la production restent dans les espaces privés.
+| Fichiers | Résultat attendu |
+| --- | --- |
+| Sources et recettes aux versions choisies | Programmes et unités à installer. |
+| Archive chiffrée du socle | n8n, base, clé maître et compléments réseau/accès prévus. |
+| Archive chiffrée des ajouts | Portail, dashboard, archives lisibles, worker et sources locales. |
+| Empreintes, métadonnées et clé correspondante | Vérification, déchiffrement et rétablissement des propriétaires. |
+| Sauvegarde d'hébergement séparée | Fichiers et éventuelles données des sites distants. |
 
-Une copie Git permet de retrouver les recettes et documents ; elle ne contient pas le stockage n8n, les secrets ni les identités nécessaires à la restauration. Une sauvegarde conservée uniquement sur le serveur perdu ne permet pas de reprendre.
+Une archive antérieure à l'ajout du portail et du dashboard ne peut pas restaurer leurs données. Sans ces fichiers, la reconstruction reste partielle.
 
-## Reconstruire une cible isolée
+## Ordre des commandes
 
-Préparer le système et le contrôleur Ansible. Relire les rôles, leur provenance et les limites de validation ; ne pas considérer une recette publiée comme déjà éprouvée. Utiliser une cible isolée et garder arrêtés les déclencheurs ou chemins pouvant produire des emails, notifications et constructions réels.
+La procédure privée `PROCEDURE-REPRISE-ACTIVITE.md` contient les commandes exactes, dans cet ordre :
 
-Restaurer données et configuration cohérentes, notamment l'identité de chiffrement originale requise pour les identifiants n8n. Restaurer aussi les comptes, groupes et droits, l'environnement d'agents, le protocole et les travaux partagés, ainsi que l'état TLS et les restrictions d'accès. Conserver les révocations les plus récentes lors de la reprise VPN.
+1. Comparer les empreintes puis déchiffrer sur le poste opérateur. Aucun service modifié.
+2. Transférer les archives par SSH vérifié vers une nouvelle cible isolée. Aucune clé privée transférée.
+3. Extraire en préparation privée et recréer les identités correspondant aux propriétaires sauvegardés.
+4. Installer le socle sans démarrage, puis restaurer le volume n8n vide avec sa clé d'origine.
+5. Restaurer les compléments récents : code exécuté, bases du portail/dashboard, configurations et unités.
+6. Garder les services métier bloqués, rapprocher les envois, décisions et jobs, puis ouvrir chaque capacité séparément.
+7. Vérifier HTTPS privé et authentification, puis créer une nouvelle sauvegarde indépendante.
 
-Les fichiers de travail modifiables par d'autres comptes ne doivent pas être exécutés automatiquement avec les privilèges de l'opérateur. Les secrets bruts restent dans les stockages privés prévus ; ne jamais les recopier dans Git ou les messages de coordination.
+Chaque bloc précise son lieu d'exécution, pourquoi il est nécessaire et quels services ou fichiers il remet. Aucun déploiement ni test Ansible n'est exécuté par la lecture de la procédure.
 
-## Reconstituer les dépendances actuelles
+## Workflows et effets externes
 
-Inventorier séparément la pile n8n et son volume, les workflows publiés et connexions nécessaires, le proxy et ses filtres, le VPN et ses deux DNS, le bridge de construction, le worker Telegram et leurs états durables. Les adresses et fichiers précis sont dans la référence privée ; le catalogue fonctionnel est dans l’[architecture](ARCHITECTURE.md).
+La base n8n complète conserve les workflows web et mail : aucun import supplémentaire n'est nécessaire. Si seuls les JSON survivent, importer inactif, recréer les connexions et vérifier les références ; ce n'est pas une récupération des données perdues.
 
-Le worker Telegram actuel utilise des modules provenant de plusieurs dossiers sources : réponse humaine, validation de maquette, blocages techniques, Jev, reprise immédiate et diagnostic. Une ancienne recette qui copie seulement le worker et un module ne reproduit pas cette installation. Reconstituer les dépendances, configurations privées et permissions sans créer un deuxième consommateur du bot.
+Dépublier des workflows ne gèle pas toutes les exécutions déjà en attente. Garder les sorties isolées pendant le rapprochement. Un mail déjà confirmé envoyé ne doit pas repartir ; un état incertain ne devient pas un échec sans effet. Un ancien accord ne s'applique qu'à son résultat exact.
 
-Conserver les décisions humaines, les réservations, les envois confirmés et les états incertains. Une reprise ne doit ni rejouer toutes les anciennes réponses, ni réactiver des boutons terminés, ni renvoyer la réponse humaine. Les archives de mission sur le même serveur ne remplacent pas une sauvegarde indépendante.
+Le consommateur Telegram volontairement suspendu reste arrêté. Restaurer le dashboard conserve sa connexion propriétaire ; cela ne déchiffre pas les anciens messages opaques. Ne pas remettre une ancienne liste de révocation VPN à la place d'une plus récente.
 
-## Recette sans effets externes
+## Vérification finale
 
-Vérifier intégrité des données, droits, disponibilité locale, DNS, HTTPS, accès autorisés et refus attendus. Vérifier séparément les refus réseau et les profils révoqués. Contrôler la mémoire, la file et les réservations d'envoi sans rejouer aveuglément un état incertain.
+Contrôler les versions exécutées, les données, les trois interfaces privées et les refus attendus. Le site hébergé peut avoir continué à évoluer pendant la panne : le comparer avant toute restauration distante.
 
-Tester les parcours applicatifs sur des fixtures et cibles autorisées. Distinguer extraction réelle d'un document, brouillon, confirmation humaine, envoi confirmé, construction et revue des artefacts. Une page HTTP accessible ne démontre pas toute la chaîne.
-
-## Bascule autorisée
-
-Traiter ensemble les changements d'adresse, domaine, certificats et connexions applicatives. Revalider les restrictions et cibles de test avant tout effet réel. Republier progressivement les workflows, avec une autorisation humaine couvrant les conséquences, et vérifier les nouveaux résultats.
-
-Conserver un retour arrière et les preuves privées. Rendre compte des résultats et limites, puis clore les réservations. La réussite d'un déchiffrement ou d'un contrôle de configuration ne doit jamais être présentée comme une restauration complète validée.
+Une lecture statique des commandes, une archive authentifiée et un exercice complet de restauration sont trois résultats distincts. Aucun exercice complet ni reboot restauré n'est revendiqué par cette mise à jour.

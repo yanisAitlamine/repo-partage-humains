@@ -1,35 +1,43 @@
-> Documentation publique. Les paramètres réels, preuves privées et inventaires de secrets restent dans les espaces privés du Pi.
+# Maintenir les services et récupérer les sauvegardes
 
-# Continuité quotidienne — procédure publique
+Pour une panne limitée, contrôler puis redémarrer le composant concerné. Pour une perte du serveur, suivre la [reprise](PROCEDURE-REPRISE-ACTIVITE.md). Pour réinstaller du code, suivre l'[implémentation](GUIDE-IMPLEMENTATION.md).
 
-## Prise de poste
+## Contrôler sans redéployer
 
-Lire les consignes, la passation et les messages de collaboration. Identifier la mission autorisée et annoncer les interventions. Les paramètres réels, commandes propres à la production et preuves privées se consultent dans l'espace sensible du Pi.
+Depuis le contrôleur Linux, avec la cible et l'identité personnelles du guide privé :
 
-## Vérifier le service
+```bash
+ansible all -i "$CIBLE," -u "$COMPTE" --become \
+  -m ansible.builtin.command -a 'systemctl --failed --no-pager'
+```
 
-Contrôler la disponibilité de n8n et de ses dépendances, la résolution DNS, HTTPS et les accès autorisés. Examiner uniquement les journaux utiles au problème. L'état actif d'un service et une page accessible ne prouvent pas que tout parcours applicatif fonctionne.
+Pourquoi : localiser la panne. Aucun service ni fichier n'est modifié. L'état volontairement arrêté d'un composant n'est pas une panne ; le consommateur Telegram suspendu ne doit pas être réactivé par une commande générale.
 
-Pour les emails, distinguer réception, file, traitement, brouillon, revue, réservation d'envoi et envoi confirmé. Une issue incertaine doit être réconciliée avant un nouvel essai. Ne pas répondre rétroactivement à des messages anciens ni déclencher une construction à partir d'une simple notification.
+## Redémarrer un seul service
 
-## Décisions et documents
+```bash
+ansible all -i "$CIBLE," -u "$COMPTE" --become \
+  -m ansible.builtin.systemd_service -a "name=$SERVICE state=restarted"
+```
 
-Une réponse Telegram doit conserver les contrôles d'identité et la confirmation du texte exact. Le prototype de test peut être construit automatiquement après un brief suffisant, une source valide et une cible vérifiée. Contrôler ensuite la maquette et sa revue, puis obtenir l’approbation humaine liée à ce résultat avant livraison Gmail. Le mode site complet et la mise en production conservent leurs autorisations distinctes.
+Effet : redémarre le service choisi, conserve ses données et son code. Choisir les valeurs dans la procédure privée. Un traitement interrompu ou un envoi incertain doit être rapproché avant relance.
 
-Les documents entrants restent non fiables. Contrôler format, taille, provenance, droits et couverture d'extraction ; expliquer les absences de lecture. L'OCR, les images et les fichiers protégés ne doivent pas être déclarés pris en charge sans preuve.
+Les anciens playbooks d'exploitation ne sont pas automatiquement compatibles avec les helpers de la production actuelle. La procédure privée indique les appels utilisables et le précontrôle manquant ; ne pas fabriquer un marqueur pour contourner un refus.
 
-Après Continuer et un envoi humain confirmé, suivre la reprise immédiate jusqu’au résultat commercial. Un état de prise en charge n’est pas une livraison. Si un nouveau mail client intervient, vérifier qu’il n’a pas remplacé le contexte en cours. Les diagnostics expliquent les étapes ; les reçus externes confirment les effets.
+## Télécharger une sauvegarde utilisable
 
-Les détails sont dans le [guide des workflows](WORKFLOWS-PIPELINE-PRINCIPAL.md) et l’[architecture](ARCHITECTURE.md). Les reprises d’IA, la reprise après décision humaine et la relance client opportuniste après au moins deux heures sont trois mécanismes distincts.
+| Ensemble | Pourquoi le garder |
+| --- | --- |
+| Archive du socle | Base et connexions n8n, clé maître, accès et configurations couverts par le collecteur historique. |
+| Archive des ajouts récents | Comptes et données du portail, dashboard, textes lisibles conservés, worker et code réellement installé. |
+| Empreintes et métadonnées privées | Identifier une génération cohérente et ses propriétaires. |
+| Clé de récupération correspondante | Déchiffrer ; conservation protégée séparée. |
+| Copie de l'hébergement | Retrouver les fichiers de sites absents de l'archive du serveur. |
 
-## Sauvegarder
+La procédure privée `PROCEDURE-CONTINUITE-RUN.md` donne les chemins et les commandes de collecte, chiffrement, téléchargement et vérification. Elle distingue le snapshot existant de la collecte complémentaire à réaliser. Une ancienne archive ne contient pas les services ajoutés après sa date.
 
-Préparer une sauvegarde cohérente des données, configurations, identités nécessaires à la restauration et état TLS. Inclure les comptes et droits, le protocole et les travaux partagés, ainsi que les restrictions réseau. Chiffrer la sauvegarde et conserver une copie vérifiée hors Pi ; les secrets et archives ne vont pas dans Git.
+La collecte se fait pendant un arrêt cohérent des écrivains. Copier une SQLite active ou oublier ses écritures en attente peut perdre des décisions. Conserver une copie chiffrée vérifiée hors serveur, puis sur un second support indépendant. Le contrôle du déchiffrement ne remplace pas un exercice de restauration.
 
-Contrôler intégrité, déchiffrement et présence des éléments nécessaires sans afficher les secrets. Une vérification d'archive ne remplace pas un essai de restauration sur une machine isolée. Conserver les révocations les plus récentes pour éviter de réautoriser un accès retiré.
+## Revenir au service
 
-## Incident et maintenance
-
-Choisir une intervention ciblée selon la panne ; ne pas redémarrer tout le système pour un quota ou une erreur d'authentification externe. Respecter la réserve humaine sur les tests et déploiements Ansible. Les renouvellements de certificats et listes de révocation suivent le calendrier privé réel, sans réinitialiser une production existante.
-
-Finir par une annonce avec les résultats, limites et réservations libérées. Les rapports distinguent Collaboration et Délégation. Pour une perte complète du Pi, suivre la [procédure de reprise](PROCEDURE-REPRISE-ACTIVITE.md).
+Reprendre l'état relevé avant maintenance, contrôler les interfaces en HTTPS privé et garder bloqués les envois/jobs incertains. Ne pas restaurer une ancienne base pour réparer une simple indisponibilité de page. Le guide privé indique les services et résultats attendus, sans exécution automatique.
