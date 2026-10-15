@@ -50,6 +50,17 @@ opérateur et le test depuis le réseau extérieur. Aucun playbook Ansible, mode
 check, syntax-check ou lint n'a été lancé. Les services et règles actives n'ont
 pas été modifiés ; aucune connexion à l'hyperviseur ou à Kali n'a été effectuée.
 
+Complément du même jour : sur une nouvelle instruction explicite de Yanis,
+sa clé SSH publique personnelle existante et son empreinte vérifiée ont été
+envoyées au collaborateur, dans le nouveau fil demandé. La clé utilise RSA
+3072 bits ; la préférence Ed25519 du mail a été signalée et aucune nouvelle paire
+n'a été créée. La clé privée n'a pas été consultée, copiée ou transmise.
+L'adresse source prévue a été indiquée à partir de l'affectation serveur du
+profil personnel, avec confirmation du tunnel restant à faire sur le poste.
+Les métadonnées relues confirment SENT, le destinataire et le fil. L'exception
+de réseau nécessaire reste à coordonner séparément ; aucun compte, droit,
+filtrage ou routage n'a été activé par cet échange.
+
 ## Orchestration et délégation
 
 Codex réalise directement la lecture ciblée du mail, la préparation des fichiers,
@@ -84,3 +95,8 @@ Ce rapport public est anonymisé : la cartographie privée, les identifiants de
 messages et les chemins d'exploitation restent dans les références privées.
 Le contenu et le diff sont relus avant publication. Git conserve les sources ;
 il ne remplace pas une sauvegarde indépendante des identités et états privés.
+
+Ce complément a une intention et une fin déclaratives propres. Les dernières
+annonces ont été relues, notamment celle du portail distinct ; leurs réservations
+ont été préservées. Le suivi est ajouté à ce rapport et à la passation privée,
+sans publier la clé, son empreinte, les coordonnées ou les paramètres d'accès.
