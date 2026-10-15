@@ -103,3 +103,5 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 - [Rapport 48 — Réponses humaines contrôlées, tests et rappels à six heures](RAPPORT-48-robustesse-reponses-et-rappels-six-heures.md)
 
 - [Préparation d'un accès VPN dédié à un serveur — 15 octobre](RAPPORT-VPN-SERVEUR-20261015.md)
+
+- [Livraison d’un site complet, captures et recette réelle — 15 octobre](RAPPORT-SITE-COMPLET-REVUE-VISUELLE-20261015.md)
