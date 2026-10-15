@@ -81,3 +81,5 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 - [Rapport 44 — Consolidation des documents et suppression des anciennes copies](RAPPORT-44-consolidation-documentation-et-retrait-humain.md)
 
 - [Rapport 46 — Références techniques du bridge et du worker, sources versionnées](RAPPORT-46-references-techniques-bridge-et-worker.md)
+
+- [Rapport 47 — Reprise du pipeline, validation humaine et livraison vérifiée](RAPPORT-47-reprise-pipeline-et-validation-maquette.md)
