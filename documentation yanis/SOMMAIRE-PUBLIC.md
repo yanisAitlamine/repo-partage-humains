@@ -14,6 +14,8 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 
 ## Historique et procédures
 
+- [Portail : tests end-to-end et correctifs — 15 octobre 2026](RAPPORT-PORTAIL-E2E-CORRECTIFS-20261015.md) : parcours réexécutable, erreurs de génération explicites et accord lié à la version exacte.
+
 - [Portail connecté à n8n et parcours client — 15 octobre 2026](RAPPORT-PORTAIL-N8N-20261015.md) : comptes, conversations réelles, maquettes privées versionnées et vérifications du service installé.
 
 - [Portail client indépendant en HTTPS privé — 15 octobre 2026](RAPPORT-PORTAIL-CLIENT-20261015.md) : portail autonome, contrôles, versionnement et passation agents.
