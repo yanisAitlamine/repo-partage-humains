@@ -1,4 +1,4 @@
-# Identité VPN serveur activée et lot privé disponible — 15 octobre 2026
+# Identité VPN serveur activée et lot privé remis — 15 octobre 2026
 
 ## Demande et résultat
 
@@ -21,14 +21,14 @@ avec son accès personnel déjà épinglé et sous instruction de son humain.
 Yanis avait explicitement choisi ce canal de vérification. Ce résultat n'est pas
 présenté comme une comparaison manuelle personnellement effectuée par Ilyes.
 
-Le lot disponible par SFTP contient quatre fichiers : autorité publique,
+Le lot remis par SFTP contient quatre fichiers : autorité publique,
 certificat client public, configuration et protection TLS propre au client.
 La clé privée de l'appareil, sa passphrase, la clé privée de l'autorité et la
 protection TLS serveur sont absentes. Le répertoire de remise est contrôlé par
 root et lisible par le seul groupe personnel du destinataire, vérifié exclusif.
 Les droits de lecture sont contrôlés sous ce compte ; un compte tiers est refusé.
-Le contenu de la clé n'est pas affiché. La copie de remise sera retirée après
-réception attestée, tandis que le certificat public opérateur restera conservé
+Le contenu de la clé n'est pas affiché. La copie de remise est désormais retirée
+après réception attestée, tandis que le certificat public opérateur reste conservé
 pour permettre une révocation individuelle.
 
 L'identité VPN dispose de son adresse fixe distincte du poste personnel.
@@ -59,12 +59,29 @@ de Yanis, avec le chemin SFTP et les seules preuves publiques utiles. Aucun
 secret n'est joint au mail. SENT, le destinataire et le fil sont confirmés par
 relecture des métadonnées ; la réception et la lecture ne sont pas attestées.
 
-**Restent à réaliser côté client :** récupération SFTP, installation protégée,
-activation du filtre local préparé, lancement manuel avec saisie personnelle de
-la passphrase, test du tunnel puis du SSH quand le poste de Yanis sera connecté.
-Aucune connexion à l'hyperviseur ni nouveau test depuis un client extérieur n'a
-été effectué par Codex. Une configuration chargée ne démontre pas ces essais.
-Le démarrage automatique reste hors de cette étape.
+**Réception et tests client attestés ensuite :** le correspondant confirme les
+quatre fichiers reçus et installés, le contrôle du certificat, la saisie locale
+de la passphrase et le tunnel réellement connecté. Il rapporte HTTPS avec TLS,
+DNS dans les deux transports, refus des ports interdits et conservation du réseau
+de gestion. Le Pi observe indépendamment l'identité VPN connectée ; les essais
+depuis Proxmox restent les attestations du correspondant.
+
+Après cet accusé de réception, une nouvelle recette ciblée retire uniquement la
+copie de remise : contrôle du chemin exact et des fichiers, absence de liens et
+conservation préalable du certificat public opérateur. Sept tâches réussies,
+trois changements, aucun échec. Le secret n'est pas lu pour ce retrait. Un marqueur
+protégé empêche la recette de préparation de recréer le lot accidentellement ;
+le refus est testé et le dossier reste absent. Une nouvelle remise nécessite une
+autorisation explicite. Les sources et références d'exploitation sont actualisées.
+
+**Reste le SSH positif depuis le poste de Yanis.** Son profil VPN n'est pas
+connecté lors du contrôle. La route du Pi utilise une autre adresse source que
+celle autorisée : un test depuis le Pi ne validerait pas le trajet du poste et
+sa clé. Aucun élargissement de filtre ni usurpation d'adresse n'est utilisé.
+Aucune connexion à l'hyperviseur n'a été effectuée par Codex Yanis. La réponse
+email confirme le retrait et cette limite ; son envoi est vérifié. Le démarrage
+automatique Proxmox est une mission distincte du collaborateur, dont les fichiers
+réservés restent préservés.
 
 ## Orchestration et délégation
 
