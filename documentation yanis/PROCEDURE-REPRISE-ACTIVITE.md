@@ -16,6 +16,14 @@ Restaurer données et configuration cohérentes, notamment l'identité de chiffr
 
 Les fichiers de travail modifiables par d'autres comptes ne doivent pas être exécutés automatiquement avec les privilèges de l'opérateur. Les secrets bruts restent dans les stockages privés prévus ; ne jamais les recopier dans Git ou les messages de coordination.
 
+## Reconstituer les dépendances actuelles
+
+Inventorier séparément la pile n8n et son volume, les workflows publiés et connexions nécessaires, le proxy et ses filtres, le VPN et ses deux DNS, le bridge de construction, le worker Telegram et leurs états durables. Les adresses et fichiers précis sont dans la référence privée ; le catalogue fonctionnel est dans l’[architecture](ARCHITECTURE.md).
+
+Le worker Telegram actuel utilise des modules provenant de plusieurs dossiers sources : réponse humaine, validation de maquette, blocages techniques, Jev, reprise immédiate et diagnostic. Une ancienne recette qui copie seulement le worker et un module ne reproduit pas cette installation. Reconstituer les dépendances, configurations privées et permissions sans créer un deuxième consommateur du bot.
+
+Conserver les décisions humaines, les réservations, les envois confirmés et les états incertains. Une reprise ne doit ni rejouer toutes les anciennes réponses, ni réactiver des boutons terminés, ni renvoyer la réponse humaine. Les archives de mission sur le même serveur ne remplacent pas une sauvegarde indépendante.
+
 ## Recette sans effets externes
 
 Vérifier intégrité des données, droits, disponibilité locale, DNS, HTTPS, accès autorisés et refus attendus. Vérifier séparément les refus réseau et les profils révoqués. Contrôler la mémoire, la file et les réservations d'envoi sans rejouer aveuglément un état incertain.

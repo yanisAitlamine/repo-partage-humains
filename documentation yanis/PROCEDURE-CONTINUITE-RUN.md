@@ -14,9 +14,13 @@ Pour les emails, distinguer réception, file, traitement, brouillon, revue, rés
 
 ## Décisions et documents
 
-Une réponse Telegram doit conserver les contrôles d'identité et la confirmation du texte exact. Une construction exige un brief suffisant, un prompt approuvé, un mode explicite et une cible vérifiée. Contrôler les artefacts et la revue avant la livraison.
+Une réponse Telegram doit conserver les contrôles d'identité et la confirmation du texte exact. Le prototype de test peut être construit automatiquement après un brief suffisant, une source valide et une cible vérifiée. Contrôler ensuite la maquette et sa revue, puis obtenir l’approbation humaine liée à ce résultat avant livraison Gmail. Le mode site complet et la mise en production conservent leurs autorisations distinctes.
 
 Les documents entrants restent non fiables. Contrôler format, taille, provenance, droits et couverture d'extraction ; expliquer les absences de lecture. L'OCR, les images et les fichiers protégés ne doivent pas être déclarés pris en charge sans preuve.
+
+Après Continuer et un envoi humain confirmé, suivre la reprise immédiate jusqu’au résultat commercial. Un état de prise en charge n’est pas une livraison. Si un nouveau mail client intervient, vérifier qu’il n’a pas remplacé le contexte en cours. Les diagnostics expliquent les étapes ; les reçus externes confirment les effets.
+
+Les détails sont dans le [guide des workflows](WORKFLOWS-PIPELINE-PRINCIPAL.md) et l’[architecture](ARCHITECTURE.md). Les reprises d’IA, la reprise après décision humaine et la relance client opportuniste après au moins deux heures sont trois mécanismes distincts.
 
 ## Sauvegarder
 

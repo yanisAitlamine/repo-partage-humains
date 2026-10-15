@@ -4,8 +4,8 @@
 
 ## Comprendre le fonctionnement
 
-- [Les workflows expliqués étape par étape](WORKFLOWS-PIPELINE-PRINCIPAL.md) : réception, dialogue, décisions Telegram, maquette et livraison.
-- [L’architecture expliquée](ARCHITECTURE.md) : machines, services, données et sauvegardes.
+- [Guide détaillé des workflows, du mail à la livraison](WORKFLOWS-PIPELINE-PRINCIPAL.md) : réception, dialogue, décisions Telegram, maquette et livraison.
+- [Architecture complète, schémas et catalogue des fichiers](ARCHITECTURE.md) : machines, services, données et sauvegardes.
 
 Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous conservent l’historique daté des interventions.
 
@@ -61,4 +61,6 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 - [Guide — Pipeline principal n8n](WORKFLOWS-PIPELINE-PRINCIPAL.md)
 - [Rapport 39 — Documentation des workflows](RAPPORT-39-documentation-workflows.md)
 
-- [Rapport 40 — Guides réécrits en français clair](RAPPORT-40-documentation-en-francais-clair.md)
+- [Rapport 40 — Documentation claire et complète, publique et privée](RAPPORT-40-documentation-en-francais-clair.md)
+
+- [Rapport 41 — Reprise immédiate après Telegram et diagnostic](RAPPORT-41-reprise-telegram-et-diagnostic.md)
