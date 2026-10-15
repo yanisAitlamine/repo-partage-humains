@@ -14,6 +14,8 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 
 ## Historique et procédures
 
+- [Portail client indépendant en HTTPS privé — 15 octobre 2026](RAPPORT-PORTAIL-CLIENT-20261015.md) : portail autonome, contrôles, versionnement et passation agents.
+
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 - [PASSATION.md](PASSATION.md)
 - [PROCEDURE-CONTINUITE-RUN.md](PROCEDURE-CONTINUITE-RUN.md)
