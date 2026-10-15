@@ -46,6 +46,9 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 
 - [Rapport 28 — Quatre références privées et guide Ansible](RAPPORT-28-quatre-references-et-guide-ansible.md)
 
+- [Rapport 29 — Versionnement privé d’OpenVPN](RAPPORT-29-openvpn-versionnement-prive.md)
+- [Rapport 30 — Traitement des mails sur événements](RAPPORT-30-mails-sur-evenements.md)
+
 - [Rapport 31 — Telegram : blocages et maquettes](RAPPORT-31-telegram-blocages-et-maquettes.md)
 
 - [Rapport 32 — Maquette produite avant validation humaine](RAPPORT-32-pipeline-maquette-avant-validation.md)
@@ -58,6 +61,9 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 
 - [Rapport 36 — Diagnostic complet, livraison vérifiée et reprise de l’agent Ilyes](RAPPORT-36-test-reel-maquette-et-validation.md)
 
+- [Rapport 37 — Revue native Telegram du laboratoire](RAPPORT-37-revue-laboratoire-telegram-native.md)
+- [Rapport 38 — Jev dans le parcours commercial réel](RAPPORT-38-jev-parcours-commercial-reel.md)
+
 - [Guide — Pipeline principal n8n](WORKFLOWS-PIPELINE-PRINCIPAL.md)
 - [Rapport 39 — Documentation des workflows](RAPPORT-39-documentation-workflows.md)
 
@@ -66,3 +72,7 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 - [Rapport 41 — Reprise immédiate après Telegram et diagnostic](RAPPORT-41-reprise-telegram-et-diagnostic.md)
 
 - [Rapport 42 — Refonte des guides privés, continuité et reprise](RAPPORT-42-refonte-trois-guides-prives.md)
+
+- [Rapport 43 — Correctifs et pause de l’essai Gmail et Telegram](RAPPORT-43-correctifs-et-essai-gmail-telegram.md)
+
+- [Rapport 44 — Consolidation des documents et suppression des anciennes copies](RAPPORT-44-consolidation-documentation-et-retrait-humain.md)

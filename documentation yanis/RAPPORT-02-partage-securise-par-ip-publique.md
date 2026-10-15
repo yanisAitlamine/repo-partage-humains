@@ -53,7 +53,7 @@ Deux variantes sont étudiées plus loin : un nom DNS pointant vers la même IP 
 | Pi | Debian 13 ARM64, environ 8 Go de RAM |
 | Adresse LAN du Pi | `paramètre privé à consulter sur le Pi`, attribuée par DHCP |
 | Passerelle | `paramètre privé à consulter sur le Pi` |
-| Interface | `wlan0`, MAC `d8:3a:dd:4e:4c:21` |
+| Interface | `wlan0`, MAC `[ADRESSE-MAC-ANONYMISEE]` |
 | n8n côté Pi | uniquement `paramètre privé à consulter sur le Pi:5678` |
 | Données | volume `n8n_n8n_data` |
 | IPv6 | le Pi possède aussi une IPv6 globale ; à traiter dans le filtrage |
@@ -101,7 +101,7 @@ Dans le serveur DHCP de Freebox OS, créer ou vérifier un bail statique pour le
 | Champ | Valeur proposée |
 |---|---|
 | Appareil | `yanis-pi` / Raspberry Pi correspondant |
-| MAC de l'interface utilisée | `d8:3a:dd:4e:4c:21` |
+| MAC de l'interface utilisée | `[ADRESSE-MAC-ANONYMISEE]` |
 | Adresse réservée | `paramètre privé à consulter sur le Pi` si disponible et compatible avec la plage DHCP |
 
 Le Pi utilise le Wi-Fi. Une réservation pour la MAC Ethernet ne stabiliserait pas son adresse Wi-Fi. Un passage ultérieur à Ethernet est intéressant pour la disponibilité, mais il faudra alors ajuster la réservation et les règles NAT.

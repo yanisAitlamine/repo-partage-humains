@@ -39,7 +39,7 @@ Le contrôle `/healthz/readiness` a répondu `{"status":"ok"}` ; l'interface a r
 | Adresse LAN observée | `paramètre privé à consulter sur le Pi` |
 | Passerelle | `paramètre privé à consulter sur le Pi` |
 | Connexion active | Wi-Fi, interface `wlan0` |
-| MAC Wi-Fi | `d8:3a:dd:4e:4c:21` |
+| MAC Wi-Fi | `[ADRESSE-MAC-ANONYMISEE]` |
 
 L'ancien alias `raspberrypi` dans la configuration SSH Windows désigne `paramètre privé à consulter sur le Pi`. Il n'a pas été utilisé pour le déploiement et n'a pas été modifié. L'accès repose sur `[HOTE-LOCAL]`, qui évite cette adresse ancienne.
 

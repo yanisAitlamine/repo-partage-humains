@@ -59,9 +59,10 @@ dans le dossier de leur auteur. Chaque rapport décrit la demande et le résulta
 l'orchestration et la délégation, puis la coopération et l'adaptation au contexte
 lu. Les consignes détaillées sont dans [AGENTS.md](AGENTS.md).
 
-Le dépôt personnel privé de Yanis, `projet-n8n-documentation-humaine`, conserve
-quatre références : architecture générale, inventaire de secrets sans valeurs,
-guide Ansible détaillé et configuration des agents (chats exclus).
+Le dépôt personnel privé de Yanis, `projet-n8n-documentation-humaine`, possède
+un sommaire d’accueil et six références : architecture générale, inventaire
+de secrets sans valeurs, guide Ansible détaillé, configuration des agents
+(chats exclus), procédure d’exploitation quotidienne et procédure de reprise.
 Les inventaires sensibles et les valeurs de secrets ne sont pas publiés ici.
 
 Références de compréhension actualisées le 15 octobre 2026 : [architecture complète et schémas](documentation%20yanis/ARCHITECTURE.md), [workflows expliqués pas à pas](documentation%20yanis/WORKFLOWS-PIPELINE-PRINCIPAL.md) et [mise à jour documentaire](documentation%20yanis/RAPPORT-40-documentation-en-francais-clair.md).
