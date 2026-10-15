@@ -87,3 +87,5 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 - [Rapport 47 — Reprise du pipeline, validation humaine et livraison vérifiée](RAPPORT-47-reprise-pipeline-et-validation-maquette.md)
 
 - [Rapport 48 — Réponses humaines contrôlées, tests et rappels à six heures](RAPPORT-48-robustesse-reponses-et-rappels-six-heures.md)
+
+- [Préparation d'un accès VPN dédié à un serveur — 15 octobre](RAPPORT-VPN-SERVEUR-20261015.md)
