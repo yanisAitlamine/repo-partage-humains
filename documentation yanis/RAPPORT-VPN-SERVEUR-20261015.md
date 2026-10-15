@@ -61,6 +61,34 @@ Les métadonnées relues confirment SENT, le destinataire et le fil. L'exception
 de réseau nécessaire reste à coordonner séparément ; aucun compte, droit,
 filtrage ou routage n'a été activé par cet échange.
 
+Nouveau complément : la CSR publique est arrivée. Sa signature, son sujet et
+l'empreinte DER de sa clé publique correspondent aux éléments annoncés dans le
+mail. Les certificats publics de l'autorité et la CRL courante ont été vérifiés
+sans ouvrir le coffre privé réel. La confirmation humaine de l'empreinte par le
+contact habituel, expressément demandée par le correspondant, reste à obtenir.
+Elle a été demandée à Yanis ; aucune réponse n'est inventée à partir du silence.
+Yanis a ensuite choisi explicitement de solliciter la confirmation par email.
+Un second message demande au collaborateur de comparer et confirmer les deux
+empreintes publiques, VPN et hôte SSH. Son envoi et le bon fil sont vérifiés ;
+la réponse personnelle reste attendue avant les opérations dépendantes.
+
+Deux nouvelles recettes préparent la remise SFTP et l'exception SSH entre les
+deux seules identités concernées, avec retour établi. Le lot est prévu dans un
+répertoire contrôlé par root et lisible par le seul groupe personnel vérifié du
+destinataire. Le transfert ne doit contenir ni clé privée d'appareil, ni clé de CA,
+ni protection TLS du serveur. La recette de filtre conserve les refus généraux,
+prévoit validation préalable et restauration de préimage en cas d'échec.
+
+Ces recettes et leur documentation sont versionnées dans le dépôt technique
+privé et intégrées au clone actif, après revue statique et contrôle du diff.
+Elles n'ont pas été testées ou exécutées. Aucun certificat n'a été émis, aucun
+secret TLS client créé, aucun lot remis, aucune admission ou exception chargée.
+Le service VPN n'a pas redémarré. La réponse envoyée au correspondant décrit
+précisément cette attente ; SENT et le bon fil sont confirmés par relecture des
+métadonnées. Les annonces de la mission de connexion externe concurrente ont été
+lues et son périmètre préservé. Cette étape est une préparation complète des
+opérations dépendantes, avec confirmation d'identité encore nécessaire.
+
 ## Orchestration et délégation
 
 Codex réalise directement la lecture ciblée du mail, la préparation des fichiers,
