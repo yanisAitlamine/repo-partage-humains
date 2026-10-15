@@ -7,6 +7,9 @@
 - [Guide détaillé des workflows, du mail à la livraison](WORKFLOWS-PIPELINE-PRINCIPAL.md) : réception, dialogue, décisions Telegram, maquette et livraison.
 - [Architecture complète, schémas et catalogue des fichiers](ARCHITECTURE.md) : machines, services, données et sauvegardes.
 
+- [Bridge n8n/OpenCode : référence technique complète](BRIDGE-N8N-OPENCODE-REFERENCE-TECHNIQUE.md) : routes HTTP, jobs, preuve d’artefact, fonctions, workflow, unité et tests.
+- [Worker Telegram : référence technique complète](WORKER-TELEGRAM-REFERENCE-TECHNIQUE.md) : poller, Gmail, validations, moteur de décision, reprise, fichiers, fonctions et tests.
+
 Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous conservent l’historique daté des interventions.
 
 ## Historique et procédures
@@ -76,3 +79,5 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 - [Rapport 43 — Correctifs et pause de l’essai Gmail et Telegram](RAPPORT-43-correctifs-et-essai-gmail-telegram.md)
 
 - [Rapport 44 — Consolidation des documents et suppression des anciennes copies](RAPPORT-44-consolidation-documentation-et-retrait-humain.md)
+
+- [Rapport 46 — Références techniques du bridge et du worker, sources versionnées](RAPPORT-46-references-techniques-bridge-et-worker.md)

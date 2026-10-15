@@ -67,6 +67,8 @@ Les inventaires sensibles et les valeurs de secrets ne sont pas publiés ici.
 
 Références de compréhension actualisées le 15 octobre 2026 : [architecture complète et schémas](documentation%20yanis/ARCHITECTURE.md), [workflows expliqués pas à pas](documentation%20yanis/WORKFLOWS-PIPELINE-PRINCIPAL.md) et [mise à jour documentaire](documentation%20yanis/RAPPORT-40-documentation-en-francais-clair.md).
 
+Références techniques du code : [bridge n8n/OpenCode, fichier par fichier et fonction par fonction](documentation%20yanis/BRIDGE-N8N-OPENCODE-REFERENCE-TECHNIQUE.md) et [worker Telegram, décisions et reprise durable](documentation%20yanis/WORKER-TELEGRAM-REFERENCE-TECHNIQUE.md). Elles détaillent les contrats, les états, les effets externes, les tests existants et les limites de la version de sources documentée. Le [rapport 46](documentation%20yanis/RAPPORT-46-references-techniques-bridge-et-worker.md) décrit leur publication et le versionnement du code dans le dépôt source privé.
+
 Dernière évolution applicative documentée : [reprise après Telegram et diagnostic](documentation%20yanis/RAPPORT-41-reprise-telegram-et-diagnostic.md). Le [rapport 36](documentation%20yanis/RAPPORT-36-test-reel-maquette-et-validation.md) conserve les preuves du cas réel de construction et livraison. Ces rapports couvrent des étapes et des essais différents.
 
 La documentation précise aussi le versionnement et la sauvegarde de chaque fichier décrit. [Rapport 28](documentation%20yanis/RAPPORT-28-quatre-references-et-guide-ansible.md).
