@@ -14,6 +14,8 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 
 ## Historique et procédures
 
+- [Drive privé vers maquette livrée par mail — 15 octobre 2026](RAPPORT-DRIVE-MAIL-MAQUETTE-20261015.md) : trente pages, images et produits, construction revue, validation Telegram et réception du lien.
+
 - [Alertes Telegram : étape et cause explicites — 15 octobre 2026](RAPPORT-ALERTES-TELEGRAM-20261015.md) : diagnostic précis, référence d’exécution et vérification du rendu sans envoi de test.
 
 - [Portail : tests end-to-end et correctifs — 15 octobre 2026](RAPPORT-PORTAIL-E2E-CORRECTIFS-20261015.md) : parcours réexécutable, erreurs de génération explicites et accord lié à la version exacte.
