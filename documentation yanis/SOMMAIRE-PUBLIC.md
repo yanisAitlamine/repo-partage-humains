@@ -64,3 +64,5 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 - [Rapport 40 — Documentation claire et complète, publique et privée](RAPPORT-40-documentation-en-francais-clair.md)
 
 - [Rapport 41 — Reprise immédiate après Telegram et diagnostic](RAPPORT-41-reprise-telegram-et-diagnostic.md)
+
+- [Rapport 42 — Refonte des guides privés, continuité et reprise](RAPPORT-42-refonte-trois-guides-prives.md)
