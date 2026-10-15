@@ -72,6 +72,8 @@ flowchart TB
         DNS["DNS privé LAN et VPN"]
         FILTER["Filtres réseau de l’hôte"]
         HTTPS["Caddy — accès HTTPS privé"]
+        ADMINAPI["Caddy — administration locale"]
+        DISCOVERY["Avahi — découverte des noms locaux"]
         N8N["n8n — workflows et état durable"]
         TGWORKER["Service unique de revue Telegram"]
         BRIDGE["Passerelle privée OpenCode"]
@@ -95,6 +97,9 @@ flowchart TB
     LAN --> FILTER
     VPN --> FILTER
     LAN --> DNS
+    LAN -->|"mDNS — découverte locale"| DISCOVERY
+    SSH -. "Opération locale autorisée" .-> ADMINAPI
+    ADMINAPI -. "Gestion du proxy" .-> HTTPS
     VPN --> DNS
     FILTER --> HTTPS
     HTTPS -->|"Proxy local"| N8N
