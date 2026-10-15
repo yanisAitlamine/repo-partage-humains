@@ -2,6 +2,12 @@
 
 # Documentation publique
 
+Pour les agents : [fiche courte de reprise](REPRISE-AGENTS.md), puis les seules
+références utiles à la mission.
+
+- [Parcours simplifié de reprise — 15 octobre 2026](RAPPORT-REPRISE-COURTE-20261015.md).
+
+
 ## Comprendre le fonctionnement
 
 - [Guide détaillé des workflows, du mail à la livraison](WORKFLOWS-PIPELINE-PRINCIPAL.md) : réception, dialogue, décisions Telegram, maquette et livraison.

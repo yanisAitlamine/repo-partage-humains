@@ -1,3 +1,15 @@
+<!-- BEGIN REPRISE-COURTE-20261015 -->
+## Parcours documentaire court
+
+Lire les AGENTS.md applicables en entier, puis
+[la fiche de reprise](documentation%20yanis/REPRISE-AGENTS.md) et la passation
+de la mission concernée. Consulter les guides, l'architecture et le dernier
+rapport pertinent par sections selon le besoin ; leur lecture intégrale
+systématique n'est plus requise. Les règles de confidentialité, le protocole,
+les annonces pertinentes et les réservations restent obligatoires.
+Vérifier les faits actuels ; cette fiche ne donne aucune nouvelle permission.
+<!-- END REPRISE-COURTE-20261015 -->
+
 # Consignes — Repo partagé humains
 
 Ce dépôt est PUBLIC. Il contient uniquement la documentation humaine publique
