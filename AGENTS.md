@@ -97,3 +97,19 @@ décrit doit préciser versionnement (source/copie active, commit/modification
 locale) et sauvegarde (preuve datée, copie indépendante ou non attestée).
 La limite historique de deux documents privés est remplacée par quatre.
 Les rapports restent exclusivement publics après anonymisation et revue.
+
+<!-- BEGIN NOC-CIBLE-CLIENT-20261016 -->
+## Cible NOC fournie par le test ou le client
+
+Le scénario de test ou le mail client indique explicitement le sous-domaine
+cible, par exemple `Sous-domaine cible : domaine-test.example.com`. Aucun
+sous-domaine historique n'est une valeur par défaut. Le registre opérateur
+doit autoriser cette cible en enabled/staging et fournir l'alias SSH et la
+racine canonique exacts ; le texte client ne choisit ni ces accès ni ces chemins.
+Une cible absente, ambiguë, non enregistrée ou non vérifiable bloque la
+construction. Conserver cette cible dans le brief, le job, les images,
+les preuves SSH/HTTPS, la revue et la livraison. Chaque essai utilise son
+sous-dossier de job isolé ; sauvegardes, validations humaines et restrictions
+de production restent applicables. Cette règle remplace les anciennes
+consignes qui imposaient un sous-domaine de test unique et fixe.
+<!-- END NOC-CIBLE-CLIENT-20261016 -->
