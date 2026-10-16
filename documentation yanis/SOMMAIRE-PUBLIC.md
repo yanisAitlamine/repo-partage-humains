@@ -114,3 +114,5 @@ Les commandes propres à la production sont dans les guides privés correspondan
 - [Préparation d'un accès VPN dédié à un serveur — 15 octobre](RAPPORT-VPN-SERVEUR-20261015.md)
 
 - [Livraison d’un site complet, captures et recette réelle — 15 octobre](RAPPORT-SITE-COMPLET-REVUE-VISUELLE-20261015.md)
+
+- [Jev et OpenAI Decisions : diagnostic et comparaison isolée — 16 octobre](RAPPORT-JEV-DECISIONS-20261016.md)
