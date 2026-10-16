@@ -116,3 +116,5 @@ Les commandes propres à la production sont dans les guides privés correspondan
 - [Livraison d’un site complet, captures et recette réelle — 15 octobre](RAPPORT-SITE-COMPLET-REVUE-VISUELLE-20261015.md)
 
 - [Jev et OpenAI Decisions : diagnostic et comparaison isolée — 16 octobre](RAPPORT-JEV-DECISIONS-20261016.md)
+
+- [OpenAI Decisions intégré et essais mail — 16 octobre](RAPPORT-MIGRATION-DECISIONS-TESTS-20261016.md) : analyse débloquée sur deux cibles, première maquette revue, seconde bloquée dans la coordination NOC.
