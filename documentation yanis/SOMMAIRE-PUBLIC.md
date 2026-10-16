@@ -120,3 +120,5 @@ Les commandes propres à la production sont dans les guides privés correspondan
 - [OpenAI Decisions intégré et essais mail — 16 octobre](RAPPORT-MIGRATION-DECISIONS-TESTS-20261016.md) : analyse débloquée sur deux cibles, première maquette revue, seconde bloquée dans la coordination NOC.
 
 - [Deux pipelines mail vers maquette livrée — 16 octobre](RAPPORT-NOC-A-Z-TESTS-20261016.md) : correctifs de preuve et de navigation, deux revues finales réussies, recettes navigateur et mails reçus ; périmètre prototype TEST.
+
+- [Portail : parcours complet et images IA préparés — 16 octobre](PORTAIL-E2E-IMAGES-PREPARATION-20261016.md) : sources testées et release préparée ; activation et essais réels encore attendus.
