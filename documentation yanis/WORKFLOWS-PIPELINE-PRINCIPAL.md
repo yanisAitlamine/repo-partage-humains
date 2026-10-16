@@ -1,5 +1,17 @@
 # Comprendre les workflows : du premier mail à la maquette envoyée
 
+**Point courant du 16 octobre 2026 :** la décision du dialogue mail utilise
+désormais OpenAI Decisions ; deux nouveaux parcours jusqu'à une maquette
+reçue sont documentés dans le [bilan des essais](RAPPORT-NOC-A-Z-TESTS-20261016.md).
+Le portail conserve son ancienne version exécutée et son décideur Jev ; sa
+migration cohérente avec images et site complet est préparée, non activée.
+Telegram reste arrêté et désactivé. Les livraisons des deux essais mail
+reposaient sur un harnais opérateur TEST explicite, sans clic Telegram natif.
+Le gel demandé et les limites de reprise sont dans
+[l'architecture actualisée](ARCHITECTURE.md#état-au-16-octobre-2026--gel-des-changements-et-préparation-de-reprise).
+Les descriptions datées du 15 ci-dessous restent historiques lorsqu'elles
+diffèrent de ce point ; aucun nouveau parcours n'est lancé pour la rédaction.
+
 Ce guide explique ce que fait le projet lorsqu’une personne demande un site par mail : comment son message est reçu, comment le besoin est compris, dans quels cas un humain intervient et à quel moment une maquette peut être envoyée. Il explique aussi pourquoi certains traitements s’arrêtent et pourquoi il serait dangereux de simplement cliquer sur « relancer » dans tous les cas.
 
 La lecture peut commencer sans connaître n8n. Les termes techniques utiles sont définis au moment où ils apparaissent, puis réunis dans un glossaire. Les noms de statuts sont conservés : ils permettent de faire le lien entre cette explication et ce que montre le système.

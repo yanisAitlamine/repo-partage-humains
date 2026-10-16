@@ -2,6 +2,10 @@
 
 # Documentation publique
 
+**État au 16 octobre 2026 :** [gel des changements et préparation du redéploiement Debian amd64](RAPPORT-GEL-REDEPLOIEMENT-20261016.md).
+Les versions courantes et les limites de reprise sont distinguées dans
+[l'architecture actualisée](ARCHITECTURE.md#état-au-16-octobre-2026--gel-des-changements-et-préparation-de-reprise).
+
 Pour les agents : [fiche courte de reprise](REPRISE-AGENTS.md), puis les seules
 références utiles à la mission.
 

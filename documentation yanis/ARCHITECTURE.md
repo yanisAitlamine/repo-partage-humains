@@ -1,10 +1,43 @@
 # Architecture complète du projet : machines, services, échanges, données et fichiers
 
+## État au 16 octobre 2026 — gel des changements et préparation de reprise
+
+Ce relevé remplace les états antérieurs pour les points suivants ; les sections
+historiques et leurs dates restent conservées. Un gel temporaire des changements
+applicatifs est demandé pour laisser l'opérateur effectuer son exercice de
+redéploiement. La présente actualisation ne change aucun service ou workflow.
+L'annonce de gel relève de la coordination ; aucun verrou technique global
+n'est installé.
+
+| Sujet | État établi et limite |
+| --- | --- |
+| Services | Portail, Observatoire, orchestration, proxy privé et VPN actifs au relevé. Santé des deux interfaces vérifiée en local et en HTTPS privé, TLS conservé. La revue Telegram reste arrêtée et désactivée. |
+| Chaîne mail | Le nouveau moteur de décision est publié. Deux nouveaux parcours jusqu'à la réception d'une maquette sont documentés, avec corrections, seconde revue et recette desktop/mobile. Les livraisons utilisent un harnais opérateur TEST explicite ; aucun clic Telegram natif n'est revendiqué. |
+| Portail | La version qui tourne et la candidate préparée diffèrent. La migration du décideur web, la génération d'images et le nouveau parcours jusqu'au site complet appartiennent à la candidate non activée. Leur fonctionnement réel complet n'est pas encore démontré. |
+| Défauts connus | Audit de marque sensible au renommage malgré un HTML identique ; historique des prévisualisations susceptible de se vider sans rechargement dans un volet resté ouvert. Aucun correctif réalisé pendant le gel. |
+| Sources et données | Des intégrations et exports restent modifiés ou non suivis. Cloner un commit seul ne recrée pas l'installation, ses données et ses connexions. |
+| Reprise | Aucun nouveau lot complet indépendant n'est certifié par cette actualisation. Les archives historiques précèdent certains outils et états récents ; leur existence ne prouve pas une sauvegarde actuelle. |
+| VM d'exercice | La cible souhaitée est Debian 13 amd64. La création est bloquée avant authentification par l'accès VPN indisponible : poste opérateur déconnecté et serveur d'hypervision absent du tunnel au relevé. Les droits de création ne sont donc pas vérifiés et aucune VM n'est créée. |
+
+La [documentation Debian amd64](https://www.debian.org/releases/trixie/amd64/)
+décrit l'installation du système. La procédure de restauration du Pi ARM64 ne
+doit pas être rejouée telle quelle sur cette architecture : le helper refuse
+le binaire du proxy incompatible, et les exécutables, dépendances natives et
+navigateur de revue doivent être reconstruits pour la cible. La restauration
+complète entre architectures n'est pas encore validée.
+
+L'exercice doit conserver une VM isolée, les sorties métier bloquées avant le
+premier démarrage, les workflows restaurés inactifs et les attentes/envois
+réconciliés. Aucune bascule du DNS ou du réseau de production n'est comprise
+dans cet exercice. Les références précises et versions figées restent dans
+la documentation privée. Le [rapport de préparation](RAPPORT-GEL-REDEPLOIEMENT-20261016.md)
+distingue les contrôles réels du travail restant.
+
 Ce projet fait travailler ensemble plusieurs outils pour préparer une maquette de site à partir d’une discussion par mail. Gmail transporte la discussion. n8n organise les étapes. Des services d’IA aident à comprendre le besoin et à rédiger. Telegram permet à une personne de répondre aux blocages et d’approuver une livraison. OpenCode prépare la maquette sur l’hébergement autorisé. Le Raspberry Pi coordonne ces outils et conserve une partie de leur état.
 
 Cette page explique **ce que fait chaque élément, avec qui il communique, ce qu’il lit, ce qu’il écrit et où chercher quand une étape bloque**. Elle conserve volontairement les détails utiles : simplifier le langage ne doit pas supprimer le schéma des services, le rôle des répertoires ou les limites des sauvegardes.
 
-**Version documentaire : 15 octobre 2026.** Les résultats du 14 octobre et les évolutions documentées du 15 octobre sont distingués dans le texte. Une installation vérifiée ne prouve pas que tous les parcours humains ont déjà été essayés. Les rapports de référence conservent les preuves et leurs limites.
+**Version documentaire : 16 octobre 2026.** Le point daté en tête donne l'état courant vérifié. Les résultats et catalogues des 14 et 15 octobre restent historiques et sont distingués dans le texte. Une installation vérifiée ne prouve pas que tous les parcours humains ont déjà été essayés. Les rapports de référence conservent les preuves et leurs limites.
 
 Cette édition est publique. Les schémas décrivent les liens fonctionnels avec des noms de rôle. La documentation privée d’exploitation contient les adresses réelles, les interfaces, les ports effectivement configurés, les domaines, les chemins absolus, les identités de service et les emplacements sensibles. Les noms de fichiers et chemins relatifs présentés ci-dessous sont des repères dans les sources ; ce ne sont pas des instructions de connexion au système réel.
 
