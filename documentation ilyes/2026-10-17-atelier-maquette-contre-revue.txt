@@ -1,0 +1,38 @@
+Atelier — Maquette réelle et contre-revue
+17 octobre 2026 — version publique anonymisée
+
+1. Demande et résultat
+
+La mission consistait à stabiliser la continuité du brief puis obtenir une véritable maquette fictive, en conservant les protections et les autres automatisations.
+
+Deux corrections ont été publiées : meilleure récupération des preuves du brief après clarification et transmission du contrat de revue visuelle attendu par le constructeur. Les seuils de décision, les contrôles d’arrêt, les autorisations et la séparation des projets ont été conservés.
+
+Un premier travail s’est terminé sans preuve suffisante : il n’a pas été présenté comme réussi. Après correction du raccord, un nouvel essai du même projet fictif a réellement produit une maquette. La première revue a demandé des changements ; le constructeur a remplacé les sections par quatre pages distinctes et amélioré le menu mobile. Une seconde revue visuelle a rendu pass. La livraison reste soumise à validation humaine.
+
+La contre-revue indépendante a constaté quatre réponses HTTP200, les bons marqueurs de travail et de révision, et une empreinte de la page d’accueil identique à la preuve enregistrée. La navigation vers Services et Contact, le retour à l’accueil et la confirmation du formulaire local ont été exercés dans le navigateur. Aucun envoi réel n’est configuré dans ces interactions de démonstration.
+
+Réserve métier confirmée : une orientation de couleurs exprimée dans le chat n’était pas transmise au constructeur. La maquette est construite, mais ne peut pas être déclarée entièrement conforme au brief. Aucune livraison client ni publication commerciale n’a été approuvée.
+
+Un candidat local conserve davantage de données du chat. Sa reproduction passe d’un échec attendu à une suite de78tests réussis. Il n’est pas déployé : sa revue de sécurité exige un traitement des secrets accidentels du chat, une réanalyse explicite des anciens briefs prêts et la régénération des artefacts coordonnés. Aucun secret réel ni fuite n’a été observé. Le respect du design après correction reste à tester en situation réelle.
+
+2. Orchestration et délégation
+
+Délégation
+
+Le responsable a conduit le diagnostic, les sauvegardes, les publications ciblées, les essais réels, le suivi sans doublon et la contre-revue demandée par l’utilisateur.
+
+Des agents distincts ont relu les garde-fous, préparé les sources portables et leurs tests, reproduit la perte de style et effectué une revue adversariale du candidat. Leurs travaux locaux ont été distingués des corrections publiées et des essais réels. Le constructeur a utilisé son modèle configuré gpt-6-luna et des rôles de planification, d’implémentation et de revue distincts.
+
+La suite du raccord visuel compte72tests réussis. Des essais réels OpenAI ont conservé les six champs après clarification et bloqué une demande d’arrêt. Les suites se recouvrent : aucun total additionné n’est présenté comme une mesure globale de fiabilité. Le succès métier de la construction repose sur ses preuves, pas sur la seule couleur d’une exécution.
+
+3. Coopération et adaptation au contexte
+
+Collaboration
+
+Le protocole, l’état partagé et les intentions pertinentes ont été consultés. La revue automatique avait reconnu une pagination initiale de coordination incomplète. Cet écart a été signalé à l’utilisateur, qui a demandé une contre-revue. Celle-ci a effectué un inventaire complet jusqu’à une page vide, puis relu les intentions et clôtures pertinentes. Elle ne rend pas rétroactivement conforme le travail des anciens agents.
+
+Les évolutions parallèles de l’autre responsable restent dans un espace de travail distinct. Les changements de collecte documentaire et de sources web sont préservés ; le candidat de continuité du chat devra être coordonné avec eux avant intégration. Les références détaillées restent dans les preuves privées autorisées, sans secrets ou données clients dans ce rapport.
+
+Limites : la comparaison SSH est fournie par le service constructeur ; la contre-vérification HTTP et les interactions navigateur sont indépendantes. Les captures mobiles proviennent de la revue du constructeur. Aucun audit de sécurité exhaustif, test de charge, paiement, backend métier ou site commercial complet n’a été validé ici.
+
+Prochaine action : terminer la conservation sûre des exigences du chat, réanalyser le brief et vérifier la fidélité au besoin lors d’un futur essai autorisé. La livraison demeure en attente.
