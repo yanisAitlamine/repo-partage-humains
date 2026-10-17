@@ -12,6 +12,8 @@ références utiles à la mission.
 - [Parcours simplifié de reprise — 15 octobre 2026](RAPPORT-REPRISE-COURTE-20261015.md).
 
 
+- [Portail : dépôt PDF privé et reprise de plusieurs sites — candidate du 17 octobre 2026](RAPPORT-PORTAIL-PDF-REFONTE-20261017.md).
+
 ## Comprendre le fonctionnement
 
 - [Guide détaillé des workflows, du mail à la livraison](WORKFLOWS-PIPELINE-PRINCIPAL.md) : réception, dialogue, décisions Telegram, maquette et livraison.
