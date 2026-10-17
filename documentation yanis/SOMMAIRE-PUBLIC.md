@@ -12,7 +12,7 @@ références utiles à la mission.
 - [Parcours simplifié de reprise — 15 octobre 2026](RAPPORT-REPRISE-COURTE-20261015.md).
 
 
-- [Portail : dépôt PDF privé et reprise de plusieurs sites — candidate du 17 octobre 2026](RAPPORT-PORTAIL-PDF-REFONTE-20261017.md).
+- [Portail : dépôt PDF privé et reprise de plusieurs sites — recette réelle du 18 octobre 2026](RAPPORT-PORTAIL-PDF-REFONTE-20261017.md).
 
 ## Comprendre le fonctionnement
 
