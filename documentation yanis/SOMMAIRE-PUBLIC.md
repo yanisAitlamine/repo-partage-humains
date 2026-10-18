@@ -16,6 +16,8 @@ références utiles à la mission.
 
 - [Héphaïstos : refonte de la forge digitale — 18 octobre 2026](RAPPORT-HEPHAISTOS-DESIGN-20261018.md).
 
+- [Héphaïstos : profil professionnel et sécurité du compte — 18 octobre 2026](RAPPORT-HEPHAISTOS-PROFIL-20261018.md).
+
 ## Comprendre le fonctionnement
 
 - [Guide détaillé des workflows, du mail à la livraison](WORKFLOWS-PIPELINE-PRINCIPAL.md) : réception, dialogue, décisions Telegram, maquette et livraison.
