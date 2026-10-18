@@ -1,6 +1,6 @@
 # Héphaïstos : portail déployé et parcours commun candidat
 
-18 octobre 2026 — rapport de Yanis, avec assistance Codex.
+18 octobre 2026 — rapport Codex pour Yanis.
 
 ## Demande et résultat
 
@@ -55,6 +55,8 @@ uniquement, sans exécution, contrôle de syntaxe ni lint. La configuration priv
 les destinations et un essai réel de bout en bout restent à vérifier lors d'une
 activation autorisée de la release exacte.
 Les sources ont été commitées et poussées normalement sur la branche principale.
+La release candidate a également passé la préparation isolée du mécanisme de
+déploiement. La version réellement exécutée reste la version design et profil.
 
 Le premier pont final couvre les sites statiques ; il ne provisionne pas de
 backend ni de compte client. Le contrat prévoit des informations de connexion
