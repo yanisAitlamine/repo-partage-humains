@@ -83,6 +83,13 @@ est poussé et préparé séparément. Sa bascule attend l'accord humain sur la 
 exacte imposé par les consignes du dépôt. Il n'est pas présenté comme déjà exécuté
 par le portail.
 
+Le contrôle final a également détecté des caches Python créés par le diagnostic
+opérateur dans la release immuable. Une recette ciblée a vérifié qu'il s'agissait
+uniquement de caches générés, absents du manifeste, puis les a retirés. Les
+contrôles d'intégrité des releases réussissent à nouveau, sans modifier les
+sources scellées ni redémarrer le portail. Les diagnostics futurs doivent
+désactiver l'écriture de bytecode.
+
 ## Orchestration et délégation
 
 Codex a effectué directement l'activation, les corrections, les vérifications,
