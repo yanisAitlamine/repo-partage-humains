@@ -14,6 +14,8 @@ références utiles à la mission.
 
 - [Portail : dépôt PDF privé et reprise de plusieurs sites — recette réelle du 18 octobre 2026](RAPPORT-PORTAIL-PDF-REFONTE-20261017.md).
 
+- [Héphaïstos : refonte de la forge digitale — 18 octobre 2026](RAPPORT-HEPHAISTOS-DESIGN-20261018.md).
+
 ## Comprendre le fonctionnement
 
 - [Guide détaillé des workflows, du mail à la livraison](WORKFLOWS-PIPELINE-PRINCIPAL.md) : réception, dialogue, décisions Telegram, maquette et livraison.
