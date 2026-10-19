@@ -26,4 +26,6 @@ Les consignes, états Git, protocole de coopération, annonces et passations per
 
 Les difficultés observées ont modifié le parcours : scalaire YAML invalide, filtrage de transit ajouté par Docker, résolution DNS différente entre hôte et conteneurs, cache exclu mais exigé par la sandbox, manque de marge de reconnexion VPN et attente réseau héritée d'un gestionnaire inutilisé. Les reprises ont été ciblées, puis les redémarrages et accès ont été revérifiés.
 
+Le dernier contrôle depuis le contrôleur a aussi révélé qu'un renouvellement DHCP pouvait remplacer le DNS du VPN. Un agrégateur natif de résolveurs a été installé et sa priorité configurée ; l'accès HTTPS normal a été vérifié après réenregistrement des paramètres DHCP, sans modifier le gestionnaire de l'interface réseau.
+
 Une candidate préparée après la capture a été conservée sans activation implicite. Les guides distants ajoutés pendant l'historique ont été intégrés avant publication de la procédure, sans écraser leurs changements. La documentation privée contient les commandes, leur ordre réel, les garde-fous, les sauvegardes, les limites et les précautions pour refaire l'exercice sur un lab isolé. Ce rapport public omet les accès, inventaires privés, identifiants internes, secrets et données clients.
