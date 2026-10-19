@@ -53,8 +53,10 @@ n'a changé que la typographie de guillemets d'une réponse de FAQ. Cette derni�
 conserve une formulation explicative sur le nom d'une rubrique, améliorable dans
 une future finition éditoriale. Les huit pages de V2 passent les mêmes contrôles
 ordinateur/mobile, avec huit liens de menu et aucun débordement. Trois captures
-stables de la V2 sont préparées pour remise : accueil ordinateur, accueil mobile
-et menu mobile ouvert. L'aperçu V2 est refusé avec 401 sans session ; ses huit
+stables de la V2 ont été remises dans un mail récapitulatif demandé : accueil
+ordinateur, accueil mobile et menu mobile ouvert. La réception dans la boîte du
+demandeur et les trois pièces jointes PNG de tailles attendues ont été vérifiées ;
+aucun mot de passe ne figure dans ce mail. L'aperçu V2 est refusé avec 401 sans session ; ses huit
 pages ainsi que celles de V1 restent accessibles en HTTP200 au seul propriétaire.
 Les réponses servent une CSP sans scripts, réseau, formulaires ni frames imbriquées,
 avec Cache-Control: no-store. Le projet reste en revue de maquette ; aucun succès
@@ -121,3 +123,7 @@ n’a été réarmé. Les archives de captures et de reçus restent privées, ho
 dépôt documentaire public. Ce rapport est anonymisé et ne contient ni coordonnées,
 identifiants de projets/exécutions, chemins d’accès privés, corps de mail ou
 identifiants de connexion.
+
+Les annonces de coordination lues et publiées ont été conservées en copies
+d’audit privées après leurs publications. Ces copies ne prouvent ni une
+antériorité des intentions ni une égalité avec un historique natif chiffré.
