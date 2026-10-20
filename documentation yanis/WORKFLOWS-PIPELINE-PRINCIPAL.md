@@ -1,3 +1,100 @@
+# Workflows et parcours de données — référence publique
+
+## État courant — 21 octobre 2026
+
+Le parcours commun portail/mail et le pipeline historique sont deux circuits
+distincts. Le portail commun est actif dans la production principale ; la
+copie de secours garde ses workflows dépubliés. Le lab utilise ses propres
+graphes et ses données. Les anciens paragraphes du16octobre restent plus bas
+comme historique, sans prévaloir sur cet état.
+
+### Circuit commun portail/mail
+
+| Graphe / composant | Entrée | Traitement | Sortie et garde |
+| --- | --- | --- | --- |
+| Liaison mail dans le portail | Compte connecté et adresse choisie | Challenge expirant envoyé puis confirmé par le même compte | Adresse vérifiée ; modifier le profil seul ne confirme pas le mail. |
+| Lecteur Drive privé | Source explicitement partagée | Lecture bornée des formats admis | Sources privées rattachées au projet ; aucune interprétation inventée d'une image. |
+| Lecture et scan des sources | Référence de source/événement admis | Extraction, provenance et scanner heuristique | Texte utilisable ou motif de rejet ; source problématique à remplacer/retirer explicitement. |
+| Moteur commun | Brief, historique admissible et sources | Analyse structurée, directions artistiques, génération et revue via fournisseurs configurés | Réponses sous contrat ; le serveur conserve les autorités et les transitions. |
+| Notifications privées | Outbox et mail actuellement vérifié | Envoi utile : vérification, question, récapitulatif, aperçu, clarification, livraison | Reçu fournisseur et corrélation au tour ; pas de mail à chaque étape technique. |
+| Réponses Gmail vers portail | Un nouveau message du thread corrélé | Filtrage, pièces jointes et relais authentifié vers ingress | Première réponse admissible gagne ; une ancienne référence n'est pas réutilisée. |
+| Builder privé | Confirmation explicite du récapitulatif | Pages inertes, captures, revue indépendante, corrections et seconde revue | Bundle immuable lié au propriétaire, job et manifeste ; pas d'URL publique d'aperçu. |
+| Révision client | Modifier + retour obligatoire | Clarification, confirmation distincte des changements, nouvelle génération/revue | Nouvelle version ; l'ancienne approbation ne vaut pas approbation de la nouvelle. |
+| Livraison finale | Validation client de la version exacte | Registre opérateur, gateway signé, réalisation/revue, publication SSH et comparaison HTTPS | Reçu lié aux mêmes octets ; CMS réel si capacité demandée/admissible. |
+
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant P as Portail et SQLite
+  participant N as n8n commun
+  participant M as Gmail
+  participant AI as Moteurs et revue
+  participant H as Hébergement TEST
+  C->>P: Brief et adresse vérifiée
+  P->>N: Analyse et notification
+  N->>M: Question avec référence de tour
+  C->>M: Réponse client
+  M->>N: Message nouveau seulement
+  N->>P: Ingress authentifié et déduplication
+  P-->>C: Récapitulatif distinct
+  C->>P: Confirmation explicite
+  P->>AI: Génération, captures et revue indépendante
+  AI-->>P: Bundle corrigé et revu
+  P-->>C: Aperçu privé
+  C->>P: Modifier ou valider la version exacte
+  P->>H: Livraison autorisée, dossier neuf et preuves
+  H-->>P: Vérifications HTTPS/navigateur/CMS
+  P->>N: Notification finale
+  N->>M: Lien du site et activation éventuelle
+```
+
+Les décisions client fictives d'une recette autonome sont exercées comme telles.
+Elles ne constituent pas un accord opérateur de modifier la production. Ce
+parcours commun n'a pas besoin de Telegram ; les validations du pipeline
+historique restent celles de son propre contrat.
+
+### Pipeline historique et fonctions annexes
+
+Le premier graphe reçoit/filtre les mails admis et conserve le suivi. Le second
+construit le dialogue commercial et le brief, avec décisions sourcées et gardes
+de reprise. Le troisième produit une maquette et attend son accord de livraison.
+Le quatrième réalise le site complet dans une cible TEST après les accords
+requis. Les graphes de sources/images, journal/erreurs et reprise humaine sont
+des auxiliaires ; ils ne remplacent ni le serveur de vérité ni une autorisation.
+
+Les anciennes entrées Test Frontend et portail v2 restent présentes pour leurs
+projets compatibles. Les automatisations de candidatures sont un autre projet,
+préservé et non exercé par la recette de site. Aucun graphe historique n'est
+republié ou relancé uniquement pour mettre la documentation à jour.
+
+### Séparer les environnements et éviter les doubles
+
+Une vraie boîte Gmail par environnement est prévue, avec OAuth, trigger,
+expéditeur et corrélations séparés. C'est une décision à configurer, pas une
+installation attestée par ce guide. En attendant, un seul serveur consomme
+automatiquement les messages de production ; la copie de secours reste sans
+workflows publiés et le lab utilise un connecteur opérateur de recette.
+Un alias dans une boîte commune ne crée pas cette isolation. La déduplication
+dans deux bases indépendantes n'empêche pas deux pollers concurrents de voir le
+même message. Les états incertains ne sont jamais remis en file à l'aveugle.
+
+### Lire une preuve de test
+
+Le lab a réussi le parcours client et les contrôles navigateur avec de vrais
+appels OpenCode/OpenAI, Gmail et n8n, puis un CMS réel sur hébergement local.
+Ses trois webhooks de recette ne sont pas les cinq graphes communs de production.
+Leurs identifiants/version publiées et le catalogue actif détaillé restent dans
+la documentation privée, avec les domaines/chemins et points d'écoute réels.
+Une recette sur la production et l'hébergement externe doit fournir ses propres
+preuves ; une sonde de santé, un login ou un index200 ne la remplace pas.
+
+Toute modification de production fait l'objet de la coordination réciproque
+par mail définie dans l'[architecture actuelle](ARCHITECTURE.md). La validation
+doit porter sur le changement précis ; une réserve d'un autre agent reste à
+résoudre avant mutation, et une annonce n'est pas un verrou atomique.
+
+## Historique du pipeline — descriptions relatives à leur date
+
 # Comprendre les workflows : du premier mail à la maquette envoyée
 
 **Point courant du 16 octobre 2026 :** la décision du dialogue mail utilise

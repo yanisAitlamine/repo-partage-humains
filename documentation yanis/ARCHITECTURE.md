@@ -1,3 +1,191 @@
+# Architecture du projet — vue publique
+
+## Référence courante — 21 octobre 2026
+
+Cette section remplace les états plus anciens conservés après l'historique.
+Elle explique les composants et les échanges. L'inventaire détaillé des IP,
+interfaces, ports d'écoute effectifs, domaines d'administration, identités,
+racines d'hébergement et emplacements de secrets est dans la documentation
+privée d'exploitation. Aucune adresse de connexion réelle n'est publiée ici.
+
+### Machines et responsabilités
+
+| Rôle | Responsabilité actuelle | Limite importante |
+| --- | --- | --- |
+| Production applicative active | Portail, n8n et runners, moteur de génération, passerelle finale, observatoire et outil automobile | Seul environnement propriétaire des consommateurs automatiques de production. |
+| Serveur d'origine / secours | VPN, DNS privé, frontal HTTPS, dépôts canoniques et archive ; interfaces applicatives conservées | Même release de portail que la production active, mais données non répliquées en continu et automatisations neutralisées. Son ancien nom de lab est historique. |
+| Lab de recette | Runtime indépendant, n8n dédié, OpenCode, navigateur, cible SSH/HTTPS locale et CMS | Version de code plus récente ; ses adaptateurs et son hébergement ne sont pas ceux de production. |
+| Lab de développement du collaborateur | Travaux et diagnostics propres à cet opérateur | La disponibilité de son raccord de modèles doit être vérifiée dans cet environnement ; elle n'est pas héritée du lab de recette. |
+| VM d'exercice de reprise | Reconstitution manuelle depuis les sauvegardes | Distincte du lab automatisé ; arrêtée au relevé d'hyperviseur. |
+| Hyperviseur | Héberge templates et VM, réseaux virtuels et accès console | Une VM démarrée n'est pas une application vérifiée ; son bridge ne fournit pas automatiquement toutes les routes. |
+| Poste Windows | Client opérateur, coffre chiffré, édition et collecte de traces | Ce poste n'héberge pas le serveur livré. |
+| Poste Linux personnel | Contrôleur Ansible et essais humains | Aucun accès ou sondage dans cette mission. |
+| Hébergement de test externe | Sert les maquettes et sites construits dans des dossiers de job isolés | Cible autorisée exactement par l'opérateur ; aucun domaine historique par défaut. |
+
+La version stable commune du portail est antérieure à celle du lab. Les
+changements récents comprennent le contrôle des prérequis natifs, des limites
+de durée mieux séparées, une compatibilité CSS d'aperçu corrigée et le respect
+de la langue demandée. Les raffinements OpenCode de la recette conservent les
+fichiers/corrections existants et exigent du JSON structuré ; une partie de ce
+code appartient à l'adaptateur de test et n'est pas installée dans le moteur
+de production. Un commit sur la branche principale n'active aucune release.
+
+### Vue réseau et accès
+
+```mermaid
+flowchart LR
+  Client[Client privé] -->|VPN puis DNS privé| Edge[Passerelle VPN / DNS / HTTPS]
+  LAN[Client du LAN autorisé] -->|HTTPS| Edge
+  Edge -->|Proxy HTTP privé| Backend[Proxy production]
+  Backend --> Portal[Portail]
+  Backend --> N8N[n8n]
+  Backend --> Observatory[Observatoire]
+  Backend --> Cars[Tableau automobile]
+  Edge -->|Nom distinct de secours| Standby[Interfaces serveur de secours]
+  Lab[Lab indépendant] -->|SSH et HTTPS locaux| LabSite[Hébergement de recette]
+  Prod[Constructeur production] -->|SSH puis contrôle HTTPS| External[Hébergement TEST autorisé]
+```
+
+L'accès HTTPS applicatif reste limité au réseau autorisé ou au VPN. Le nom
+d'entrée VPN est distinct des noms applicatifs privés. Le frontal termine TLS
+avec preuve DNS, puis relaie vers la production. Les backends locaux ne sont
+pas directement publiés sur Internet. Le service DNS du système d'une VM,
+le DNS proposé au VPN et la découverte locale sont des fonctions distinctes.
+
+Le serveur d'origine reste nécessaire au frontal et au réseau : déplacer les
+applications en VM n'a pas supprimé cette dépendance. Un serveur nommé secours
+VPN ne constitue pas une bascule validée. Le relevé d'hyperviseur a aussi montré
+une possible adresse LAN dupliquée entre deux invités ; elle est consignée en
+privé sans changement réseau improvisé.
+
+### Services : qui appelle qui
+
+| Service | Entrée → travail → sortie | Stockage et preuve |
+| --- | --- | --- |
+| Proxy HTTPS | Navigateur privé → terminaison TLS et routage par chemin/nom → backend | Configuration installée distincte du template source ; santé et API privée contrôlées séparément. |
+| Portail Python et frontend React | Session propriétaire → brief, réponses et validations → travaux durables | SQLite privée, révisions atomiques, tours et versions de maquette. |
+| n8n et runners externes | Webhooks et triggers admis → graphes publiés → appels de services | Base et credentials chiffrés ; version enregistrée distincte de la version publiée. |
+| Moteur commun | Sources/brief bornés → décision et génération structurées → propositions vérifiées | Le serveur contrôle citations, schémas et consentements ; le modèle ne choisit pas ses permissions. |
+| OpenCode CLI / OpenAI | Consigne bornée et éventuellement captures → génération ou avis indépendant | Appels réels dans la recette ; clé valide distincte de la disponibilité d'un fournisseur gratuit. |
+| Capture privée | HTML/CSS/raster admis → Chromium isolé → images desktop/mobile et mesures | Aucun réseau pour le renderer privé ; captures liées aux octets et à la version. |
+| Revue visuelle | Captures réelles → constats, scores et corrections → verdict | Indépendante de la génération ; défaut majeur bloque, aucun score n'est réécrit pour faire passer. |
+| Bridge et runner d'hébergement | Job authentifié → contexte NOC borné → réalisation et revue sur cible TEST | États durables, contrôle des chemins et comparaison SSH/HTTPS. |
+| Gateway final | Claim/signature, version approuvée et registre opérateur → publication de mêmes octets → reçu final | Aucun remplacement de l'index racine ; dossier neuf propre au job, pas de répétition d'un effet incertain. |
+| CMS PHP/SQLite | Activation propriétaire → brouillon, publication, recherche et médias | Capacité explicite ; recette authentifiée réelle avant livraison. Pas de faux formulaire ou mot de passe envoyé en clair. |
+| Relais mail | Pair n8n autorisé → ingress local authentifié → réponse rattachée au bon tour | Référence opaque, identité de message, première réponse gagnante et rejet des retards. |
+| Observatoire | Collecte Windows/Linux et copies d'audit autorisées → chronologie/graphes | Archive privée faisant autorité sur le serveur d'origine, miroir vers production ; cryptogrammes non déclarés déchiffrés. |
+| Observatoire automobile | Sources autorisées → collecte courante et archives → dashboard | Trois rôles web/worker/historique en production ; prix affichés et couverture documentés, pas de vente inférée. |
+
+### Messagerie par environnement : décision et état réel
+
+L'organisation demandée prévoit **une vraie boîte par environnement** :
+production active, serveur de secours et lab de recette. Chaque boîte doit
+avoir son identité OAuth, ses triggers et sa corrélation propres. Plusieurs
+alias aboutissant dans une boîte commune ne séparent pas les traitements.
+
+Cette séparation n'est **pas encore une configuration livrée** : aucune
+création de boîte ou modification OAuth n'a été faite dans la mise au propre.
+La prévention actuelle repose sur un seul environnement consommateur et sur
+les workflows de la copie de secours dépubliés. Le lab utilise le connecteur
+opérateur pour ses échanges de recette, sans poller Gmail de production et
+sans Telegram. La clé fournisseur partagée n'implique pas le partage des files,
+des comptes clients ou des identités de machine.
+
+### Parcours commun et données
+
+```mermaid
+flowchart TD
+  Account[Compte et mail vérifiés] --> Project[Projet propriétaire / brief]
+  Project --> Turn[Question et tour durable]
+  Turn --> Web[Réponse portail]
+  Turn --> Gmail[Question puis réponse Gmail]
+  Web --> Winner[Première réponse admise atomiquement]
+  Gmail --> Winner
+  Winner --> Sources[Sources privées extraites et scannées]
+  Sources --> Analysis[Analyse structurée et confirmations explicites]
+  Analysis --> Summary[Récapitulatif distinct confirmé]
+  Summary --> Build[Directions artistiques / pages privées]
+  Build --> Capture[Captures réelles desktop et mobile]
+  Capture --> Review[Revue indépendante]
+  Review -->|Corrections nécessaires| Build
+  Review -->|Contrôles satisfaits| Preview[Aperçu privé versionné]
+  Preview --> Decision[Décision client exacte]
+  Decision -->|Modifier| Turn
+  Decision -->|Valider| Final[Gateway final et cible autorisée]
+  Final --> Verify[SSH / HTTPS / navigateur / CMS demandé]
+  Verify --> Delivery[Reçu et mail de livraison]
+```
+
+Les principales données sont les identités/sessions hashées, contacts vérifiés,
+projets, tours, événements admis, sources privées, jobs, fichiers immuables,
+reçus de revue et outbox. Les bases du portail, de n8n, du bridge et du gateway
+ont chacune un rôle : aucune ne se déduit d'un clone Git. Un résultat incertain
+n'est jamais réarmé automatiquement ; restaurer une ancienne outbox ne doit
+pas envoyer une seconde fois un mail ou reconstruire un site déjà publié.
+
+La version commune emploie cinq graphes n8n pour sources/Drive, moteur,
+notifications et réponses. Les parcours historiques mail, portail v2, support
+et candidatures personnelles coexistent mais n'ont pas la même entrée ni les
+mêmes permissions. Leur présence n'autorise aucun test des projets personnels.
+Voir [le guide actualisé des workflows](WORKFLOWS-PIPELINE-PRINCIPAL.md).
+
+### Catalogue des dépôts et lecture du code
+
+| Dépôt / famille | Code contenu | Ce qu'il ne fournit pas à lui seul |
+| --- | --- | --- |
+| DevLinuxSetup | Installation d'outils Linux, détection OS/architecture, environnement utilisateur et recettes Ansible | Données n8n, identités ou restauration des applications. |
+| n8n-services | Déploiement Docker/runners, lifecycle, intégrations mail/Drive/bridge/visuel, sauvegarde et reprise | Workflows/credentials/bases d'une installation sauvegardée par simple clone. |
+| NOCAgent | Base de contrôle OpenCode, rôles de planification/implémentation/revue, skills et contraintes de cible | Nouvelle permission d'hébergement ou domaine par défaut. |
+| OpenVPNDeploy | PKI/enrôlement, CCD, CRL, DNS/pare-feu/TLS et prérequis | Droit de recréer une CA déjà utilisée en production. |
+| TelegramOpencodeServer | Bridge Python vers un forum, attribution des sessions/questions/permissions | Compatibilité runtime attestée ou usage autorisé de la base personnelle. |
+| agent-observatory | Serveur et interface de traces, collecteurs et archive | Clé de déchiffrement des anciens messages natifs chiffrés. |
+| CarPriceScrapper | FastAPI/SQLite, adaptateurs de collecte et reprise historique | Certitude d'une vente ou équivalence entre prix affiché et prix de transaction. |
+| atelier-portal | frontend/lib pour écrans et contrats ; server pour API/états ; integrations pour n8n/CMS/gateway ; tools pour runner ; Ansible et tests | Activation de la release ou publication de workflow à chaque push. |
+| atelier-portal-public | Miroir de code assaini et configurations d'exemple | Inventaire privé ou accès d'exploitation. |
+| repo-partage-humains | Guides, architecture, rapports et preuves anonymisées par auteur | Serveur exécutable ou données sensibles de reprise. |
+| Documentation humaine privée | Architecture effective, inventaire des emplacements de secrets et guides d'exploitation historiques | Valeurs de secrets ou archives de données dans Git. |
+
+Les nombreux dossiers de missions/clones ne sont pas autant d'applications
+différentes. Le remote identifie le dépôt, le commit la source, la release
+immuable l'installation et la version publiée le graphe réellement exécuté.
+La base personnelle de contrôle Pi est un dossier installé distinct, réservé
+à son propriétaire ; aucun lancement n'a lieu dans cette mission.
+
+### Reprise, coordination et niveau de preuve
+
+L'ordre est : cible neuve identifiée → amorçage Python par transport brut avant
+facts Ansible → utilitaires → coffre vérifié/déchiffré → extraction bornée →
+réseau/confiance → bonnes dépendances natives → bases et releases restaurées →
+réconciliation des effets → consommateur unique → nouvelle recette isolée.
+Un snapshot de VM n'annule aucun effet déjà envoyé et ne remplace pas une
+sauvegarde indépendante. Les anciens rôles réservés ne sont pas exécutés ici.
+
+Toute modification de production exige désormais une consultation réciproque
+des deux opérateurs. Côté demandeur, un mail de validation de l'agent du
+collaborateur doit précéder l'application du changement proposé. Le périmètre,
+la version exacte et le retour arrière doivent être précis. Les autres accords
+humains requis restent applicables ; ni silence, ni journal de coordination,
+ni recette fictive ne constituent un accord de déployer une nouvelle release.
+
+La recette lab réussie a effectué37 contrôles de parcours,58 contrôles Chromium,
+533 unitaires,15 invocations natives OpenCode/OpenAI,16 notifications reçues,
+40 appels de gateway via vrais webhooks,64 captures privées et4 captures
+d'acceptation. Elle a livré huit pages et vérifié un CMS réel. Sa cible était
+locale au lab : ce succès ne certifie ni le graphe prod ni l'hébergement externe.
+
+La mission du21octobre actualise l'inventaire et prépare une recette sur la
+production existante vers une cible TEST externe déjà admise. Les contrôles
+SSH/HTTPS de racine passent sans écriture. Une autre cible finale nécessiterait
+un ajout de configuration : sa validation par mail est demandée, pas présumée.
+La recette nouvelle et le mail annonçant son succès restent conditionnés à une
+livraison réellement vérifiée. Aucun résultat vert n'est déduit du seul accès.
+
+## Historique documentaire — états relatifs à leur date
+
+Les textes suivants sont conservés pour leurs explications et preuves datées.
+Les anciennes mentions du serveur d'origine comme unique production ou lab,
+de candidats non activés et de moteurs locaux ne sont pas l'état courant.
+
 # Architecture complète du projet : machines, services, échanges, données et fichiers
 
 ## État au 16 octobre 2026 — gel des changements et préparation de reprise
