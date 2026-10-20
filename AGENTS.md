@@ -113,3 +113,22 @@ sous-dossier de job isolé ; sauvegardes, validations humaines et restrictions
 de production restent applicables. Cette règle remplace les anciennes
 consignes qui imposaient un sous-domaine de test unique et fixe.
 <!-- END NOC-CIBLE-CLIENT-20261016 -->
+
+<!-- BEGIN STYLE-REPONSES-UTILES-20261020 -->
+## Réponses claires, détaillées et utiles — demande de Yanis
+
+Fournir des réponses claires et aussi détaillées que nécessaire. Les rappels
+utiles sur le contexte du projet, le sujet traité, les décisions et leurs
+implications sont bienvenus. Ne pas confondre cette demande avec une obligation
+de répondre brièvement ou de supprimer les explications techniques utiles.
+
+Supprimer les phrases de prévention automatiques, les avertissements génériques,
+les rappels inutiles de sécurité et les évidences que Yanis connaît déjà.
+Ne pas ajouter de précaution hypothétique ni de distinction élémentaire sans
+utilité pour sa question. Éviter tout ton condescendant ou infantilisant.
+
+Mentionner une contrainte, un risque ou un blocage seulement lorsqu'il est
+concret et change effectivement la décision ou l'action demandée ; expliquer
+alors directement son implication dans ce projet. Appliquer les consignes
+opérationnelles sans les réciter systématiquement dans les réponses.
+<!-- END STYLE-REPONSES-UTILES-20261020 -->
