@@ -2,6 +2,53 @@
 
 ## Demande et résultat
 
+**État de la reprise du 20 octobre.** La cible TEST du seul projet de recette
+est désormais disponible. Le blocage du transport des réponses Gmail a été
+localisé puis corrigé, et une sonde native authentifiée confirme le retour
+attendu du serveur. La maquette V2 reste en revue ; **aucun site final n’est
+encore livré dans cette recette**.
+
+L’accès SSH de la nouvelle machine présentait la même ancienne clé que le Pi,
+mais l’hébergement refusait sa provenance. Après une instruction humaine
+explicite dans la tâche d’administration, une identité dédiée a été générée
+sur la nouvelle machine ; seule sa partie publique a été inscrite, avec une
+restriction de provenance. Les anciennes entrées ont été préservées. Les
+preuves SSH/HTTPS ont réussi depuis le transport définitif, puis la seule
+association du nouveau projet a été ajoutée avec sauvegarde et garde de
+concurrence. L’API propriétaire et l’interface confirment la disponibilité de
+la construction statique et du CMS. Aucun ancien site ni job n’a été remplacé.
+
+Un troisième retour client fictif a servi de diagnostic, sans réponse portail
+concurrente. Une lecture native des seuls en-têtes de ce courrier dans la boîte
+du service a réellement vérifié : expéditeur égal à l’adresse vérifiée,
+thread égal au reçu de notification, absence des labels spam, corbeille et
+envoyés. Le corps et les pièces jointes n’ont pas été lus par cette sonde.
+Les contrôles d’identité et de corrélation n’ont donc pas été assouplis.
+
+Une sonde native distincte, avec le credential existant et un JSON vide
+volontairement invalide, expirait entre le conteneur et le relais ; le relais
+répondait immédiatement depuis son hôte. Le filtrage hôte ne comportait pas
+l’admission du flux privé nécessaire. Une seule règle limitée au bridge,
+à la source, à la destination et au port concernés a été ajoutée et persistée.
+Après correction, le conteneur reçoit le refus sans authentification attendu ;
+la nouvelle sonde authentifiée passe et confirme HTTP400 pour le schéma
+invalide. Aucun message client ni travail n’est créé par ces sondes.
+Cette preuve de transport ne remplace pas encore un nouvel échange métier
+complet après correction.
+
+La candidate qui supprime les confirmations de traitement est préparée par le
+contrôleur officiel, avec un manifeste complet conforme. Les 494 tests Python,
+les huit tests de l’adaptateur mail et la compilation frontend passent.
+Le contrôle global des releases avait signalé un écart ; la candidate demandée
+a été préparée séparément et vérifiée sur tous ses fichiers, sans rescellage
+d’une autre version. L’application exécutée reste inchangée : l’opérateur a
+refusé l’activation sans l’accord humain sur le commit exact exigé par les
+consignes du dépôt. Cette confirmation est demandée. Les réponses et décisions
+du client fictif restent prises en charge de façon autonome ; le test final
+reprendra après cette bascule pour éviter de nouveaux mails techniques.
+
+**Essai initial, nuit du 19 au 20 octobre — historique des preuves ci-dessous.**
+
 Demande : exercer sans présence de l’utilisateur le parcours client sur la
 production migrée, puis remettre la maquette. Des instructions permanentes ont
 été ajoutées au fichier agents demandé : compte de recette réutilisable,
@@ -97,33 +144,56 @@ reste à préciser humainement ; ce n’est pas une validation client simulée.
 
 ## Orchestration et délégation
 
-Travail direct de Codex : lectures et coordination, modification ciblée des
-consignes, compte et coffre de recette, actions navigateur et Gmail, contrôles
-HTTP authentifiés et anonymes, captures et compte rendu. Aucun nouveau sous-agent
-Codex lancé et aucune session PIAgentControl utilisée. La génération, l’analyse
-et la revue proviennent des workflows applicatifs déjà actifs ; elles ne sont
-pas présentées comme une délégation Codex supplémentaire. Aucune consigne n’a
-été envoyée à une autre tâche en l’absence d’autorisation explicite. Aucun coût
-ou gain de temps supposé n’est chiffré.
+Travail direct de Codex pour les consignes de recette, le compte et son coffre,
+les actions navigateur/Gmail, les contrôles HTTP, les captures et les tests de
+code. Aucun nouveau sous-agent Codex ni session PIAgentControl n’a été lancé.
+L’analyse, la génération et les revues des maquettes utilisent les workflows
+applicatifs existants.
+
+La reprise a reçu une autorisation explicite de transmettre la demande à une
+tâche opérateur existante. Celle-ci a traité l’identité SSH, l’association de
+cible, la correction réseau et la préparation de release par son circuit
+administratif existant. La tâche principale a revu les résultats et les
+helpers de diagnostic, signalé les limites d’un inventaire filtré et d’un
+parcours de timestamps trop peu profond, puis vérifié elle-même la disponibilité,
+les en-têtes côté destinataire et le transport authentifié réparé.
+
+Quatre workflows de diagnostic manuels ont été créés puis archivés : profil
+du service, première sonde de transport, enveloppe du courrier et recontrôle
+après réparation. Ils n’ont jamais été publiés ; les exécutions sont configurées
+sans conservation avant utilisation. Ces sondes n’ont reçu ni corps de courriel ni credential brut, et n’ont
+réinjecté aucun ancien événement ou déclenché de construction.
+Aucun coût ni gain de temps n’est inventé.
 
 ## Coopération et adaptation au contexte
 
-Les consignes applicables, la reprise commune, les passations du parcours, le
-protocole et l’état partagé ont été consultés. Les annonces de migration, de
-déploiement et d’approbation concurrentes ont été lues dans leur périmètre utile.
-L’intention de reprise, les points et l’extension du rapport ont distingué la
-production applicative du lab, réservé le projet de recette et ses preuves,
-et préservé les projets concurrents ainsi que les travaux de profil et de revue.
+Les consignes, la reprise commune, les passations, le protocole et les annonces
+pertinentes ont été consultés. Les intentions et fins de la tâche opérateur
+ont permis de séparer la configuration de cible, le réseau, les sondes mail et
+les preuves de recette. Les travaux concurrents sur le profil, la revue et
+une machine de développement distincte ont été préservés. Les checkouts déjà
+modifiés n’ont pas été réinitialisés et les intégrations utilisent des copies
+isolées.
 
-La release exécutée et les services ont été vérifiés ; les fichiers du garde de
-maquette et de résolution de cible finale correspondent aux blobs attendus.
-Aucun code, service, workflow publié, réseau ou donnée d’un autre projet n’a été
-modifié dans cette reprise. Aucun ancien job, envoi incertain ou décision inconnue
-n’a été réarmé. Les archives de captures et de reçus restent privées, hors du
-dépôt documentaire public. Ce rapport est anonymisé et ne contient ni coordonnées,
-identifiants de projets/exécutions, chemins d’accès privés, corps de mail ou
-identifiants de connexion.
+Le diagnostic distingue les identifiants de courriers propres à chaque boîte,
+les en-têtes réellement reçus et les métadonnées d’exécution. Une absence de
+ligne d’historique ne prouve pas l’absence d’exécution lorsque la conservation
+est désactivée. Le timestamp de poll a été retrouvé dans la structure imbriquée,
+et le profil natif a confirmé la boîte du service ; ces faits ont évité de
+modifier les contrôles de sender ou de thread sur une supposition.
 
-Les annonces de coordination lues et publiées ont été conservées en copies
-d’audit privées après leurs publications. Ces copies ne prouvent ni une
-antériorité des intentions ni une égalité avec un historique natif chiffré.
+Une exploration du menu de comptes du navigateur a affiché trop de métadonnées
+dans la trace privée. L’onglet a été fermé et ses variables temporaires effacées ;
+ces informations ne sont pas reproduites dans ce rapport. Les sorties des
+sondes ont été limitées ensuite à des assertions et résultats techniques.
+
+Les demandes directes à la tâche opérateur ont été archivées avant envoi.
+Les réponses lisibles disponibles sont conservées en copies d’audit privées ;
+certaines annonces de coordination ont été copiées après leur publication. Ces copies ne sont pas présentées comme un déchiffrement
+de messages natifs. Les sources de sonde, reçus et captures restent privés ;
+le rapport public ne contient ni coordonnées, cible d’hébergement, chemins
+d’accès privés, identifiants runtime, marqueurs de mail ou valeurs secrètes.
+
+Le passage au site final, la preuve du CMS livré, la réception du mail final
+et le nouvel échange métier après réparation restent à vérifier. Aucun ancien
+mail, job échoué ou accord opérateur inconnu n’a été réarmé.
