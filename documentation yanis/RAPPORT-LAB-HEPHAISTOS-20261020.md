@@ -12,6 +12,10 @@ Vérifications réelles : connexion SSH, interrogation SQLite par PHP, égalité
 
 Ces preuves valident le runtime. Elles ne constituent ni une livraison de site client, ni un test fournisseur IA authentifié. Le CLI est installé sans import de connexion fournisseur ; les profils et une éventuelle nouvelle authentification restent à la recette. Aucun prompt payant n’a été lancé par cette intervention.
 
+Une extension ultérieure prépare l’inférence locale après le refus explicite du gateway gratuit, sans tenter de contourner ce refus. La marge de l’hôte est vérifiée, les seules ressources du lab sont augmentées et son redémarrage est coordonné après libération des essais. Le modèle dispose d’un stockage séparé créé uniquement dans l’espace libre ; les partitions système existantes sont préservées. Ollama officiel fonctionne en boucle locale, cloud désactivé et ressources plafonnées. Le modèle vision [Qwen3.5:4b](https://ollama.com/library/qwen3.5:4b) est vérifié par son manifeste exact, sa quantification et ses capacités natives.
+
+Deux véritables appels locaux successifs passent : un calcul simple puis l’identification correcte d’une forme, d’une couleur et d’un nombre dans une image de contrôle. Les réponses finales et compteurs natifs sont conservés ; aucun outil applicatif ou reçu de livraison n’est fabriqué. Ce résultat prouve l’inférence texte et image réelle. La validation du parcours client complet avec ce modèle reste à la recette coordonnée.
+
 ## Orchestration et délégation
 
 Codex réalise directement le provisionnement, les recettes, les contrôles et la documentation. Aucun sous-agent ni session OpenCode n’est lancé. Une autre conversation, autorisée par l’utilisateur, conduit les corrections applicatives et la recette. Elle transmet les contrats attendus du frontend HTTPS, du stockage CMS et des dépendances ; les périmètres sont coordonnés avant chaque adaptation.
