@@ -2,11 +2,14 @@
 
 ## Demande et résultat
 
-**État de la reprise du 20 octobre.** La cible TEST du seul projet de recette
-est désormais disponible. Le blocage du transport des réponses Gmail a été
-localisé puis corrigé, et une sonde native authentifiée confirme le retour
-attendu du serveur. La maquette V2 reste en revue ; **aucun site final n’est
-encore livré dans cette recette**.
+**État de la reprise du 20 octobre.** La cible TEST est disponible, le transport
+Gmail est corrigé et la politique limitant les mails automatiques est active.
+Une nouvelle validation du client fictif a réellement traversé Gmail puis le
+portail et déclenché la fabrication finale. Ce premier job s’est arrêté avant
+écriture distante : une dépendance du navigateur manque sur le serveur restauré
+et empêche le chargement des outils MCP. **Aucun site final n’est encore livré.**
+La préparation du correctif est coordonnée avec la tâche d’administration ;
+la désignation du laboratoire dédié reste nécessaire avant ses essais.
 
 L’accès SSH de la nouvelle machine présentait la même ancienne clé que le Pi,
 mais l’hébergement refusait sa provenance. Après une instruction humaine
@@ -33,19 +36,26 @@ l’admission du flux privé nécessaire. Une seule règle limitée au bridge,
 Après correction, le conteneur reçoit le refus sans authentification attendu ;
 la nouvelle sonde authentifiée passe et confirme HTTP400 pour le schéma
 invalide. Aucun message client ni travail n’est créé par ces sondes.
-Cette preuve de transport ne remplace pas encore un nouvel échange métier
-complet après correction.
+Un échange métier frais a ensuite confirmé ce transport : la décision de
+validation et ses retours ont été reçus dans la conversation du portail, puis
+un nouveau job final a été créé. Aucun ancien courrier n’a été rejoué.
 
-La candidate qui supprime les confirmations de traitement est préparée par le
-contrôleur officiel, avec un manifeste complet conforme. Les 494 tests Python,
-les huit tests de l’adaptateur mail et la compilation frontend passent.
-Le contrôle global des releases avait signalé un écart ; la candidate demandée
-a été préparée séparément et vérifiée sur tous ses fichiers, sans rescellage
-d’une autre version. L’application exécutée reste inchangée : l’opérateur a
-refusé l’activation sans l’accord humain sur le commit exact exigé par les
-consignes du dépôt. Cette confirmation est demandée. Les réponses et décisions
-du client fictif restent prises en charge de façon autonome ; le test final
-reprendra après cette bascule pour éviter de nouveaux mails techniques.
+La candidate supprimant les confirmations de traitement a été activée après
+accord humain explicite sur sa version exacte, via le contrôleur officiel et
+sa sauvegarde cohérente. Les 494 tests Python, huit tests mail et compilation
+frontend passent. Le processus et le lien de release concordent, santé HTTPS200 ;
+configuration et maquette V2 ont été préservées. Les notifications de simple
+état sont supprimées de la file sans effacer les traces des anciens envois.
+Un premier refus de sceau provenait uniquement de caches Python dérivés ajoutés
+à l’ancienne release : ils ont été vérifiés et conservés en quarantaine, sans
+modifier les sources ni les manifestes, avant une nouvelle vérification native.
+
+Le runner a bien délégué l’implémentation mais ses deux tentatives ne disposaient
+d’aucun outil MCP de construction/revue. Le diagnostic Node en lecture seule
+confirme l’absence du module Playwright attendu par le lockfile. Le job est
+terminal bloqué, aucune revue favorable ni livraison n’est inventée. Aucun ancien
+job n’est réarmé. La préparation et la vérification du correctif doivent précéder
+une intégration coordonnée, puis une nouvelle tentative traçable.
 
 **Essai initial, nuit du 19 au 20 octobre — historique des preuves ci-dessous.**
 
@@ -195,5 +205,11 @@ le rapport public ne contient ni coordonnées, cible d’hébergement, chemins
 d’accès privés, identifiants runtime, marqueurs de mail ou valeurs secrètes.
 
 Le passage au site final, la preuve du CMS livré, la réception du mail final
-et le nouvel échange métier après réparation restent à vérifier. Aucun ancien
+restent à vérifier ; le nouvel échange Gmail après réparation est confirmé. Aucun ancien
 mail, job échoué ou accord opérateur inconnu n’a été réarmé.
+
+La nouvelle règle humaine sépare désormais le laboratoire des deux serveurs de
+production. Aucun correctif du runtime n’a été installé : une VM est à désigner
+pour ses essais. Le journal et la fiche commune présentent encore des états
+historiques divergents ; la consigne humaine récente prévaut. Les preuves et
+la passation privées ont été actualisées pour éviter tout rejeu à la reprise.
