@@ -8,6 +8,8 @@ La nouvelle identité reste sur son serveur. L’autorisation publique est limit
 
 Les recettes opérateur sont versionnées. Leur code Python et les différences ont été relus statiquement ; aucun test des anciens rôles Ansible réservés n’a été lancé. Un candidat applicatif demandé séparément a été préparé par le contrôleur officiel et comparé intégralement à son manifeste, sans être activé. Le diagnostic mail confirme un credential fonctionnel et un relais cohérent ; il n’établit pas encore la réception et le traitement des réponses. Aucune nouvelle sauvegarde chiffrée indépendante de la clé privée n’est attestée.
 
+Une reprise bornée a ensuite localisé un blocage entre le conteneur et le relais : le pare-feu hôte ne comportait pas l’admission nécessaire. Une recette distincte ajoute une seule règle, limitée à l’interface courante, à la source exacte du conteneur, à sa passerelle et au port du relais. Les anciennes règles sont conservées, la configuration persistante est validée et la sonde sans token reçoit désormais le refus d’authentification attendu au lieu d’un délai d’attente. Aucun service n’a été redémarré, aucune release activée et aucun mail rejoué. Le traitement d’une vraie réponse reste une vérification distincte.
+
 ## Orchestration et délégation
 
 Codex a réalisé directement la préparation opérateur, l’inscription publique, les preuves et la documentation. Aucun sous-agent ni session OpenCode n’a été lancé. Une autre conversation autorisée par l’utilisateur a fourni le périmètre du projet fictif et poursuit la recette client et les corrections mail. Ses sources et décisions applicatives restent distinctes de cette intervention d’accès.
