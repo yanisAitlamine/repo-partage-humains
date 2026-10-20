@@ -16,9 +16,11 @@ Une extension ultérieure prépare l’inférence locale après le refus explici
 
 Deux véritables appels locaux successifs passent : un calcul simple puis l’identification correcte d’une forme, d’une couleur et d’un nombre dans une image de contrôle. Les réponses finales et compteurs natifs sont conservés ; aucun outil applicatif ou reçu de livraison n’est fabriqué. Ce résultat prouve l’inférence texte et image réelle. La validation du parcours client complet avec ce modèle reste à la recette coordonnée.
 
+Pour préparer un essai plus léger, deux variantes2B sont ensuite téléchargées et vérifiées sans inférence. La variante explicite [2B Q4_K_M](https://ollama.com/library/qwen3.5:2b-q4_K_M) est retenue pour le prochain scénario, les modèles précédents restant conservés. Le transfert est isolé du groupe de ressources du modèle actif et ne redémarre aucun service. Après libération explicite des essais, la marge de l’hôte est revérifiée, puis les seules ressources CPU du lab et son quota d’inférence sont augmentés. Aucun réglage des autres VM ne change. Ni la performance ni la qualité du2B ne sont présentées comme validées par ce simple provisionnement.
+
 ## Orchestration et délégation
 
-Codex réalise directement le provisionnement, les recettes, les contrôles et la documentation. Aucun sous-agent ni session OpenCode n’est lancé. Une autre conversation, autorisée par l’utilisateur, conduit les corrections applicatives et la recette. Elle transmet les contrats attendus du frontend HTTPS, du stockage CMS et des dépendances ; les périmètres sont coordonnés avant chaque adaptation.
+Codex réalise directement le provisionnement, les recettes, les contrôles et la documentation. Pendant ce provisionnement, aucun sous-agent ni session OpenCode n’est lancé. Une autre conversation, autorisée par l’utilisateur, conduit les corrections applicatives et la recette. Elle transmet les contrats attendus du frontend HTTPS, du stockage CMS et des dépendances ; les périmètres sont coordonnés avant chaque adaptation.
 
 Les imports manquants proviennent d’une révision Git exacte, avec comparaison des blobs et empreintes avant installation. Les fichiers existants différents sont refusés. L’installation native utilise la distribution documentée par [OpenCode](https://opencode.ai/docs/fr/), sans exécuter ses scripts d’installation, puis vérifie uniquement sa version.
 
