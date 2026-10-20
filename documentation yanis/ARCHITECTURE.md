@@ -2,6 +2,16 @@
 
 ## Référence courante — 21 octobre 2026
 
+**Incident pendant la nouvelle recette.** Le compte de recette a depuis été vidé
+sans nouvelle sauvegarde sur instruction humaine explicite, puis un nouveau
+client fictif a parcouru le vrai circuit mail et confirmé son brief. La production
+et l'hyperviseur ont ensuite cessé de répondre et leurs sessions VPN ont disparu,
+alors que le serveur d'origine reste accessible. La maquette était encore en
+génération au dernier accès : aucune réussite ou livraison n'est annoncée. Les
+inventaires suivants décrivent les derniers relevés disponibles ; ils ne valent
+pas preuve de disponibilité pendant cette coupure. Voir le
+[suivi daté](RAPPORT-ARCHITECTURE-ET-RECETTE-PROD-20261021.md).
+
 Cette section remplace les états plus anciens conservés après l'historique.
 Elle explique les composants et les échanges. L'inventaire détaillé des IP,
 interfaces, ports d'écoute effectifs, domaines d'administration, identités,

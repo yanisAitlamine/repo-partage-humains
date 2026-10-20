@@ -2,6 +2,13 @@
 
 ## État courant — 21 octobre 2026
 
+La nouvelle recette a depuis exercé trois réponses Gmail réellement admises,
+les confirmations du brief et le rejet d'une réponse tardive sans nouveau job.
+La génération a commencé, puis la perte des sessions VPN de production et de
+l'hyperviseur a rendu la suite inobservable. Ce parcours partiel ne certifie pas
+la livraison finale ; les détails et la distinction des étapes figurent dans le
+[rapport de recette](RAPPORT-ARCHITECTURE-ET-RECETTE-PROD-20261021.md).
+
 Le parcours commun portail/mail et le pipeline historique sont deux circuits
 distincts. Le portail commun est actif dans la production principale ; la
 copie de secours garde ses workflows dépubliés. Le lab utilise ses propres

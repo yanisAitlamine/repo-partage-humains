@@ -1,5 +1,41 @@
 # Architecture actualisée et préparation de recette production — 21 octobre 2026
 
+## Suite de la recette — après nouvelle instruction humaine
+
+Le demandeur ordonne explicitement de vider le compte de recette sans sauvegarde
+ni export. Le seul ancien projet et90 lignes associées sont supprimés de manière
+transactionnelle après vérification de l'identité, de la propriété et de l'absence
+de traitement actif. Les données des autres comptes et les barrières externes de
+publication restent préservées. La liste du compte est vérifiée vide avant de
+créer le nouveau projet ; l'ancienne ressource est introuvable.
+
+Un nouveau client fictif est créé par l'API normale, avec cinq pages et un journal
+administrable demandé pour la livraison finale. La liaison mail est revalidée
+par le vrai challenge reçu. Le connecteur conserve réellement l'alias de recette
+dans l'identité d'expédition ; une autre adresse déjà liée à un compte distinct
+est correctement refusée, sans contournement ni nouveau paramètre OAuth.
+
+Trois réponses Gmail sont admises par les workflows de production : brief,
+confirmation d'une interaction et confirmation du récapitulatif. L'analyse
+native aboutit et les autres décisions client sont confirmées dans le portail.
+Une réponse tardive à une ancienne question est rejetée sans nouveau job. Le
+navigateur réel vérifie connexion et conversation propriétaire chargée, absence
+de débordement mobile et d'origine/écriture inattendue ; TLS et sandbox restent
+actifs. L'accès anonyme au projet est refusé.
+
+La maquette est ensuite en génération au dernier état accessible. **Une coupure
+de transport empêche la suite : l'hyperviseur et la production ne répondent plus,
+et leurs sessions VPN disparaissent du serveur.** Le serveur d'origine reste
+accessible. La cause précise distante n'est pas établie ; aucun service, réseau
+ou pare-feu n'est modifié pour tenter de la contourner.
+
+Le résultat du job est désormais inconnu à distance : ni sa fin, ni une maquette,
+ni une livraison ne sont attestées. Il faut relire l'état au retour du transport
+avant toute autre décision ; aucun job n'est réarmé. L'association opérateur du
+nouveau projet attend aussi la validation par mail exigée. Aucun mail annonçant
+la réussite de production n'est envoyé. Les paragraphes de précontrôle initial
+ci-dessous décrivent l'étape antérieure, désormais dépassée pour le nettoyage.
+
 ## Demande et résultat
 
 La demande porte sur la remise au propre de l'architecture privée et publique,
