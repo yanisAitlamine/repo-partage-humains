@@ -14,11 +14,24 @@ L'essai OAuth est réellement effectué depuis le credential dédié. Google
 répond400invalid_request en refusant l'adresse de retour sur IP privée en HTTP.
 Le credential existe mais n'est pas raccordé à la nouvelle boîte. Aucun nouveau
 poller Gmail autonome ni test client de bout en bout réussi n'est annoncé.
-La préparation d'une adresse de retour conforme reste nécessaire.
+À la suite de ce refus, l'option HTTPS autorisée est mise en place sur un nom
+distinct du lab, qui résout vers son adresse VPN. Le Caddy déjà installé sur
+le lab utilise un certificat public obtenu par DNS01 ; aucun port public n'est
+ouvert. HTTP reste utilisable. Santé HTTPS et connexion dans Brave sont vérifiées
+sans désactiver la validation du certificat.
+
+Un client Web OAuth séparé est préparé dans le projet Google du propriétaire,
+avec un seul callback lab. Sa création reste en attente de la confirmation au
+clic exigée par le skill navigateur pour un nouvel accès persistant. Le client
+de production reste inchangé ; le nouveau client n'est pas encore créé et la
+boîte du lab n'est donc pas encore raccordée. Les identifiants du projet, du
+compte et du nom de service sont exclus de ce rapport.
 
 Les recettes nouvelles sont versionnées dans leur dépôt canonique privé.
 Les unités VPN et n8n sont actives et activées au démarrage, avec dépendances
-ordonnées. Aucun redémarrage complet du lab n'a été utilisé pour les qualifier.
+ordonnées. Un contrôle quotidien de renouvellement du certificat est activé.
+Aucun redémarrage complet du lab ni renouvellement réel n'a été utilisé pour
+les qualifier.
 La santé de production répond toujours après l'admission réseau ciblée ; les
 traitements clients de production n'ont pas été relancés par cette mission.
 
