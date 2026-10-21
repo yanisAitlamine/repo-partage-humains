@@ -18,6 +18,8 @@ références utiles à la mission.
 
 - [Héphaïstos : profil professionnel et sécurité du compte — 18 octobre 2026](RAPPORT-HEPHAISTOS-PROFIL-20261018.md).
 
+- [Gmail natif du laboratoire : connexion et recette autonome réussie — 21 octobre 2026](RAPPORT-GMAIL-NATIF-LAB-20261021.md).
+
 ## Comprendre le fonctionnement
 
 - [Guide détaillé des workflows, du mail à la livraison](WORKFLOWS-PIPELINE-PRINCIPAL.md) : réception, dialogue, décisions Telegram, maquette et livraison.
