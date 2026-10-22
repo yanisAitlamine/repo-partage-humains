@@ -41,6 +41,8 @@ Les commandes propres à la production sont dans les guides privés correspondan
 
 ## Historique et procédures
 
+- [Synchronisation TLS du secours après migration Nginx — 22 octobre 2026](RAPPORT-SYNC-TLS-NGINX-SECOURS-20261022.md) : sender qualifié, paire reçue et servie vérifiée, données VPN inchangées et continuité contrôlée.
+
 - [Documentation détaillée de l’infrastructure — 22 octobre 2026](RAPPORT-DOCUMENTATION-INFRA-20261022.md) : machines, services, DNS/VPN/Nginx, LXC, stockage, parcours WordPress et limites ; rédaction sans nouvelle recette.
 
 - [Conteneurs jetables et passerelle Nginx — 22 octobre 2026](RAPPORT-LXC-NGINX-WORDPRESS-20261022.md) : infrastructure et blog WordPress administrable livrés en laboratoire, reprises conservées, interface durable et intégration des sources vérifiées.

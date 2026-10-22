@@ -13,9 +13,11 @@ distant de production applicative, une VM de laboratoire distincte et quatre
 conteneurs LXC de sites. La quatrième cible héberge actuellement le blog
 WordPress livré au lab. Les trois autres restent génériques.
 
-La présente mise à jour est documentaire. Les preuves techniques citées viennent
-du [rapport d'implémentation publié](RAPPORT-LXC-NGINX-WORDPRESS-20261022.md) ;
-aucun service ni test réel n'est relancé pour rédiger cette architecture.
+Cette vue consolide les preuves du
+[rapport d'implémentation](RAPPORT-LXC-NGINX-WORDPRESS-20261022.md) et du
+[correctif TLS du secours](RAPPORT-SYNC-TLS-NGINX-SECOURS-20261022.md), intégré
+ensuite sur demande explicite. La rédaction de l'architecture ne relance pas
+les opérations décrites ; chaque rapport précise ses contrôles réels.
 
 ### 1. Machines et responsabilités
 
@@ -161,11 +163,28 @@ réelle et le timer actif sont attestés ; sa première échéance de renouvelle
 n'a pas encore été déclenchée au contrôle. Un renouvellement futur à échéance
 n'est donc pas une preuve déjà acquise.
 
-**Point de reprise à corriger ultérieurement :** un helper de synchronisation
-du VPN de secours lit encore l'ancien certificat Caddy. Il n'est pas aligné
-sur le stockage renouvelé par Nginx. Ce raccord doit être traité avant de
-s'appuyer sur cette copie de secours ; le TLS du frontal actif reste vérifié.
-Aucun correctif de service n'est effectué par cette mission documentaire.
+**Raccord TLS du secours corrigé — 22 octobre 2026 :** le sender lit désormais
+une seule version de certificat et clé publiée par Nginx, sous le verrou partagé
+du renouvellement. La copie et sa chaîne sont validées avant l'envoi ; aucun
+repli automatique vers l'ancien stockage Caddy n'est utilisé.
+
+Après 77 tests isolés et une revue indépendante favorable, le transfert a modifié
+seulement le certificat et la clé HTTPS ; une deuxième invocation n'a rien changé.
+Le receiver, sa configuration Caddy et les données VPN sont restés inchangés.
+Aucun VPN ni Nginx n'a redémarré ; seul Caddy du secours a été rechargé.
+
+Le certificat reçu puis servi correspond à la source Nginx et le contrôle TLS
+normal retourne HTTP200. Son échéance est passée du 7 au 19 janvier 2027.
+Le timer de copie a retrouvé son état actif et activé, et la garde temporaire
+a été retirée. Sa prochaine échéance normale à 13:12:16, heure de Paris, a réussi
+sans déclenchement manuel et sans changement reçu. Il s'agit de la copie
+périodique, pas d'un renouvellement ACME. La surveillance du chemin principal
+compte 1 166 contrôles HTTPS sans échec pendant la transition. Voir le
+[rapport de synchronisation TLS](RAPPORT-SYNC-TLS-NGINX-SECOURS-20261022.md).
+
+Cette correction ne certifie ni basculement client complet ni reboot machine.
+Les préimages privées permettent une récupération ciblée à vérifier ; le
+receiver existant ne devient pas une transaction atomique de tous ses fichiers.
 
 La bascule compare les vraies routes et attend l'écoute TLS effective. Trois
 alias sans barre finale renvoyaient auparavant une réponse vide ; leur
@@ -411,7 +430,7 @@ n'a relancé aucun de ces contrôles réels.
 Restent à traiter : cycle générique automatique des cibles, capacité WordPress
 du graphe NOC de production, éventuelle démonstration publique, sauvegarde et
 restauration complètes, reboot machine, renouvellement futur à échéance,
-raccord du certificat vers le secours VPN et ancien alias DNS Windows.
+qualification complète de bascule du secours et ancien alias DNS Windows.
 
 | Besoin | Référence publique |
 | --- | --- |
