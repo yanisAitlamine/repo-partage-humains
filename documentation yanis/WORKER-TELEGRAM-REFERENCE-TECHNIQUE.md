@@ -1,5 +1,11 @@
 # Worker Telegram : référence technique expliquée, fichier par fichier et fonction par fonction
 
+> Règle d'hébergement du 22 octobre 2026 : production applicative uniquement sur
+> prod-1 ; Pi limité au load balancer / reverse proxy HTTPS, VPN et DNS interne ;
+> développement et recette sur des VM de lab distinctes. Les emplacements et
+> déploiements Pi décrits dans la capture historique ci-dessous ne sont plus des
+> prescriptions d'installation. Aucun alignement applicatif Pi/prod-1 n'est demandé.
+
 Version documentaire du 15 octobre 2026. Sources de référence : capture immuable des composants, puis conservation dans le dépôt privé `n8n-services` au commit `666c8b5f240925da7cf91f31ed94205d7e1bc4dd`. Les chemins de ce document sont relatifs à ce dépôt. Les adresses, identifiants de workflows, destinataires, jetons, chemins d’installation et données de clients réels restent dans la documentation privée.
 
 Ce guide décrit du code lu. Sa rédaction n’a lancé ni le worker, ni ses tests, ni un workflow, ni un déploiement Ansible. L’inventaire des fonctions repose sur une lecture de l’arbre syntaxique Python, sans importer les modules. La concordance des huit modules installés avec la capture a été contrôlée séparément par empreintes ; cette concordance ne prouve ni un parcours humain complet ni l’égalité de tous les graphes n8n publiés avec les anciens préparateurs conservés dans Git.

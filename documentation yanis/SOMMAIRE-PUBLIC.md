@@ -2,6 +2,12 @@
 
 # Documentation publique
 
+**Règle actuelle du 22 octobre : production applicative uniquement sur prod-1 ;
+Pi limité au load balancer / reverse proxy HTTPS, VPN et DNS interne ;
+développement et recette sur des VM de lab distinctes.** Les anciennes règles
+de déploiement sur le Pi ou d'alignement applicatif Pi/prod-1 sont remplacées.
+Lire la [clarification et les points d'entrée corrigés](RAPPORT-PRODUCTION-UNIQUE-20261022.md).
+
 **État courant au 22 octobre 2026 :** [architecture détaillée, passerelle et cibles de sites](ARCHITECTURE.md#état-courant-au-22-octobre-2026).
 Les rapports datés conservent les preuves des étapes précédentes, dont le
 [gel et la préparation de reprise du 16 octobre](RAPPORT-GEL-REDEPLOIEMENT-20261016.md).
@@ -40,6 +46,10 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 Les commandes propres à la production sont dans les guides privés correspondants.
 
 ## Historique et procédures
+
+Les rapports conservent leurs observations et décisions à leur date. Une ancienne
+description du Pi comme serveur applicatif, lab ou production à aligner ne vaut
+pas consigne actuelle. La règle ci-dessus et l'architecture courante font référence.
 
 - [Synchronisation TLS du secours après migration Nginx — 22 octobre 2026](RAPPORT-SYNC-TLS-NGINX-SECOURS-20261022.md) : sender qualifié, paire reçue et servie vérifiée, données VPN inchangées et continuité contrôlée.
 

@@ -2,6 +2,17 @@
 
 ## État courant au 22 octobre 2026
 
+**Décision actuelle de Yanis : la production applicative se déploie uniquement
+sur prod-1. Le rôle cible du Pi se limite au load balancer / reverse proxy
+HTTPS, au VPN et au DNS interne.** Développement, dépannage et recette restent
+sur des VM de lab distinctes. Cette règle remplace les anciennes prescriptions
+de déploiement applicatif sur le Pi et d'alignement applicatif Pi/prod-1.
+
+Cette mise en cohérence documentaire ne modifie aucun service. Des applications,
+sources et archives historiques restent présentes sur le Pi ; leur conservation
+ne lui attribue pas un rôle applicatif cible et leur éventuelle migration n'est
+pas réalisée par cette correction.
+
 Cette vue remplace la référence courante du 21 octobre par l'état issu de la
 mission LXC, Nginx et WordPress. Les rapports et historiques datés restent
 conservés ; leurs incidents et capacités ne sont pas automatiquement actuels.
@@ -9,7 +20,7 @@ Les coordonnées de connexion, chemins d'exploitation, identifiants et secrets
 restent dans les références privées.
 
 Quatre ensembles structurent le projet : le Raspberry Pi passerelle, le serveur
-distant de production applicative, une VM de laboratoire distincte et quatre
+distant de production applicative, les VM de laboratoire distinctes et quatre
 conteneurs LXC de sites. La quatrième cible héberge actuellement le blog
 WordPress livré au lab. Les trois autres restent génériques.
 
@@ -24,10 +35,10 @@ les opérations décrites ; chaque rapport précise ses contrôles réels.
 | Ensemble | Fonction actuelle | Données et limite d'autorité |
 | --- | --- | --- |
 | Poste opérateur | Navigateur privé, administration, édition, coffre et collecte autorisée | Ce poste n'héberge pas le serveur livré. Les accès restent protégés par leur propriétaire. |
-| Raspberry Pi | VPN, DNS privé et Nginx HTTPS en conteneur ; sources canoniques et archives | Point de passage réseau actif. Des applications héritées peuvent rester installées et accessibles, avec automatismes neutralisés ; elles ne constituent pas une seconde production active. |
-| Serveur de production applicative | Portail, n8n et runners, bridge, moteur et applications existantes | Ses bases et consommateurs font autorité pour la production. Aucune réplication continue avec le Pi n'est démontrée. |
+| Raspberry Pi | Load balancer / reverse proxy HTTPS, VPN et DNS interne uniquement | Rôle réseau cible. Les applications, sources et archives héritées encore présentes doivent être distinguées de cette cible ; aucun retrait ni déplacement n'est revendiqué ici. |
+| prod-1, unique serveur de production applicative | Portail, n8n et runners, bridge, moteur et applications existantes | Ses bases et consommateurs font autorité pour la production. Aucun déploiement applicatif miroir ni alignement applicatif du Pi n'est demandé. |
 | Hyperviseur distant | VM, LXC, volumes et réseaux virtuels | Une console ou un invité démarré ne prouve pas le fonctionnement de son application. |
-| VM de laboratoire | Développement, n8n dédié, OpenCode, navigateur, comptes et données de recette | Entrée HTTPS distincte du Nginx Pi. Ses adaptateurs qualifiés ne sont pas installés automatiquement en production. |
+| VM de laboratoire de Yanis et d'Ilyes | Développement, n8n dédié, OpenCode, navigateur, comptes et données de recette | Environnements distincts de prod-1 et du Pi. Leurs adaptateurs qualifiés ne sont pas installés automatiquement en production. |
 | Quatre LXC de sites | Invités Debian 13 non privilégiés, indépendants du lab | Chaque cible et ses capacités sont admises par l'opérateur puis liées au job. Le client ne choisit pas les accès d'administration. |
 | Autres VM de développement ou d'exercice | Missions propres à leur propriétaire | Elles restent distinctes du lab actuel ; les anciennes observations restent datées. |
 
@@ -48,7 +59,7 @@ flowchart TB
   Browser["Navigateur autorisé"] --> DNS["Résolution du nom"]
   Browser --> Local["Accès réseau local"]
   Browser --> Remote["Accès distant par VPN"]
-  subgraph Pi["Raspberry Pi : passerelle active"]
+  subgraph Pi["Raspberry Pi : load balancer, VPN et DNS interne"]
     VPN["VPN et filtrage"]
     PrivateDNS["DNS privé"]
     Nginx["Nginx en conteneur : HTTPS"]
@@ -59,7 +70,7 @@ flowchart TB
   Remote --> VPN
   VPN --> Nginx
   Certs --> Nginx
-  subgraph Production["Serveur de production distant"]
+  subgraph Production["prod-1 : unique production applicative"]
     Front["Frontal interne existant"]
     Portal["Portail"]
     Automation["n8n et runners"]
@@ -144,7 +155,7 @@ VPN. Ce montage ne signifie pas que chaque backend reçoit lui-même HTTPS.
 | Demande | Destination fonctionnelle | Portée |
 | --- | --- | --- |
 | Applications de production | Frontal interne du serveur de production puis service | Le Pi route ; les données et traitements restent sur le serveur applicatif. |
-| Interfaces héritées du Pi | Backends locaux encore admis | Leur accès ne réactive pas les anciens consommateurs automatiques. |
+| Interfaces héritées du Pi | Présence historique à vérifier séparément | Elles ne sont pas des cibles applicatives de déploiement ; cette correction ne les retire pas. |
 | Un des quatre noms de sites | HTTP privé du LXC correspondant | Une seule cible par nom, sans équilibrage entre répliques. |
 | Laboratoire courant | Frontal HTTPS distinct de la VM lab | Ce trajet n'est pas absorbé par Nginx Pi. |
 
@@ -353,7 +364,7 @@ flowchart LR
   Git["Source versionnée"] --> Lab["Qualification lab"]
   Lab --> Candidate["Candidat revu"]
   Candidate --> Approval["Accord sur le périmètre exact"]
-  Approval --> Installed["Installation effective"]
+  Approval --> Installed["Installation applicative sur prod-1"]
   Definition["Définition de workflow"] --> Published["Version publiée"]
   Published --> Runs["Exécutions et données"]
   Installed --> Runs
@@ -374,6 +385,10 @@ de recette et ancienne release UI de consultation sont distingués dans les
 preuves privées. Aucun nouveau déploiement applicatif NOC en production
 n'a été effectué. Les changements de production restent soumis à leur
 coordination et aux accords requis sur la release exacte.
+
+Les intégrations applicatives de production visent prod-1 uniquement. Le Pi ne
+reçoit pas une copie applicative de la release. Une modification de ses fonctions
+réseau reste une mission d'infrastructure distincte.
 
 ### 10. Sauvegarde et reprise
 
@@ -449,7 +464,9 @@ ou d'un CMS local comme cible courante se lisent à leur date.
 
 Les textes suivants sont conservés pour leurs explications et preuves datées.
 Les anciennes mentions du serveur d'origine comme unique production ou lab,
-de candidats non activés et de moteurs locaux ne sont pas l'état courant.
+de deux productions applicatives à aligner, de candidats non activés et de
+moteurs locaux ne sont pas l'état courant. La règle prod-1 uniquement en tête
+de page prévaut pour toute nouvelle mission.
 
 # Architecture complète du projet : machines, services, échanges, données et fichiers
 

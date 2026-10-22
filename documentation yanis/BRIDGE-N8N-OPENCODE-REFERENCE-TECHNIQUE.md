@@ -1,5 +1,11 @@
 # Bridge n8n → OpenCode : référence technique détaillée
 
+> Règle d'hébergement du 22 octobre 2026 : production applicative uniquement sur
+> prod-1 ; Pi limité au load balancer / reverse proxy HTTPS, VPN et DNS interne ;
+> développement et recette sur des VM de lab distinctes. Les emplacements et
+> déploiements Pi décrits dans la capture historique ci-dessous ne sont plus des
+> prescriptions d'installation. Aucun alignement applicatif Pi/prod-1 n'est demandé.
+
 > Lecture statique des sources du 15 octobre 2026. Ce guide explique le fonctionnement du code examiné ; il n'annonce ni nouveau test exécuté, ni nouvelle construction, ni validation du déploiement courant. Les exemples utilisent une destination fictive. Les noms de domaines, adresses, racines de déploiement, identités de connexion et identifiants d'instance sont volontairement absents.
 
 Le bridge est un petit service qui transforme une demande n8n autorisée en un travail durable, appelé **job**, puis observe sa réalisation. Il ne considère pas qu'une commande terminée sans erreur prouve qu'un site existe. Il attend un résultat structuré du planificateur, lit le fichier construit par SSH, lit la page servie par HTTPS et compare ces deux lectures avant de rendre un artefact livrable. Même à ce stade, le parcours conserve une confirmation humaine avant l'email de livraison.

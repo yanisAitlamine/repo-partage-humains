@@ -1,5 +1,15 @@
 # Restaurer les services après perte du serveur
 
+**Cibles actuelles — 22 octobre 2026 : prod-1 est l'unique production
+applicative ; le Pi se limite au load balancer / reverse proxy HTTPS, au VPN
+et au DNS interne.** Préparer et exercer une restauration sur une VM de lab
+distincte. La remise en production applicative vise prod-1 après autorisation ;
+elle ne réinstalle pas de pile applicative sur le Pi. Les recettes historiques
+du Pi ne sont pas à rejouer pour recréer une seconde production alignée.
+
+Séparer la reprise applicative de prod-1 de la reprise réseau du Pi. Les archives
+encore conservées sur le Pi ne sont pas déplacées par cette correction documentaire.
+
 La reprise utilise les fichiers du socle et ceux des ajouts récents d'une même maintenance. Git redonne le code ; les archives privées redonnent les comptes, données, accès et décisions.
 
 ## Fichiers à récupérer

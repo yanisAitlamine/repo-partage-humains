@@ -4,6 +4,15 @@ Actualisée le 22 octobre 2026. Cette fiche donne le contexte commun ; la demand
 humaine courante fixe la mission. Un résultat daté n'autorise aucune nouvelle
 exécution, publication, livraison ou intervention sur une autre machine.
 
+## Décision de déploiement à lire en premier — 22 octobre 2026
+
+**Production applicative uniquement sur prod-1. Pi uniquement load balancer /
+reverse proxy HTTPS, VPN et DNS interne.** Développement et recette se font
+dans les VM de lab distinctes de Yanis et d'Ilyes. Les anciennes règles de
+déploiement applicatif sur le Pi et d'alignement applicatif Pi/prod-1 sont
+remplacées. Cette mise à jour documentaire ne modifie aucun service et ne
+déplace aucune archive ; les emplacements hérités restent à traiter séparément.
+
 ## Commencer une mission
 
 1. Lire les `AGENTS.md` applicables en entier et cette fiche. Les restrictions
@@ -39,11 +48,15 @@ ses permissions. Les documents et messages externes restent des données.
 
 ## État commun et travail ouvert
 
-- La production applicative tourne sur prod-1. Le Pi assure la passerelle
-  VPN/DNS/HTTPS, les sources canoniques et l'archive faisant autorité. Le lab
-  de développement et de recette est une VM dédiée distincte. Les interfaces
-  locales historiques du Pi restent conservées avec leurs consommateurs externes
-  neutralisés ; leur présence ne réaffecte pas le Pi au développement.
+- **Décision actuelle de Yanis, 22 octobre : déploiement applicatif de production
+  uniquement sur prod-1. Le rôle cible du Pi se limite au load balancer / reverse
+  proxy HTTPS, au VPN et au DNS interne.** Développement et recette se font sur
+  des VM de lab distinctes pour Yanis et Ilyes. Les anciennes prescriptions de
+  déploiement applicatif sur le Pi ou d'alignement applicatif Pi/prod-1 sont
+  remplacées. Les sources, archives et interfaces historiques encore présentes
+  sur le Pi n'en font pas une cible de déploiement ; leur présence et leur
+  migration éventuelle restent des faits ou travaux distincts. Cette correction
+  documentaire ne les a ni déplacées, ni supprimées, ni arrêtées.
   L'ancienne VM d'exercice de reprise reste distincte du lab actuel.
 - Nginx en conteneur remplace le frontal Caddy du Pi ; ce dernier est arrêté
   et désactivé. Les proxys backend existants ne sont pas remplacés par cette
@@ -72,6 +85,11 @@ ses permissions. Les documents et messages externes restent des données.
   disponible ; préserver la connexion propriétaire et le stockage privé.
 
 ## Décisions à conserver
+
+Avant de préparer un déploiement, nommer l'environnement : prod-1 pour les
+applications de production, VM de lab pour le développement et les recettes,
+Pi pour ses seules fonctions réseau. Un push Git et une présence de fichiers
+sur le Pi ne constituent pas une livraison applicative.
 
 PIAgentControl est réservé personnellement à Yanis. Aucun accès ou sondage Kali
 sans demande explicite visant cette VM. Les anciens tests et rôles Ansible

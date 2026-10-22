@@ -12,6 +12,21 @@ Vérifier les faits actuels ; cette fiche ne donne aucune nouvelle permission.
 
 # Consignes — Repo partagé humains
 
+## Règle actuelle d'hébergement — 22 octobre 2026
+
+La production applicative se déploie **uniquement sur prod-1**. Le Pi a pour
+rôle cible exclusif le load balancer / reverse proxy HTTPS, le VPN et le DNS
+interne. Développement, correction et recette se font sur des VM de lab
+distinctes. Aucune consigne ancienne de déploiement applicatif sur le Pi ou
+d'alignement applicatif Pi/prod-1 ne s'applique encore.
+
+Cette correction documentaire ne constate ni n'autorise le retrait, le déplacement
+ou la migration des anciennes applications, sources, archives et données encore
+présentes sur le Pi. Vérifier séparément l'état installé et la mission autorisée.
+La [fiche de reprise](documentation%20yanis/REPRISE-AGENTS.md) et l'[architecture
+courante](documentation%20yanis/ARCHITECTURE.md) appliquent cette même règle ; les
+rapports historiques conservent leurs preuves datées.
+
 Ce dépôt est PUBLIC. Il contient uniquement la documentation humaine publique
 de Yanis et Ilyes. Les chemins opérationnels, coordonnées personnelles, données
 clients, identifiants internes, inventaires et valeurs secrètes restent hors de

@@ -1,5 +1,14 @@
 # Workflows et parcours de données — référence publique
 
+## Règle d'hébergement actuelle — 22 octobre 2026
+
+La production applicative, dont n8n et ses consommateurs, se déploie **uniquement
+sur prod-1**. Le Pi assure seulement load balancer / reverse proxy HTTPS, VPN et
+DNS interne. Développement et recette utilisent des VM de lab distinctes.
+Aucun alignement applicatif Pi/prod-1 ni réactivation d'un ancien consommateur
+Pi n'est demandé. Les descriptions de sauvegardes et copies historiques plus
+bas restent datées ; leur présence n'en fait pas une seconde production.
+
 ## État courant — 21 octobre 2026
 
 La nouvelle recette a depuis exercé trois réponses Gmail réellement admises,

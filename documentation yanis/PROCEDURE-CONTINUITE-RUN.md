@@ -1,5 +1,15 @@
 # Maintenir les services et récupérer les sauvegardes
 
+**Répartition actuelle — 22 octobre 2026 : applications de production uniquement
+sur prod-1 ; Pi limité au load balancer / reverse proxy HTTPS, VPN et DNS interne.**
+Les développements et recettes restent sur des VM de lab distinctes. Une panne
+applicative se diagnostique sur prod-1 ; une panne de passage réseau peut relever
+du Pi. Ne pas réactiver une ancienne application Pi comme procédure de secours
+ni chercher un alignement applicatif Pi/prod-1.
+
+Les archives et anciennes installations encore présentes sur le Pi sont à
+préserver jusqu'à une mission distincte : cette mise à jour ne les déplace pas.
+
 Pour une panne limitée, contrôler puis redémarrer le composant concerné. Pour une perte du serveur, suivre la [reprise](PROCEDURE-REPRISE-ACTIVITE.md). Pour réinstaller du code, suivre l'[implémentation](GUIDE-IMPLEMENTATION.md).
 
 ## Contrôler sans redéployer

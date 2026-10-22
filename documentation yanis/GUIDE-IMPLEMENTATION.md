@@ -1,5 +1,12 @@
 # Redéployer le site web et le dashboard
 
+**Cible actuelle — 22 octobre 2026 : les applications de production se déploient
+uniquement sur prod-1.** Le Pi assure seulement load balancer / reverse proxy
+HTTPS, VPN et DNS interne ; il ne reçoit pas de déploiement applicatif miroir.
+Préparer et vérifier les changements dans une VM de lab distincte avant une
+intégration explicitement demandée. Les anciennes recettes destinées au Pi
+applicatif ou à un alignement Pi/prod-1 sont historiques.
+
 Le site client et le dashboard sont deux applications distinctes. Le site utilise des workflows web dédiés ; la chaîne mail garde ses propres workflows. Réinstaller une application ne restaure aucune base et ne republie aucun workflow.
 
 ## Choisir les fichiers
@@ -14,7 +21,7 @@ Le site client et le dashboard sont deux applications distinctes. Le site utilis
 
 ## Commandes de déploiement
 
-Le guide privé `GUIDE-IMPLEMENTATION.md` fournit les SHA, chemins, variables d'intégration et commandes complètes de la production. La forme des appels est :
+Le guide privé `GUIDE-IMPLEMENTATION.md` fournit les SHA, chemins, variables d'intégration et commandes complètes de prod-1. Les exemples locaux ci-dessous s'exécutent sur la cible applicative autorisée, jamais sur le Pi. La forme des appels est :
 
 ```bash
 # Dans le checkout exact du portail, après compilation.

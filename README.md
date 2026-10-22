@@ -4,6 +4,20 @@ Documentation publique du projet commun de Yanis et Ilyes. Les documents
 présentent l'organisation, les décisions, les contrôles réalisés et leurs limites.
 Les détails d'exploitation privés sont conservés sur le serveur Pi.
 
+**Organisation actuelle — décision de Yanis du 22 octobre 2026 : la production
+applicative se déploie uniquement sur prod-1.** Le Pi assure seulement le load
+balancer / reverse proxy HTTPS, le VPN et le DNS interne. Développement et
+recette restent sur des VM de lab distinctes. L'ancienne obligation d'aligner
+les applications entre Pi et prod-1 est remplacée.
+
+Lire d'abord la [fiche de reprise](documentation%20yanis/REPRISE-AGENTS.md),
+l'[architecture courante](documentation%20yanis/ARCHITECTURE.md) et les
+[consignes agents](AGENTS.md). Les anciennes applications, sources et archives
+encore présentes sur le Pi sont un état à traiter séparément : cette mise à jour
+documentaire ne prétend pas les avoir déplacées ou retirées. Le [rapport de
+clarification](documentation%20yanis/RAPPORT-PRODUCTION-UNIQUE-20261022.md)
+explique les points d'entrée corrigés.
+
 - [Documentation Yanis](documentation%20yanis/SOMMAIRE-PUBLIC.md) : architecture,
   continuité, reprise et historique des interventions.
 - [Documentation Ilyes](documentation%20ilyes/SOMMAIRE-PUBLIC.md) : préparation
@@ -17,7 +31,7 @@ Les détails d'exploitation privés sont conservés sur le serveur Pi.
 | Repo partagé humains | Documents publics vérifiés et anonymisés | Lecture publique GitHub ; contribution Yanis et Ilyes |
 | Dossier partagé humain sensible | Documentation d'exploitation complète et catalogue confidentiel | Collaborateurs autorisés sur le Pi ; export éventuel vers un dépôt personnel privé explicitement autorisé |
 
-Les valeurs secrètes restent dans les stockages privés des services du Pi.
+Les valeurs secrètes restent dans les stockages privés de leurs services.
 Elles ne vont dans aucun dépôt Git, même privé, ni dans les messages partagés
 ou les prompts. Chaque personne garde ses propres identités ; la coopération
 passe par des permissions adaptées aux services et aux tâches.
