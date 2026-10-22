@@ -1,194 +1,430 @@
 # Architecture du projet — vue publique
 
-## Référence courante — 21 octobre 2026
+## État courant au 22 octobre 2026
 
-**Incident pendant la nouvelle recette.** Le compte de recette a depuis été vidé
-sans nouvelle sauvegarde sur instruction humaine explicite, puis un nouveau
-client fictif a parcouru le vrai circuit mail et confirmé son brief. La production
-et l'hyperviseur ont ensuite cessé de répondre et leurs sessions VPN ont disparu,
-alors que le serveur d'origine reste accessible. La maquette était encore en
-génération au dernier accès : aucune réussite ou livraison n'est annoncée. Les
-inventaires suivants décrivent les derniers relevés disponibles ; ils ne valent
-pas preuve de disponibilité pendant cette coupure. Voir le
-[suivi daté](RAPPORT-ARCHITECTURE-ET-RECETTE-PROD-20261021.md).
+Cette vue remplace la référence courante du 21 octobre par l'état issu de la
+mission LXC, Nginx et WordPress. Les rapports et historiques datés restent
+conservés ; leurs incidents et capacités ne sont pas automatiquement actuels.
+Les coordonnées de connexion, chemins d'exploitation, identifiants et secrets
+restent dans les références privées.
 
-Cette section remplace les états plus anciens conservés après l'historique.
-Elle explique les composants et les échanges. L'inventaire détaillé des IP,
-interfaces, ports d'écoute effectifs, domaines d'administration, identités,
-racines d'hébergement et emplacements de secrets est dans la documentation
-privée d'exploitation. Aucune adresse de connexion réelle n'est publiée ici.
+Quatre ensembles structurent le projet : le Raspberry Pi passerelle, le serveur
+distant de production applicative, une VM de laboratoire distincte et quatre
+conteneurs LXC de sites. La quatrième cible héberge actuellement le blog
+WordPress livré au lab. Les trois autres restent génériques.
 
-### Machines et responsabilités
+La présente mise à jour est documentaire. Les preuves techniques citées viennent
+du [rapport d'implémentation publié](RAPPORT-LXC-NGINX-WORDPRESS-20261022.md) ;
+aucun service ni test réel n'est relancé pour rédiger cette architecture.
 
-| Rôle | Responsabilité actuelle | Limite importante |
+### 1. Machines et responsabilités
+
+| Ensemble | Fonction actuelle | Données et limite d'autorité |
 | --- | --- | --- |
-| Production applicative active | Portail, n8n et runners, moteur de génération, passerelle finale, observatoire et outil automobile | Seul environnement propriétaire des consommateurs automatiques de production. |
-| Serveur d'origine / secours | VPN, DNS privé, frontal HTTPS, dépôts canoniques et archive ; interfaces applicatives conservées | Même release de portail que la production active, mais données non répliquées en continu et automatisations neutralisées. Son ancien nom de lab est historique. |
-| Lab de recette | Runtime indépendant, n8n dédié, OpenCode, navigateur, cible SSH/HTTPS locale et CMS | Version de code plus récente ; ses adaptateurs et son hébergement ne sont pas ceux de production. |
-| Lab de développement du collaborateur | Travaux et diagnostics propres à cet opérateur | La disponibilité de son raccord de modèles doit être vérifiée dans cet environnement ; elle n'est pas héritée du lab de recette. |
-| VM d'exercice de reprise | Reconstitution manuelle depuis les sauvegardes | Distincte du lab automatisé ; arrêtée au relevé d'hyperviseur. |
-| Hyperviseur | Héberge templates et VM, réseaux virtuels et accès console | Une VM démarrée n'est pas une application vérifiée ; son bridge ne fournit pas automatiquement toutes les routes. |
-| Poste Windows | Client opérateur, coffre chiffré, édition et collecte de traces | Ce poste n'héberge pas le serveur livré. |
-| Poste Linux personnel | Contrôleur Ansible et essais humains | Aucun accès ou sondage dans cette mission. |
-| Hébergement de test externe | Sert les maquettes et sites construits dans des dossiers de job isolés | Cible autorisée exactement par l'opérateur ; aucun domaine historique par défaut. |
+| Poste opérateur | Navigateur privé, administration, édition, coffre et collecte autorisée | Ce poste n'héberge pas le serveur livré. Les accès restent protégés par leur propriétaire. |
+| Raspberry Pi | VPN, DNS privé et Nginx HTTPS en conteneur ; sources canoniques et archives | Point de passage réseau actif. Des applications héritées peuvent rester installées et accessibles, avec automatismes neutralisés ; elles ne constituent pas une seconde production active. |
+| Serveur de production applicative | Portail, n8n et runners, bridge, moteur et applications existantes | Ses bases et consommateurs font autorité pour la production. Aucune réplication continue avec le Pi n'est démontrée. |
+| Hyperviseur distant | VM, LXC, volumes et réseaux virtuels | Une console ou un invité démarré ne prouve pas le fonctionnement de son application. |
+| VM de laboratoire | Développement, n8n dédié, OpenCode, navigateur, comptes et données de recette | Entrée HTTPS distincte du Nginx Pi. Ses adaptateurs qualifiés ne sont pas installés automatiquement en production. |
+| Quatre LXC de sites | Invités Debian 13 non privilégiés, indépendants du lab | Chaque cible et ses capacités sont admises par l'opérateur puis liées au job. Le client ne choisit pas les accès d'administration. |
+| Autres VM de développement ou d'exercice | Missions propres à leur propriétaire | Elles restent distinctes du lab actuel ; les anciennes observations restent datées. |
 
-La version stable commune du portail est antérieure à celle du lab. Les
-changements récents comprennent le contrôle des prérequis natifs, des limites
-de durée mieux séparées, une compatibilité CSS d'aperçu corrigée et le respect
-de la langue demandée. Les raffinements OpenCode de la recette conservent les
-fichiers/corrections existants et exigent du JSON structuré ; une partie de ce
-code appartient à l'adaptateur de test et n'est pas installée dans le moteur
-de production. Un commit sur la branche principale n'active aucune release.
+Docker empaquette Nginx sur le Pi. Les LXC de Proxmox isolent les cibles de sites
+sur l'hyperviseur. Les deux usages ont des hôtes et des responsabilités différents.
+La VM lab héberge l'atelier de développement ; les quatre cibles accueillent
+les applications construites.
 
-### Vue réseau et accès
+Il n'existe pas ici deux portails de production actifs avec une nouvelle base
+commune. La décision retenue place les applications sur le serveur distant.
+Une répartition entre répliques avec sessions, stockage et bascule cohérents
+demanderait une conception et une recette supplémentaires.
+
+### 2. Vue d'ensemble des échanges
+
+```mermaid
+flowchart TB
+  Browser["Navigateur autorisé"] --> DNS["Résolution du nom"]
+  Browser --> Local["Accès réseau local"]
+  Browser --> Remote["Accès distant par VPN"]
+  subgraph Pi["Raspberry Pi : passerelle active"]
+    VPN["VPN et filtrage"]
+    PrivateDNS["DNS privé"]
+    Nginx["Nginx en conteneur : HTTPS"]
+    Certs["Certificats et renouvellement DNS"]
+  end
+  DNS --> PrivateDNS
+  Local --> Nginx
+  Remote --> VPN
+  VPN --> Nginx
+  Certs --> Nginx
+  subgraph Production["Serveur de production distant"]
+    Front["Frontal interne existant"]
+    Portal["Portail"]
+    Automation["n8n et runners"]
+    Engine["Bridge et OpenCode"]
+    Apps["Observatoire et autres applications"]
+  end
+  Nginx -->|"Réseau privé"| Front
+  Front --> Portal
+  Front --> Automation
+  Front --> Apps
+  Automation --> Engine
+  subgraph Targets["Hyperviseur : réseau isolé des sites"]
+    Guard["Filtrage et redirections ciblées"]
+    One["LXC générique"]
+    Two["LXC générique"]
+    Three["LXC générique"]
+    Four["LXC : WordPress et base locale"]
+  end
+  Nginx -->|"VPN : HTTP des sites"| Guard
+  Guard --> One
+  Guard --> Two
+  Guard --> Three
+  Guard --> Four
+  subgraph Lab["VM de laboratoire distincte"]
+    LabFront["Entrée HTTPS propre au lab"]
+    Workshop["Portail de recette"]
+    Tools["n8n, OpenCode et navigateur"]
+  end
+  VPN -->|"Accès privé du lab"| LabFront
+  LabFront --> Workshop
+  Workshop --> Tools
+  Tools -->|"SSH de la cible admise"| Guard
+```
+
+Le navigateur consulte un service ; le constructeur utilise séparément un
+transport opérateur admis. Une requête du client ne fournit ni identité SSH
+ni racine distante. L'entrée HTTPS du lab et les interfaces héritées du Pi
+parfois nommées « lab » sont deux destinations différentes.
+
+### 3. DNS, VPN et routage
+
+Un domaine DuckDNS dédié fournit l'espace de noms des quatre sites. Un nom
+désigne une cible ; cela ne signifie pas quatre installations WordPress.
+La réponse DNS utilisée par le client doit désigner une destination joignable
+depuis son réseau autorisé.
+
+| Couche | Question résolue | Ce qu'elle ne démontre pas |
+| --- | --- | --- |
+| DNS | Où envoyer la demande pour ce nom ? | Une route réseau ou une application disponible. |
+| VPN | Par quel réseau privé atteindre le site distant ? | L'autorisation de tous les ports et de tous les invités. |
+| Filtrage | Ce pair peut-il établir ce flux précis ? | La validité du certificat ou le contenu du site. |
+| TLS | Le certificat correspond-il au nom demandé ? | WordPress installé ou un propriétaire autorisé. |
+| Nginx | Quel backend reçoit ce nom et ce chemin ? | Le bon fonctionnement de son runtime ou de sa base. |
+| Application | Les opérations et données attendues fonctionnent-elles ? | Une sauvegarde indépendante ou une bascule éprouvée. |
+
+Le VPN relie les deux sites physiques. Les LXC utilisent un pont privé de
+l'hyperviseur, avec redirections ciblées et filtrage de l'hôte. Le Pi atteint
+leur HTTP et le lab utilise les accès SSH admis. Il n'y a pas d'ouverture
+générale vers tout le réseau invité.
+
+Les règles des cibles bornent les origines, destinations et services. Les
+échanges latéraux et accès arbitraires aux réseaux privés sont filtrés.
+Les sorties nécessaires à l'installation sont distinctes des accès entrants.
+Un ajustement MSS a corrigé les transferts volumineux sur le VPN, sans réduire
+les algorithmes SSH ni supprimer les contrôles d'intégrité existants.
+
+Un nom résolu et un certificat valide ne rendent pas un site public.
+Aucune nouvelle ouverture Freebox n'a été réalisée. Une démonstration Internet
+serait une opération ultérieure avec cible, flux et critères propres.
+
+### 4. Nginx, services conservés et certificats
+
+Nginx dans Docker termine HTTPS sur le Pi. Il choisit le backend par nom,
+puis conserve ou retire les préfixes selon le contrat de l'application.
+Les en-têtes sont reconstruits pour le backend ; le filtrage porte sur
+le pair réseau réel, pas sur une origine déclarée par le navigateur.
+WebSocket et réponses progressives ont leurs directives adaptées.
+
+Les flux HTTP internes concernés passent ensuite par le réseau privé et le
+VPN. Ce montage ne signifie pas que chaque backend reçoit lui-même HTTPS.
+
+| Demande | Destination fonctionnelle | Portée |
+| --- | --- | --- |
+| Applications de production | Frontal interne du serveur de production puis service | Le Pi route ; les données et traitements restent sur le serveur applicatif. |
+| Interfaces héritées du Pi | Backends locaux encore admis | Leur accès ne réactive pas les anciens consommateurs automatiques. |
+| Un des quatre noms de sites | HTTP privé du LXC correspondant | Une seule cible par nom, sans équilibrage entre répliques. |
+| Laboratoire courant | Frontal HTTPS distinct de la VM lab | Ce trajet n'est pas absorbé par Nginx Pi. |
+
+Caddy est arrêté et désactivé **sur le Pi**. Les frontaux existants du serveur
+de production et du laboratoire restent inchangés. Les préimages de Caddy Pi
+sont conservées pour expliquer et préparer un retour arrière.
+
+Le Pi utilise désormais des lignées de certificats ACME indépendantes de Caddy,
+émises avec preuve DNS par Certbot. Une tâche planifiée renouvelle, vérifie,
+installe atomiquement la paire certificat/clé, valide puis recharge Nginx.
+Les anciens noms ont leurs lignées et les quatre sites partagent un certificat
+générique adapté. Celui-ci ne couvre pas tout nom que l'on voudrait ajouter.
+
+La validation DNS permet l'émission sans rendre le site public. L'émission
+réelle et le timer actif sont attestés ; sa première échéance de renouvellement
+n'a pas encore été déclenchée au contrôle. Un renouvellement futur à échéance
+n'est donc pas une preuve déjà acquise.
+
+**Point de reprise à corriger ultérieurement :** un helper de synchronisation
+du VPN de secours lit encore l'ancien certificat Caddy. Il n'est pas aligné
+sur le stockage renouvelé par Nginx. Ce raccord doit être traité avant de
+s'appuyer sur cette copie de secours ; le TLS du frontal actif reste vérifié.
+Aucun correctif de service n'est effectué par cette mission documentaire.
+
+La bascule compare les vraies routes et attend l'écoute TLS effective. Trois
+alias sans barre finale renvoyaient auparavant une réponse vide ; leur
+redirection canonique est vérifiée séparément, sans relâcher les contrôles
+des chemins applicatifs.
+
+### 5. Les cibles et la technologie demandée
+
+Le socle initial est Debian 13 non privilégié, avec outils de transport et page
+HTTP d'attente. La racine applicative était vide et aucun SQL n'était installé
+avant le besoin final. Les trois premières cibles restent génériques ; la
+quatrième contient désormais WordPress et sa base dédiée.
 
 ```mermaid
 flowchart LR
-  Client[Client privé] -->|VPN puis DNS privé| Edge[Passerelle VPN / DNS / HTTPS]
-  LAN[Client du LAN autorisé] -->|HTTPS| Edge
-  Edge -->|Proxy HTTP privé| Backend[Proxy production]
-  Backend --> Portal[Portail]
-  Backend --> N8N[n8n]
-  Backend --> Observatory[Observatoire]
-  Backend --> Cars[Tableau automobile]
-  Edge -->|Nom distinct de secours| Standby[Interfaces serveur de secours]
-  Lab[Lab indépendant] -->|SSH et HTTPS locaux| LabSite[Hébergement de recette]
-  Prod[Constructeur production] -->|SSH puis contrôle HTTPS| External[Hébergement TEST autorisé]
+  HTTPS["HTTPS du site"] --> Proxy["Nginx Pi"]
+  Proxy --> Network["VPN et filtrage ciblé"]
+  Network --> Web["Serveur web du LXC"]
+  Web --> Static["Pages et ressources"]
+  Web --> PHP["PHP pour WordPress"]
+  PHP --> SQL["MariaDB dédiée : socket local"]
+  PHP --> Files["Thème et médias"]
 ```
 
-L'accès HTTPS applicatif reste limité au réseau autorisé ou au VPN. Le nom
-d'entrée VPN est distinct des noms applicatifs privés. Le frontal termine TLS
-avec preuve DNS, puis relaie vers la production. Les backends locaux ne sont
-pas directement publiés sur Internet. Le service DNS du système d'une VM,
-le DNS proposé au VPN et la découverte locale sont des fonctions distinctes.
+WordPress utilise ici PHP. Le portail de l'atelier associe une API Python et
+une interface React ; n8n et le bridge orchestrent les tâches. Le langage
+du site construit et celui des services qui le construisent sont distincts.
 
-Le serveur d'origine reste nécessaire au frontal et au réseau : déplacer les
-applications en VM n'a pas supprimé cette dépendance. Un serveur nommé secours
-VPN ne constitue pas une bascule validée. Le relevé d'hyperviseur a aussi montré
-une possible adresse LAN dupliquée entre deux invités ; elle est consignée en
-privé sans changement réseau improvisé.
+La technologie client est une exigence confirmée du brief. Dans la recette
+actuelle, WordPress est confirmé dans le champ existant des interactions ;
+aucun nouveau routeur générique de technologies n'est démontré. Le registre
+opérateur fournit séparément capacités, accès et cible exacte.
 
-### Services : qui appelle qui
-
-| Service | Entrée → travail → sortie | Stockage et preuve |
+| Application visée | Ressources à admettre | État démontré |
 | --- | --- | --- |
-| Proxy HTTPS | Navigateur privé → terminaison TLS et routage par chemin/nom → backend | Configuration installée distincte du template source ; santé et API privée contrôlées séparément. |
-| Portail Python et frontend React | Session propriétaire → brief, réponses et validations → travaux durables | SQLite privée, révisions atomiques, tours et versions de maquette. |
-| n8n et runners externes | Webhooks et triggers admis → graphes publiés → appels de services | Base et credentials chiffrés ; version enregistrée distincte de la version publiée. |
-| Moteur commun | Sources/brief bornés → décision et génération structurées → propositions vérifiées | Le serveur contrôle citations, schémas et consentements ; le modèle ne choisit pas ses permissions. |
-| OpenCode CLI / OpenAI | Consigne bornée et éventuellement captures → génération ou avis indépendant | Appels réels dans la recette ; clé valide distincte de la disponibilité d'un fournisseur gratuit. |
-| Capture privée | HTML/CSS/raster admis → Chromium isolé → images desktop/mobile et mesures | Aucun réseau pour le renderer privé ; captures liées aux octets et à la version. |
-| Revue visuelle | Captures réelles → constats, scores et corrections → verdict | Indépendante de la génération ; défaut majeur bloque, aucun score n'est réécrit pour faire passer. |
-| Bridge et runner d'hébergement | Job authentifié → contexte NOC borné → réalisation et revue sur cible TEST | États durables, contrôle des chemins et comparaison SSH/HTTPS. |
-| Gateway final | Claim/signature, version approuvée et registre opérateur → publication de mêmes octets → reçu final | Aucun remplacement de l'index racine ; dossier neuf propre au job, pas de répétition d'un effet incertain. |
-| CMS PHP/SQLite | Activation propriétaire → brouillon, publication, recherche et médias | Capacité explicite ; recette authentifiée réelle avant livraison. Pas de faux formulaire ou mot de passe envoyé en clair. |
-| Relais mail | Pair n8n autorisé → ingress local authentifié → réponse rattachée au bon tour | Référence opaque, identité de message, première réponse gagnante et rejet des retards. |
-| Observatoire | Collecte Windows/Linux et copies d'audit autorisées → chronologie/graphes | Archive privée faisant autorité sur le serveur d'origine, miroir vers production ; cryptogrammes non déclarés déchiffrés. |
-| Observatoire automobile | Sources autorisées → collecte courante et archives → dashboard | Trois rôles web/worker/historique en production ; prix affichés et couverture documentés, pas de vente inférée. |
+| Site statique | Serveur HTTP, fichiers et ressources | Une base n'est pas requise par principe. |
+| WordPress | PHP, cœur, thème, médias, base et utilisateur dédiés | Installation réelle et administration vérifiée sur la quatrième cible. |
+| Flask | Python, dépendances, service et persistance choisie | Modulaire dans l'objectif, pas une livraison Flask validée par cette recette. |
+| Node.js | Runtime, dépendances, service et éventuelle base | Même limite ; cible générique ne signifie pas recette spécifique déjà éprouvée. |
 
-### Messagerie par environnement : décision et état réel
+Une remise à zéro doit identifier la cible et ses jobs, conserver les preuves
+et données nécessaires et neutraliser les effets tardifs avant remplacement.
+La récupération ponctuelle d'une cible a été exercée ; le cycle générique
+automatique de suppression/recréation entre tous les essais reste à développer.
 
-L'organisation demandée prévoit **une vraie boîte par environnement** :
-production active, serveur de secours et lab de recette. Chaque boîte doit
-avoir son identité OAuth, ses triggers et sa corrélation propres. Plusieurs
-alias aboutissant dans une boîte commune ne séparent pas les traitements.
+Les règles agents préparées dans les sources NOC et n8n ne sont pas attestées
+installées dans leurs bases actives. Un texte candidat ne doit donc pas être
+présenté comme une capacité de production en service.
 
-Cette séparation n'est **pas encore une configuration livrée** : aucune
-création de boîte ou modification OAuth n'a été faite dans la mise au propre.
-La prévention actuelle repose sur un seul environnement consommateur et sur
-les workflows de la copie de secours dépubliés. Le lab utilise le connecteur
-opérateur pour ses échanges de recette, sans poller Gmail de production et
-sans Telegram. La clé fournisseur partagée n'implique pas le partage des files,
-des comptes clients ou des identités de machine.
+### 6. Services applicatifs et orchestration
 
-### Parcours commun et données
+| Composant | Entrée et travail | Données ou résultat |
+| --- | --- | --- |
+| Portail | Session, brief, sources, réponses et décisions | Projets, révisions, tours, jobs et aperçus privés dans sa base. |
+| n8n et runners | Webhooks et triggers admis, version publiée | Transport et notifications ; base et credentials de l'environnement. |
+| Bridge | Demande authentifiée, réservation et contexte borné | Accès contrôlé au moteur et à la cible ; registres durables du parcours. |
+| OpenCode et moteur API | Brief et fichiers autorisés | Analyse, direction artistique, génération ou revue ; le modèle ne fixe pas ses permissions. |
+| Capture privée | Pages et ressources admises | Captures ordinateur/mobile et mesures liées aux mêmes octets. |
+| Revue indépendante | Captures, fichiers et brief | Verdict et corrections ; génération seule ne vaut pas acceptation. |
+| Adaptateur final | Claim, aperçu approuvé et cible admise | Installation ou adoption, recette fonctionnelle puis reçu de livraison. |
+| Notifications | Événement natif et destinataire vérifié | Message et état d'envoi durable ; outbox à réconcilier avant restauration. |
+| Observatoire | Collectes et textes lisibles autorisés | Archives privées ; les anciens cryptogrammes ne sont pas présentés comme déchiffrés. |
+| Outil automobile | Collectes, archives et consultation | Services applicatifs existants, hors du parcours WordPress de cette recette. |
+
+Le lab possède n8n et une connexion Gmail consentie, réellement utilisés.
+Le receiver de campagne est maintenant désactivé et le workflow d'origine
+conservé. Ce résultat ne prouve pas trois boîtes production/secours/lab toutes
+opérationnelles. Les consommateurs de production restent rattachés à leur
+environnement ; les fichiers, identités et permissions ne se partagent pas
+par le seul fait d'utiliser un même fournisseur.
+
+Le parcours WordPress a utilisé le portail et Gmail lab, sans dépendre d'une
+réponse Telegram. Les anciens circuits peuvent conserver d'autres entrées :
+leur existence ne donne pas de nouvelle permission de les exécuter.
+
+### 7. Parcours WordPress réellement livré
 
 ```mermaid
 flowchart TD
-  Account[Compte et mail vérifiés] --> Project[Projet propriétaire / brief]
-  Project --> Turn[Question et tour durable]
-  Turn --> Web[Réponse portail]
-  Turn --> Gmail[Question puis réponse Gmail]
-  Web --> Winner[Première réponse admise atomiquement]
-  Gmail --> Winner
-  Winner --> Sources[Sources privées extraites et scannées]
-  Sources --> Analysis[Analyse structurée et confirmations explicites]
-  Analysis --> Summary[Récapitulatif distinct confirmé]
-  Summary --> Build[Directions artistiques / pages privées]
-  Build --> Capture[Captures réelles desktop et mobile]
-  Capture --> Review[Revue indépendante]
-  Review -->|Corrections nécessaires| Build
-  Review -->|Contrôles satisfaits| Preview[Aperçu privé versionné]
-  Preview --> Decision[Décision client exacte]
-  Decision -->|Modifier| Turn
-  Decision -->|Valider| Final[Gateway final et cible autorisée]
-  Final --> Verify[SSH / HTTPS / navigateur / CMS demandé]
-  Verify --> Delivery[Reçu et mail de livraison]
+  Brief["WordPress confirmé"] --> Summary["Récapitulatif accepté"]
+  Summary --> Preview["Maquette privée de huit pages"]
+  Preview --> Capture["Captures ordinateur et mobile"]
+  Capture --> Review["Revue indépendante"]
+  Review -->|"Corriger"| Preview
+  Review -->|"Accepter"| Client["Validation client de la version"]
+  Client --> Claim["Job final et réservation native"]
+  Claim --> Gate["Cible et capacités vérifiées"]
+  Gate --> Install["Base dédiée et WordPress"]
+  Install --> Owner["Recette propriétaire et anonyme"]
+  Owner --> Delivery["Livraison et remise privée"]
+  Install -->|"Contrôle interrompu"| Failure["Échec conservé"]
+  Failure --> Admit["Installation connue examinée et admise"]
+  Admit --> NewTurn["Nouvelle décision client normale"]
+  NewTurn --> NewClaim["Nouveau job et nouvelle réservation"]
+  NewClaim --> Adopt["Adoption liée aux reçus conservés"]
+  Adopt --> Owner
 ```
 
-Les principales données sont les identités/sessions hashées, contacts vérifiés,
-projets, tours, événements admis, sources privées, jobs, fichiers immuables,
-reçus de revue et outbox. Les bases du portail, de n8n, du bridge et du gateway
-ont chacune un rôle : aucune ne se déduit d'un clone Git. Un résultat incertain
-n'est jamais réarmé automatiquement ; restaurer une ancienne outbox ne doit
-pas envoyer une seconde fois un mail ou reconstruire un site déjà publié.
+La maquette HTML/CSS permettait d'approuver le rendu ; elle ne prouvait pas
+WordPress installé. Après approbation, le constructeur a provisionné sa base
+et son utilisateur, installé le cœur et le thème adapté et préparé l'administration
+native. MariaDB utilise le socket local, sans base partagée entre les sites.
 
-La version commune emploie cinq graphes n8n pour sources/Drive, moteur,
-notifications et réponses. Les parcours historiques mail, portail v2, support
-et candidatures personnelles coexistent mais n'ont pas la même entrée ni les
-mêmes permissions. Leur présence n'autorise aucun test des projets personnels.
-Voir [le guide actualisé des workflows](WORKFLOWS-PIPELINE-PRINCIPAL.md).
+Deux erreurs du banc de recette ont suivi l'installation : interprétation de
+la réponse média puis sélection de l'URL dans un écran inadapté. Les échecs
+sont conservés. La reprise a examiné le résultat connu, demandé une nouvelle
+validation Gmail, créé un nouveau job et adopté l'installation exacte.
 
-### Catalogue des dépôts et lecture du code
+L'adoption distingue le dernier job échoué de l'installation d'origine.
+La chaîne est bornée ; elle rejette cycles, reçus altérés, changement de cible,
+de propriétaire ou de fichiers approuvés. Les reprises n'ont relancé ni modèle
+ni installateur. Une modification de design suivrait le parcours Modifier.
 
-| Dépôt / famille | Code contenu | Ce qu'il ne fournit pas à lui seul |
+Le blog a passé connexion propriétaire, brouillon, image, publication, lecture
+anonyme de l'article et de l'image, présence dans le fil, modification publique,
+mobile et déconnexion. Un article final unique est visible avec date française.
+Le mail final transmet site, identifiant et lien natif privé de réinitialisation.
+L'administration est accessible depuis le portail et le blog. Accès et lien
+sont sauvegardés et relus dans le coffre chiffré du propriétaire.
+
+Pour publier un article, ouvrir wp-admin depuis l'accès remis, puis Articles
+(Posts), Ajouter (Add New), rédiger le texte, joindre une image et choisir
+Publier (Publish). Un brouillon permet de préparer le contenu avant publication.
+
+Le formulaire de changement de mot de passe via ce lien n'a pas été exercé.
+La recette a utilisé l'accès dédié, vérifié les opérations puis la déconnexion.
+L'émission et la remise du lien restent des preuves distinctes de sa consommation.
+
+Le projet est consultable dans le service UI normal du lab après transfert
+SQLite natif contrôlé, sauvegarde de sa base antérieure vide et contrôle de
+schéma. Ce service est actif et activé au démarrage, et la consultation survit
+à son redémarrage normal.
+
+Cette UI conserve la livraison et les aperçus. Elle n'exécute pas en permanence
+le builder, les transports mail/final et la nouvelle API de reprise du runtime
+temporaire qualifié. La recette via adaptateur lab fixé à une cible n'est pas
+un atelier WordPress autonome permanent ni un déploiement du graphe NOC prod.
+
+### 8. Stockages et bases : autorités distinctes
+
+| Donnée | Détenteur fonctionnel | Rôle |
 | --- | --- | --- |
-| DevLinuxSetup | Installation d'outils Linux, détection OS/architecture, environnement utilisateur et recettes Ansible | Données n8n, identités ou restauration des applications. |
-| n8n-services | Déploiement Docker/runners, lifecycle, intégrations mail/Drive/bridge/visuel, sauvegarde et reprise | Workflows/credentials/bases d'une installation sauvegardée par simple clone. |
-| NOCAgent | Base de contrôle OpenCode, rôles de planification/implémentation/revue, skills et contraintes de cible | Nouvelle permission d'hébergement ou domaine par défaut. |
-| OpenVPNDeploy | PKI/enrôlement, CCD, CRL, DNS/pare-feu/TLS et prérequis | Droit de recréer une CA déjà utilisée en production. |
-| TelegramOpencodeServer | Bridge Python vers un forum, attribution des sessions/questions/permissions | Compatibilité runtime attestée ou usage autorisé de la base personnelle. |
-| agent-observatory | Serveur et interface de traces, collecteurs et archive | Clé de déchiffrement des anciens messages natifs chiffrés. |
-| CarPriceScrapper | FastAPI/SQLite, adaptateurs de collecte et reprise historique | Certitude d'une vente ou équivalence entre prix affiché et prix de transaction. |
-| atelier-portal | frontend/lib pour écrans et contrats ; server pour API/états ; integrations pour n8n/CMS/gateway ; tools pour runner ; Ansible et tests | Activation de la release ou publication de workflow à chaque push. |
-| atelier-portal-public | Miroir de code assaini et configurations d'exemple | Inventaire privé ou accès d'exploitation. |
-| repo-partage-humains | Guides, architecture, rapports et preuves anonymisées par auteur | Serveur exécutable ou données sensibles de reprise. |
-| Documentation humaine privée | Architecture effective, inventaire des emplacements de secrets et guides d'exploitation historiques | Valeurs de secrets ou archives de données dans Git. |
+| Sources Git | Dépôts et copies de travail | Code et configuration d'exemple ; pas les bases et secrets réels. |
+| Base portail | Service de chaque environnement | Comptes, projets, tours, versions, jobs et notifications privées. |
+| Base n8n | Instance concernée | Workflows, versions, exécutions, credentials chiffrés ; enregistré et publié sont distincts. |
+| Registres bridge et adaptateur | Responsable du parcours | Réservations, barrières et reçus évitant la répétition d'un effet incertain. |
+| MariaDB du blog | LXC admis | Articles, utilisateurs et paramètres WordPress. |
+| Fichiers du blog | Stockage du même site | Thème, médias téléversés et configuration ; SQL seul ne suffit pas à restaurer le site. |
+| Captures et reçus | Parcours et archives privées | Lien entre octets, version, revue et résultat observé. |
+| Accès et certificats privés | Services et coffre du propriétaire | Fonctionnement et reprise, hors Git et documentation publique. |
 
-Les nombreux dossiers de missions/clones ne sont pas autant d'applications
-différentes. Le remote identifie le dépôt, le commit la source, la release
-immuable l'installation et la version publiée le graphe réellement exécuté.
-La base personnelle de contrôle Pi est un dossier installé distinct, réservé
-à son propriétaire ; aucun lancement n'a lieu dans cette mission.
+Il n'existe pas une base unique pour portail, n8n et quatre sites. Une application
+peut n'exiger aucune base, utiliser un fichier local ou nécessiter un moteur
+séparé admis pour son besoin. Une nouvelle cible ne reçoit pas systématiquement
+MariaDB.
 
-### Reprise, coordination et niveau de preuve
+La notification et son lien privé peuvent rester dans l'outbox et dans la boîte
+destinataire. Une base sans mot de passe affiché publiquement n'est pas pour
+autant une donnée publique. Les emplacements et consommateurs sont dans
+l'inventaire privé.
 
-L'ordre est : cible neuve identifiée → amorçage Python par transport brut avant
-facts Ansible → utilitaires → coffre vérifié/déchiffré → extraction bornée →
-réseau/confiance → bonnes dépendances natives → bases et releases restaurées →
-réconciliation des effets → consommateur unique → nouvelle recette isolée.
-Un snapshot de VM n'annule aucun effet déjà envoyé et ne remplace pas une
-sauvegarde indépendante. Les anciens rôles réservés ne sont pas exécutés ici.
+### 9. Source, installation, publication et preuve
 
-Toute modification de production exige désormais une consultation réciproque
-des deux opérateurs. Côté demandeur, un mail de validation de l'agent du
-collaborateur doit précéder l'application du changement proposé. Le périmètre,
-la version exacte et le retour arrière doivent être précis. Les autres accords
-humains requis restent applicables ; ni silence, ni journal de coordination,
-ni recette fictive ne constituent un accord de déployer une nouvelle release.
+```mermaid
+flowchart LR
+  Git["Source versionnée"] --> Lab["Qualification lab"]
+  Lab --> Candidate["Candidat revu"]
+  Candidate --> Approval["Accord sur le périmètre exact"]
+  Approval --> Installed["Installation effective"]
+  Definition["Définition de workflow"] --> Published["Version publiée"]
+  Published --> Runs["Exécutions et données"]
+  Installed --> Runs
+  Runs --> Evidence["Preuves et sauvegardes privées"]
+```
 
-La recette lab réussie a effectué37 contrôles de parcours,58 contrôles Chromium,
-533 unitaires,15 invocations natives OpenCode/OpenAI,16 notifications reçues,
-40 appels de gateway via vrais webhooks,64 captures privées et4 captures
-d'acceptation. Elle a livré huit pages et vérifié un CMS réel. Sa cible était
-locale au lab : ce succès ne certifie ni le graphe prod ni l'hébergement externe.
+| État | Autorité à consulter | Conclusion permise |
+| --- | --- | --- |
+| Source poussée | Commit distant et diff | Le code est disponible ; ce n'est pas un déploiement. |
+| Capacité admise | Registre, paramètres et permissions opérateur | Cette cible et ces opérations peuvent être utilisées dans le périmètre convenu. |
+| Installation | Release, service et configuration effectivement lus | Cette machine exécute cette version, indépendamment du HEAD d'un autre checkout. |
+| Workflow actif | Version publiée et état des triggers | Ce graphe peut produire des effets ; un export ne l'établit pas seul. |
+| Livraison | Reçu lié au job, HTTPS et recette métier | Résultat vérifié pour cette cible, version et fonctions. |
+| Sauvegarde | Copie cohérente, contrôlée et récupérable | Reprise dans la portée couverte et réellement testée. |
 
-La mission du21octobre actualise l'inventaire et prépare une recette sur la
-production existante vers une cible TEST externe déjà admise. Les contrôles
-SSH/HTTPS de racine passent sans écriture. Une autre cible finale nécessiterait
-un ajout de configuration : sa validation par mail est demandée, pas présumée.
-La recette nouvelle et le mail annonçant son succès restent conditionnés à une
-livraison réellement vérifiée. Aucun résultat vert n'est déduit du seul accès.
+Les sources finales ont été intégrées et poussées. Source fusionnée, runtime
+de recette et ancienne release UI de consultation sont distingués dans les
+preuves privées. Aucun nouveau déploiement applicatif NOC en production
+n'a été effectué. Les changements de production restent soumis à leur
+coordination et aux accords requis sur la release exacte.
+
+### 10. Sauvegarde et reprise
+
+Les préimages du frontal, archives de création/récupération de cible, reçus
+et bases de parcours sont conservés. L'ancienne base UI vide a été sauvegardée
+avant transfert. Les accès propriétaire sont dans le coffre chiffré, dont
+la relecture a été vérifiée.
+
+Ces éléments ne forment pas une archive restaurable complète de WordPress.
+Aucun dump SQL récent associé aux médias et configuration, ni restauration
+complète du CMS, n'est attesté par cette mission. Une sauvegarde du blog doit
+réunir un ensemble cohérent de SQL, fichiers/médias et identités nécessaires,
+avec copie indépendante et procédure de reprise éprouvée.
+
+Le retour arrière du code et celui des données ont des effets différents.
+Restaurer une configuration peut rétablir une route ; restaurer une ancienne
+base de jobs peut réintroduire des mails ou constructions déjà traités.
+Il faut réconcilier les effets avant de réactiver les consommateurs.
+
+L'ordre conceptuel est : identifier machine et cible, vérifier sauvegarde et
+identités, rétablir réseau et confiance, restaurer les bons composants et
+données, réconcilier, puis vérifier le parcours utilisateur. Les commandes
+réelles sont réservées aux procédures privées et à une mission autorisée.
+
+### 11. Repères de diagnostic conceptuels
+
+| Symptôme | Distinguer en premier | Preuve utile |
+| --- | --- | --- |
+| Un nom ne s'ouvre pas | DNS du poste, route, VPN et filtrage | Destination attendue et accès depuis le réseau autorisé. |
+| SSH fonctionne, interface web refusée | Permission propre à son port, écoute et source | Un tunnel SSH local peut joindre une interface saine sans nouvelle règle directe. |
+| Certificat refusé | Nom, chaîne, confiance et certificat chargé | DNS correct ne corrige pas un certificat pour un autre nom. |
+| Mauvaise page ou erreur du proxy | Nom/chemin, backend choisi et santé interne | Contrôler séparément le frontal et l'application. |
+| Petit appel réussi, transfert bloqué | Trajet et taille des paquets | L'incident MSS montre la limite d'un simple HTTP court. |
+| Blog visible, administration en échec | Propriétaire, session, origine et SQL | Exercer une opération native, pas seulement observer un HTTP 200. |
+| Projet absent dans l'UI | Compte, environnement et base réellement consommée | Un dossier de recette récent peut coexister avec une autre base installée. |
+| Job échoué, site déjà présent | Reçus et étape réellement atteinte | Examiner le résultat avant une nouvelle installation ou suppression. |
+| Mail absent | Événement, outbox, publication et corrélation du receiver | Un workflow enregistré ne prouve pas l'envoi ni la réception. |
+
+Une omission DNS Windows préexistante affecte encore un ancien alias distinct
+des interfaces du Pi. Son HTTPS privé a été vérifié depuis le Pi ; les nouvelles
+cibles et l'entrée de production ont été vérifiées depuis Windows. Cette limite
+ne doit pas être confondue avec une panne de la VM lab ou de tous les services.
+
+### 12. Preuves, limites et références
+
+L'implémentation a vérifié quatre LXC réels sans SQL initial, douze routes avant
+bascule, seize contrôles de parcours final et seize propriétaire WordPress,
+puis quarante contrôles UI HTTPS avant et après redémarrage du service.
+Les tests isolés et leurs périmètres sont détaillés dans le
+[rapport d'implémentation](RAPPORT-LXC-NGINX-WORDPRESS-20261022.md).
+La [mise à jour documentaire](RAPPORT-DOCUMENTATION-INFRA-20261022.md)
+n'a relancé aucun de ces contrôles réels.
+
+Restent à traiter : cycle générique automatique des cibles, capacité WordPress
+du graphe NOC de production, éventuelle démonstration publique, sauvegarde et
+restauration complètes, reboot machine, renouvellement futur à échéance,
+raccord du certificat vers le secours VPN et ancien alias DNS Windows.
+
+| Besoin | Référence publique |
+| --- | --- |
+| Résultat LXC, Nginx et WordPress | [Rapport d'implémentation](RAPPORT-LXC-NGINX-WORDPRESS-20261022.md) |
+| Workflows historiques | [Guide des workflows](WORKFLOWS-PIPELINE-PRINCIPAL.md) |
+| Bridge et worker | [Bridge](BRIDGE-N8N-OPENCODE-REFERENCE-TECHNIQUE.md) et [worker](WORKER-TELEGRAM-REFERENCE-TECHNIQUE.md) |
+| Reprise, à lire avec sa date | [Continuité](PROCEDURE-CONTINUITE-RUN.md) et [reprise](PROCEDURE-REPRISE-ACTIVITE.md) |
+| Reprise courte d'un agent | [Fiche commune](REPRISE-AGENTS.md) |
+| Incident et inventaire du 21 octobre | [Rapport daté](RAPPORT-ARCHITECTURE-ET-RECETTE-PROD-20261021.md) |
+
+Les historiques suivants restent utiles pour comprendre les choix. Les anciennes
+descriptions du Pi comme unique serveur applicatif, de Caddy comme frontal du Pi
+ou d'un CMS local comme cible courante se lisent à leur date.
 
 ## Historique documentaire — états relatifs à leur date
 

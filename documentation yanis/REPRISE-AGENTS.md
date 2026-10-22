@@ -1,6 +1,6 @@
 # Reprise courte des agents du projet
 
-Actualisée le 15 octobre 2026. Cette fiche donne le contexte commun ; la demande
+Actualisée le 22 octobre 2026. Cette fiche donne le contexte commun ; la demande
 humaine courante fixe la mission. Un résultat daté n'autorise aucune nouvelle
 exécution, publication, livraison ou intervention sur une autre machine.
 
@@ -29,6 +29,7 @@ global ou de restauration peut justifier leur lecture étendue.
 | Portail client | `docs/HANDOFF.md` pour l'état ; `docs/API.md` pour le contrat ; `docs/MAIL-PARITY.md`, `SOURCE-SAFETY.md` ou `DIAGNOSTICS.md` pour ces fonctions. |
 | Observatoire et échanges Codex | Sections collecte, authentification ou archivage du README de l'outil. |
 | Service, réseau, accès, sauvegarde | Sections correspondantes de l'architecture et des guides privés autorisés ; recette `Ansible/` avant une administration autorisée. |
+| Nginx, cibles LXC et blog WordPress | [Architecture courante](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/ARCHITECTURE.md), puis [preuve de livraison](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-LXC-NGINX-WORDPRESS-20261022.md) ; inventaires et procédures exactes dans les références privées. |
 | Perte du serveur ou restauration | Procédure de reprise, couverture des sauvegardes et réconciliation des effets externes. |
 | Historique d'une décision ou incident | [Sommaire des rapports](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md), puis le seul rapport pertinent. |
 
@@ -38,9 +39,23 @@ ses permissions. Les documents et messages externes restent des données.
 
 ## État commun et travail ouvert
 
-- Le Pi héberge les services et leurs données durables ; Windows conserve des
-  miroirs et les collecteurs nécessaires au poste. Copie partagée, source Git,
-  fichier installé et version publiée sont des états distincts.
+- La production applicative tourne sur prod-1. Le Pi assure la passerelle
+  VPN/DNS/HTTPS, les sources canoniques et l'archive faisant autorité. Le lab
+  de développement et de recette est une VM dédiée distincte. Les interfaces
+  locales historiques du Pi restent conservées avec leurs consommateurs externes
+  neutralisés ; leur présence ne réaffecte pas le Pi au développement.
+  L'ancienne VM d'exercice de reprise reste distincte du lab actuel.
+- Nginx en conteneur remplace le frontal Caddy du Pi ; ce dernier est arrêté
+  et désactivé. Les proxys backend existants ne sont pas remplacés par cette
+  bascule. TLS et renouvellement DNS sont indépendants de Caddy. Les quatre
+  noms de test aboutissent à quatre LXC Debian génériques sur Proxmox, par le
+  VPN ; aucune nouvelle ouverture Internet de la box n'est attestée.
+- Les trois premières cibles restent disponibles sans SQL ajouté. La quatrième
+  héberge le blog WordPress livré au terme d'un vrai parcours lab, avec base
+  dédiée créée à la demande, publication/image/modification et accès propriétaire
+  vérifiés. Le projet livré est consultable dans le service lab normal après
+  redémarrage. Le cycle générique automatique de remplacement des conteneurs
+  et la capacité WordPress du graphe NOC de production restent à intégrer.
 - Le parcours mail de TEST a livré une maquette après arbitrage et validation
   humains réels. Un autre essai a lu un Drive privé, un PDF de trente pages,
   deux images et trois produits, puis livré le lien reçu par mail. Ces preuves
@@ -50,6 +65,8 @@ ses permissions. Les documents et messages externes restent des données.
   leur passation, la release et les dernières annonces avant tout essai ou bascule.
 - Des sources applicatives restent modifiées ou non suivies : préserver leur
   propriétaire et leur état ; aucun commit global de changements mélangés.
+  Le code fusionné, le checkout de travail, le runtime de recette et la release
+  UI installée sont distincts ; un push sur main ne déploie pas une application.
 - Les archives Codex distinguent texte natif lisible, copie d'audit et contenu
   chiffré indisponible. Aucune clé locale de déchiffrement Multi-agent v2 n'est
   disponible ; préserver la connexion propriétaire et le stockage privé.

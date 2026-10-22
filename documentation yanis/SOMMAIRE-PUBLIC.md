@@ -2,9 +2,9 @@
 
 # Documentation publique
 
-**État au 16 octobre 2026 :** [gel des changements et préparation du redéploiement Debian amd64](RAPPORT-GEL-REDEPLOIEMENT-20261016.md).
-Les versions courantes et les limites de reprise sont distinguées dans
-[l'architecture actualisée](ARCHITECTURE.md#état-au-16-octobre-2026--gel-des-changements-et-préparation-de-reprise).
+**État courant au 22 octobre 2026 :** [architecture détaillée, passerelle et cibles de sites](ARCHITECTURE.md#état-courant-au-22-octobre-2026).
+Les rapports datés conservent les preuves des étapes précédentes, dont le
+[gel et la préparation de reprise du 16 octobre](RAPPORT-GEL-REDEPLOIEMENT-20261016.md).
 
 Pour les agents : [fiche courte de reprise](REPRISE-AGENTS.md), puis les seules
 références utiles à la mission.
@@ -40,6 +40,8 @@ Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous cons
 Les commandes propres à la production sont dans les guides privés correspondants.
 
 ## Historique et procédures
+
+- [Documentation détaillée de l’infrastructure — 22 octobre 2026](RAPPORT-DOCUMENTATION-INFRA-20261022.md) : machines, services, DNS/VPN/Nginx, LXC, stockage, parcours WordPress et limites ; rédaction sans nouvelle recette.
 
 - [Conteneurs jetables et passerelle Nginx — 22 octobre 2026](RAPPORT-LXC-NGINX-WORDPRESS-20261022.md) : infrastructure et blog WordPress administrable livrés en laboratoire, reprises conservées, interface durable et intégration des sources vérifiées.
 
