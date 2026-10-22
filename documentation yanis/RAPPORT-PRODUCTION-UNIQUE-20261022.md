@@ -29,6 +29,17 @@ exécuté. Les applications, sources et archives encore présentes sur le Pi ne
 sont pas déplacées ou retirées par cette correction. Une règle écrite ne prouve
 pas à elle seule que le nettoyage opérationnel est terminé.
 
+La finalisation par l'orchestrateur a aussi corrigé les consignes globales
+protégées du poste, les trois points d'entrée partagés des agents, les références
+humaines privées et les points d'entrée des sources applicatives et réseau.
+La fiche de reprise publique, celle du poste et celle du journal partagé sont
+identiques, vérifiées par empreinte. Les corrections documentaires sont publiées
+dans les branches principales des cinq dépôts sources concernés, par mises à
+jour normales sans forcer l'historique. Les copies de travail accessibles en
+production et au lab portent également le rappel ; les sources modifiées avant
+mission sont préservées. Les identifiants internes et chemins précis restent
+dans les références privées.
+
 ## Orchestration et délégation
 
 L'orchestrateur Codex a confié ce périmètre à un sous-agent interne dédié à la
@@ -38,6 +49,11 @@ puis relu les différences et les liens. Le périmètre privé et les points
 d'entrée des environnements sont traités séparément par l'orchestrateur et un
 autre sous-agent. Aucun lancement OpenCode depuis PIAgentControl n'a été effectué.
 Le modèle exact n'est pas consigné par cette mission ; aucun coût n'est déduit.
+
+L'orchestrateur a revu ces résultats, corrigé les contradictions globales et
+privées, synchronisé la reprise, rétabli les ACL et la lecture seule des
+consignes protégées et publié les corrections Git des sources. La comparaison
+des commits confirme que ces derniers ne changent que des fichiers Markdown.
 
 ## Coopération et adaptation au contexte
 
@@ -54,3 +70,9 @@ est distinguée d'un droit ou d'une cible de déploiement applicatif. La revue
 porte sur le contenu documentaire, les différences, la cohérence et les liens ;
 elle ne certifie aucune migration opérationnelle. Une annonce de fin libère
 les réservations publiques après la publication Git vérifiée.
+
+Une annonce explicite demande aux agents dont les sessions sont déjà ouvertes
+de relire la décision actuelle. La disponibilité de la règle dans leurs points
+d'entrée est vérifiée ; la lecture de chaque session distante n'est pas attestée
+sans accusé. Le présent résultat ne prétend pas avoir modifié leurs contextes
+déjà chargés ni tous leurs fichiers locaux inaccessibles.
