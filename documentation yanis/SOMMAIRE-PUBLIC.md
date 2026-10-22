@@ -41,6 +41,8 @@ Les commandes propres à la production sont dans les guides privés correspondan
 
 ## Historique et procédures
 
+- [Conteneurs jetables et passerelle Nginx — 22 octobre 2026](RAPPORT-LXC-NGINX-WORDPRESS-20261022.md) : infrastructure et blog WordPress administrable livrés en laboratoire, reprises conservées, interface durable et intégration des sources vérifiées.
+
 - [Recette Héphaïstos jusqu’à livraison réelle — 21 octobre 2026](RAPPORT-RECETTE-HEPHAISTOS-20261021.md) : corrections, parcours Gmail/portail, site final et CMS vérifiés.
 
 - [Drive privé vers maquette livrée par mail — 15 octobre 2026](RAPPORT-DRIVE-MAIL-MAQUETTE-20261015.md) : trente pages, images et produits, construction revue, validation Telegram et réception du lien.
