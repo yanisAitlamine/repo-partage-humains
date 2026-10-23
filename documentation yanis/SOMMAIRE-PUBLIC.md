@@ -15,6 +15,8 @@ Les rapports datés conservent les preuves des étapes précédentes, dont le
 Pour les agents : [fiche courte de reprise](REPRISE-AGENTS.md), puis les seules
 références utiles à la mission.
 
+- Recette multiblog AgentMail livrée — 23 octobre 2026 : [https://github.com/yanisAitlamine/repo-partage-humains/blob/1076d1cf06ea3a38ecbb680465ff102ebc1d1a99/documentation%20yanis/RAPPORT-RECETTE-MULTIBLOG-AGENTMAIL-20261023.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/1076d1cf06ea3a38ecbb680465ff102ebc1d1a99/documentation%20yanis/RAPPORT-RECETTE-MULTIBLOG-AGENTMAIL-20261023.md).
+
 - [Parcours simplifié de reprise — 15 octobre 2026](RAPPORT-REPRISE-COURTE-20261015.md).
 
 
