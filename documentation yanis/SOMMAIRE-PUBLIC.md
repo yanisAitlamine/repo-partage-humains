@@ -30,6 +30,8 @@ références utiles à la mission.
 
 - [Gmail natif du laboratoire : connexion et recette autonome réussie — 21 octobre 2026](RAPPORT-GMAIL-NATIF-LAB-20261021.md).
 
+- Tests Atelier et conversations simulées — 28 octobre 2026 : [https://github.com/yanisAitlamine/repo-partage-humains/blob/rapport-tests-20261028/documentation%20yanis/RAPPORT-TESTS-ATELIER-20261028.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/rapport-tests-20261028/documentation%20yanis/RAPPORT-TESTS-ATELIER-20261028.md). 29 scénarios réels, 28 captures et vérifications distinctes du dépôt unique.
+
 ## Comprendre le fonctionnement
 
 - [Guide détaillé des workflows, du mail à la livraison](WORKFLOWS-PIPELINE-PRINCIPAL.md) : réception, dialogue, décisions Telegram, maquette et livraison.
