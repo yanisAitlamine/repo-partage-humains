@@ -31,7 +31,7 @@ Les deux invocations représentent 79,55 secondes ; le reste couvre les autres o
 ### Message client
 
 > Projet : Terre Claire
-> 
+>
 > Je veux le site suivant : Terre Claire propose des ateliers de poterie pour adultes debutants a Tours. L action principale est Demander une place. Accueil, Ateliers, A propos, Contact. Palette ivoire, terre cuite et bleu cobalt. Mercredi et samedi de 10 h a 18 h. Initiation : 90 minutes, 55 EUR, 8 places ; Tournage : 120 minutes, 85 EUR, 4 places ; Email sauvage : 150 minutes, 110 EUR, complet. Contact bonjour@terre-claire.example.test. Ton direct et chaleureux. Textes courts redigeables a partir de ces seules informations, sans inventer de temoignages, de chiffres ni de biographies. Liberte sur la composition dans la palette indiquee. Aucun compte client, paiement ou inscription. Les visuels generes sont autorises ; aucun portrait reel invente. Contact en texte lisible.
 
 ### Réponse affichée
@@ -47,11 +47,11 @@ Le premier appel porte le rôle fonctionnel `chat-decision`. Ses instructions ap
 Décision enregistrée : `sufficient=true`, `question=""`, `stop=false`. Son champ `prompt` contient exactement :
 
 > Créer une première maquette du site Terre Claire, qui propose des ateliers de poterie pour adultes débutants à Tours. L’objectif est de présenter les ateliers et de faciliter la prise de contact ; l’action principale est « Demander une place ».
-> 
+>
 > Prévoir quatre pages ou sections clairement accessibles : Accueil, Ateliers, À propos et Contact. Présenter les informations suivantes sans en ajouter : ateliers le mercredi et le samedi de 10 h à 18 h ; Initiation, 90 minutes, 55 €, 8 places ; Tournage, 120 minutes, 85 €, 4 places ; Émail sauvage, 150 minutes, 110 €, complet. Afficher clairement le statut complet de ce dernier atelier. Indiquer Tours et l’adresse bonjour@terre-claire.example.test en texte lisible ; ne pas inventer d’adresse précise.
-> 
+>
 > Employer des textes courts, directs et chaleureux, rédigés uniquement à partir des faits fournis. Ne pas inventer de témoignages, de chiffres, de biographie ou de détails sur le contenu des ateliers. Utiliser une palette ivoire, terre cuite et bleu cobalt, avec une composition libre. Les visuels générés sont autorisés, mais aucun portrait réel ne doit être inventé.
-> 
+>
 > Rendre la navigation et l’action principale faciles à repérer. « Demander une place » peut orienter vers le contact par e-mail, sans promettre de réservation ni créer de formulaire d’inscription. Ne prévoir aucun compte client, paiement ou inscription. Concevoir une maquette lisible et adaptée aux mobiles.
 
 Le backend a vérifié que le prompt envoyé ensuite à la génération correspondait à cette décision enregistrée. Le contexte du générateur comprenait la conversation originale et ce prompt ; les critères de réussite du scénario n’y figuraient pas.
@@ -155,4 +155,3 @@ Codex a exécuté ce travail directement. La coordination du dépôt unique et d
 ### Contact — 390 pixels
 
 ![Contact — 390 pixels](https://raw.githubusercontent.com/yanisAitlamine/repo-partage-humains/rapport-test-01-20261028/documentation%20yanis/assets/test-01-20261028/contact-390.png)
-
