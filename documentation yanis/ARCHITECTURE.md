@@ -69,7 +69,7 @@ flowchart TD
 
 ```mermaid
 stateDiagram-v2
-  [*] --> waiting
+  [*] --> queued : Initialisation
   waiting --> queued : Message accepte
   ready --> queued : Modification ou validation
   queued --> working : Reservation transactionnelle
@@ -78,11 +78,25 @@ stateDiagram-v2
   working --> closed : Cloture explicite
   working --> delivered : Publication verifiee
   working --> uncertain : Erreur ou resultat non confirme
+  waiting --> deleted : Retrait sans maquette
+  closed --> deleted : Retrait sans maquette
   closed --> [*]
+  deleted --> [*]
   delivered --> [*]
 ```
 
-Le schéma réunit les états de conversation et de tâche : `queued` est l’état de tâche, tandis que `waiting`, `ready`, `closed`, `delivered` et `uncertain` décrivent la conversation. Le contrôle de propriété s’applique aussi aux fichiers et à chaque version d’aperçu.
+Le schéma décrit les états de la conversation : `queued` et `working` sont également inscrits dans la tâche. La première consultation initialise une conversation en attente de traitement. Le retrait logique `deleted` n’est admis que sans maquette, depuis waiting, closed ou deleted. Le contrôle de propriété s’applique aussi aux fichiers et à chaque version d’aperçu.
+
+```mermaid
+stateDiagram-v2
+  [*] --> queued
+  queued --> working : Reservation
+  working --> completed : Resultat valide
+  working --> uncertain : Erreur ou redemarrage
+  completed --> [*]
+```
+
+Ce second schéma décrit la tâche. Au redémarrage du serveur, les conversations et tâches restées `working` deviennent `uncertain` avec une erreur de réconciliation ; elles ne sont pas rejouées automatiquement.
 
 ## Technologies et dépendances
 
