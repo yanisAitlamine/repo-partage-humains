@@ -1,3 +1,7 @@
+<!-- BEGIN RUST-DOCUMENTATION-20261030 -->
+> **Document historique.** Les faits et résultats ci-dessous restent ceux de leur date. La référence courante du projet Rust est [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md).
+<!-- END RUST-DOCUMENTATION-20261030 -->
+
 # D’un dossier Drive privé à une maquette de test livrée — 15 octobre 2026
 
 Le huitième essai réel a abouti : sources lues, maquette construite, revue indépendante validée, approbation humaine enregistrée et mail final reçu. Le site commercial de production n’a pas été publié.

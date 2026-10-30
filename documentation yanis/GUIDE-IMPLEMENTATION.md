@@ -1,48 +1,33 @@
-# Redéployer le site web et le dashboard
+# Installation, maintenance et retour à la version précédente
 
-**Cible actuelle — 22 octobre 2026 : les applications de production se déploient
-uniquement sur prod-1.** Le Pi assure seulement load balancer / reverse proxy
-HTTPS, VPN et DNS interne ; il ne reçoit pas de déploiement applicatif miroir.
-Préparer et vérifier les changements dans une VM de lab distincte avant une
-intégration explicitement demandée. Les anciennes recettes destinées au Pi
-applicatif ou à un alignement Pi/prod-1 sont historiques.
+## Préparer une version
 
-Le site client et le dashboard sont deux applications distinctes. Le site utilise des workflows web dédiés ; la chaîne mail garde ses propres workflows. Réinstaller une application ne restaure aucune base et ne republie aucun workflow.
+Utiliser une copie propre du dépôt à la révision choisie, la chaîne de compilation documentée et les dépendances verrouillées. Construire le serveur Rust et le portail, exécuter les contrôles locaux communs puis sceller le paquet et son manifeste. Les scripts refusent une source, un binaire ou une interface qui ne correspondent pas aux preuves de construction.
 
-## Choisir les fichiers
+[https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/scripts/build.py](https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/scripts/build.py) ; [https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/scripts/check.py](https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/scripts/check.py) ; [https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/scripts/package.py](https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/scripts/package.py).
 
-| Besoin | Fichiers à récupérer | Effet |
-| --- | --- | --- |
-| Étudier le portail | [Code public du portail](https://github.com/yanisAitlamine/atelier-portal-public). | Produit et exemples ; aucun accès ni donnée de production. |
-| Redéployer le portail | Source privée à la release approuvée, recette Ansible, configurations privées existantes. | Installe serveur et interface, redémarre le portail, recharge le proxy si nécessaire. |
-| Redéployer le dashboard | Source privée à la release approuvée et recette dédiée. | Installe et redémarre le dashboard ; conserve son stockage. |
-| Retrouver comptes et historiques | Archives chiffrées indépendantes et clé correspondante. | Restaure les données selon la [procédure de reprise](PROCEDURE-REPRISE-ACTIVITE.md). |
-| Retrouver les sites hébergés | Sauvegarde de l'hébergement. | Restaure les fichiers distants ; la sauvegarde du serveur d'orchestration ne les contient pas. |
+## Lab permanent
 
-## Commandes de déploiement
+Le lanceur sépare les phases : prérequis, inspection, préparation des droits, construction, plan Terraform, création, épinglage de la clé d’hôte, installation Ansible et vérification. Les anciennes phases de retrait ne doivent pas servir de raccourci pour réinitialiser le lab actuel. Les plans de destruction sont liés à une identité et à une empreinte précises ; toute opération effaçant les projets exige sa propre instruction humaine.
 
-Le guide privé `GUIDE-IMPLEMENTATION.md` fournit les SHA, chemins, variables d'intégration et commandes complètes de prod-1. Les exemples locaux ci-dessous s'exécutent sur la cible applicative autorisée, jamais sur le Pi. La forme des appels est :
+Une installation neuve reçoit un système minimal, un seul dépôt, une release et les données initiales. La configuration privée fournit adresses, comptes, clés, certificats et autorisations. Terraform gère les ressources ; Ansible configure le système, les services et les modèles. Une lecture ou un mode sans modification ne certifie pas une installation exécutée.
 
-```bash
-# Dans le checkout exact du portail, après compilation.
-ansible-playbook -i localhost, -c local Ansible/deploy.yml \
-  -e portal_release=SHA_APPROUVE
+Une mise à jour conserve les bases et autorisations. Le contrôleur vérifie les travaux en attente, actifs ou incertains, prend un verrou, exporte une préimage privée puis remplace la version. La vérification précède le retrait de l’ancienne copie. Une erreur provoque la restauration de la préimage ; un retour explicite conserve les données applicatives actuelles.
 
-# Dans le checkout exact du dashboard.
-ansible-playbook -i localhost, -c local Ansible/deploy.yml \
-  -e observatory_release=SHA_APPROUVE
-```
+Une mise à jour limitée au bridge peut réutiliser les binaires si les arbres source et les dépendances compilés sont identiques. La preuve de compilation d’origine reste intacte ; une preuve supplémentaire relie la nouvelle version du bridge aux composants réutilisés. La version étudiée a utilisé cette procédure.
 
-Remplacer les paramètres et ajouter les références de configuration depuis le guide privé. Ces exemples ne réinstallent ni n8n ni le réseau. Une source plus récente que la release exécutée doit recevoir son propre accord avant déploiement.
+[https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/infra/lab/README.md](https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/infra/lab/README.md) ; [https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/infra/lab/scripts/run.py](https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/infra/lab/scripts/run.py).
 
-## Workflows du site
+## Staging temporaire
 
-Le portail utilise une entrée dialogue/Drive/maquette et trois dépendances : lecture des sources, images et décision avec citations. Le support explicite reste séparé. Une sauvegarde complète de la base n8n conserve leurs IDs, versions et connexions. Les JSON seuls servent à une reconstruction partielle, avec import inactif et connexions à recréer.
+La capture compare les octets réellement installés à ceux du paquet. Une VM neuve reçoit ce logiciel exact et des bases vides. Playwright réalise l’inscription puis les scénarios du catalogue, avec alternance entre deux conteneurs admis. Les paramètres opérateur, secrets référencés, certificats, états Terraform et preuves restent privés.
 
-Le brouillon et la version publiée peuvent différer. Une mise à jour API d'un workflow actif peut republier immédiatement : ne pas utiliser cet appel comme simple enregistrement. Le dernier correctif préparé du parcours web reste distinct de sa publication.
+Les actions `validate` et `list` inspectent la préparation. L’action `run` crée et configure la VM, exécute les parcours et publications, collecte les preuves puis détruit la VM. Les actions `status` et `cleanup` permettent de lire l’état et de reprendre uniquement la clôture. Une clôture incomplète conserve l’étape bloquée ; elle ne rejoue pas les messages ou publications.
 
-## Résultat à vérifier
+Les règles réseau et permissions temporaires sont identifiées par campagne, avec préimage et reçu. Leur retrait préserve les changements concurrents. Le profil d’authentification renouvelé est conservé avant destruction. Les preuves sont exportées et leurs empreintes comparées avant retrait des données de recette.
 
-Comparer release choisie et release exécutée, contrôler le service, son accès HTTPS privé et le refus d'accès anonyme aux données. Aucun envoi, construction de site ou traitement payant n'est nécessaire pour ces contrôles. Le redéploiement ne corrige pas à lui seul un défaut du workflow publié.
+[https://github.com/yanisAitlamine/atelier-unifie/blob/4165993e12b987590213b6a1e4c0e52ad0e2d51f/infra/staging/README.md](https://github.com/yanisAitlamine/atelier-unifie/blob/4165993e12b987590213b6a1e4c0e52ad0e2d51f/infra/staging/README.md) ; [https://github.com/yanisAitlamine/atelier-unifie/blob/4165993e12b987590213b6a1e4c0e52ad0e2d51f/infra/staging/scripts/run.py](https://github.com/yanisAitlamine/atelier-unifie/blob/4165993e12b987590213b6a1e4c0e52ad0e2d51f/infra/staging/scripts/run.py).
 
-Les commandes opérationnelles réelles restent dans le dépôt privé ; ce guide public n'expose aucun inventaire d'accès. Les recettes dédiées et une restauration complète sur cible neuve ont des niveaux de validation différents.
+## Distinguer les formats de paquet
+
+Le paquet du lab permanent est scellé par [https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/infra/lab/ansible/roles/build/files/seal_release.py](https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/infra/lab/ansible/roles/build/files/seal_release.py) et installé par [https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/infra/lab/ansible/roles/application/files/install.py](https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/infra/lab/ansible/roles/application/files/install.py). Le lanceur [https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/scripts/package.py](https://github.com/yanisAitlamine/atelier-unifie/blob/4162a4fcd18ebf9f948d60cadc36ded52394b43f/scripts/package.py) appelle un ancien préparateur du staging : son archive intermédiaire et le paquet installé ne sont pas des formats interchangeables. Pour la reconstruction actuelle, suivre le lanceur du lab et son manifeste attendu.

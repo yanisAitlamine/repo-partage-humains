@@ -1,3 +1,7 @@
+<!-- BEGIN RUST-DOCUMENTATION-20261030 -->
+> **Document historique.** Les faits et résultats ci-dessous restent ceux de leur date. La référence courante du projet Rust est [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md).
+<!-- END RUST-DOCUMENTATION-20261030 -->
+
 # Rapport 31 — Telegram : blocages, décisions et maquettes
 
 13 octobre 2026. Version publique anonymisée.

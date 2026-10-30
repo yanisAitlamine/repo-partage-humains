@@ -1,3 +1,7 @@
+<!-- BEGIN RUST-DOCUMENTATION-20261030 -->
+> **Document historique.** Les faits et résultats ci-dessous restent ceux de leur date. La référence courante du projet Rust est [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md).
+<!-- END RUST-DOCUMENTATION-20261030 -->
+
 # Fournisseur OpenAI partagé et recette autonome du laboratoire
 
 Mission du 20 octobre 2026. Acceptation finale : 21 octobre à 00 h 11 (Paris).

@@ -1,3 +1,7 @@
+<!-- BEGIN RUST-DOCUMENTATION-20261030 -->
+> **Document historique.** Les faits et résultats ci-dessous restent ceux de leur date. La référence courante du projet Rust est [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md).
+<!-- END RUST-DOCUMENTATION-20261030 -->
+
 # Portail : dépôt PDF privé et reprise de plusieurs sites
 
 Mission commencée le 17 octobre, état du 18 octobre 2026 : **parcours activé après accord humain, test réel en échec côté constructeur**.

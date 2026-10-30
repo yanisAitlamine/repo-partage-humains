@@ -1,53 +1,20 @@
-# Restaurer les services après perte du serveur
+# Plan de reprise — Atelier Rust
 
-**Cibles actuelles — 22 octobre 2026 : prod-1 est l'unique production
-applicative ; le Pi se limite au load balancer / reverse proxy HTTPS, au VPN
-et au DNS interne.** Préparer et exercer une restauration sur une VM de lab
-distincte. La remise en production applicative vise prod-1 après autorisation ;
-elle ne réinstalle pas de pile applicative sur le Pi. Les recettes historiques
-du Pi ne sont pas à rejouer pour recréer une seconde production alignée.
+## Ensembles à conserver
 
-Séparer la reprise applicative de prod-1 de la reprise réseau du Pi. Les archives
-encore conservées sur le Pi ne sont pas déplacées par cette correction documentaire.
+Conserver séparément la source Git, le paquet scellé et ses preuves ; les paramètres et états Terraform/Ansible ; les configurations installées ; les deux bases du portail et du backend ; les états/intentions du bridge et de publication ; les sources client ; les autorisations et sessions du modèle nécessaires ; les fichiers et bases des sites publiés. Les certificats et clés ont leur propre sauvegarde privée avec leurs permissions.
 
-La reprise utilise les fichiers du socle et ceux des ajouts récents d'une même maintenance. Git redonne le code ; les archives privées redonnent les comptes, données, accès et décisions.
+La documentation et les références d’emplacements ne prouvent pas l’existence d’une sauvegarde complète indépendante. Cette mission vérifie des sources et métadonnées ; elle ne réalise pas une restauration générale ni un exercice de perte totale.
 
-## Fichiers à récupérer
+## Ordre de restauration
 
-| Fichiers | Résultat attendu |
-| --- | --- |
-| Sources et recettes aux versions choisies | Programmes et unités à installer. |
-| Archive chiffrée du socle | n8n, base, clé maître et compléments réseau/accès prévus. |
-| Archive chiffrée des ajouts | Portail, dashboard, archives lisibles, worker et sources locales. |
-| Empreintes, métadonnées et clé correspondante | Vérification, déchiffrement et rétablissement des propriétaires. |
-| Sauvegarde d'hébergement séparée | Fichiers et éventuelles données des sites distants. |
+1. Choisir une machine et une identité explicitement autorisées ; vérifier réseau, ressources et stockage. Identifier les projets à conserver avant toute réinitialisation.
+2. Rétablir l’accès opérateur, la confiance des hôtes, le DNS/VPN et le HTTPS correspondant à la cible.
+3. Reconstruire ou réinstaller exactement le paquet documenté avec Terraform/Ansible et ses paramètres privés. Une instance neuve ne reçoit pas automatiquement d’anciennes données.
+4. Si une restauration de données a été demandée, restaurer les bases de manière cohérente avec leurs journaux SQLite, les sources et les états associés, sous leurs comptes de service.
+5. Rétablir les autorisations du modèle, les jetons internes et le registre de publication ; vérifier leurs associations sans choisir une ancienne identité d’hôte.
+6. Réconcilier les jobs incertains, intentions et reçus avec les sites réellement présents. Ne pas réarmer une livraison déjà réalisée.
+7. Contrôler services, versions, propriétés, accès client, fichiers et maquettes ; exécuter une nouvelle recette autorisée avec un compte et une cible réservés.
+8. Retirer uniquement les copies et processus créés par la reprise devenus inutiles, puis conserver les preuves et le retour à l’état antérieur encore nécessaires.
 
-Une archive antérieure à l'ajout du portail et du dashboard ne peut pas restaurer leurs données. Sans ces fichiers, la reconstruction reste partielle.
-
-## Ordre des commandes
-
-La procédure privée `PROCEDURE-REPRISE-ACTIVITE.md` contient les commandes exactes, dans cet ordre :
-
-1. Comparer les empreintes puis déchiffrer sur le poste opérateur. Aucun service modifié.
-2. Transférer les archives par SSH vérifié vers une nouvelle cible isolée. Aucune clé privée transférée.
-3. Extraire en préparation privée et recréer les identités correspondant aux propriétaires sauvegardés.
-4. Installer le socle sans démarrage, puis restaurer le volume n8n vide avec sa clé d'origine.
-5. Restaurer les compléments récents : code exécuté, bases du portail/dashboard, configurations et unités.
-6. Garder les services métier bloqués, rapprocher les envois, décisions et jobs, puis ouvrir chaque capacité séparément.
-7. Vérifier HTTPS privé et authentification, puis créer une nouvelle sauvegarde indépendante.
-
-Chaque bloc précise son lieu d'exécution, pourquoi il est nécessaire et quels services ou fichiers il remet. Aucun déploiement ni test Ansible n'est exécuté par la lecture de la procédure.
-
-## Workflows et effets externes
-
-La base n8n complète conserve les workflows web et mail : aucun import supplémentaire n'est nécessaire. Si seuls les JSON survivent, importer inactif, recréer les connexions et vérifier les références ; ce n'est pas une récupération des données perdues.
-
-Dépublier des workflows ne gèle pas toutes les exécutions déjà en attente. Garder les sorties isolées pendant le rapprochement. Un mail déjà confirmé envoyé ne doit pas repartir ; un état incertain ne devient pas un échec sans effet. Un ancien accord ne s'applique qu'à son résultat exact.
-
-Le consommateur Telegram volontairement suspendu reste arrêté. Restaurer le dashboard conserve sa connexion propriétaire ; cela ne déchiffre pas les anciens messages opaques. Ne pas remettre une ancienne liste de révocation VPN à la place d'une plus récente.
-
-## Vérification finale
-
-Contrôler les versions exécutées, les données, les trois interfaces privées et les refus attendus. Le site hébergé peut avoir continué à évoluer pendant la panne : le comparer avant toute restauration distante.
-
-Une lecture statique des commandes, une archive authentifiée et un exercice complet de restauration sont trois résultats distincts. Aucun exercice complet ni reboot restauré n'est revendiqué par cette mise à jour.
+Un retour logiciel n’annule pas les effets sur un site distant. La reprise des données et le retour de version sont donc deux opérations distinctes.

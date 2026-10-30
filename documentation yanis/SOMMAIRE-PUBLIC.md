@@ -1,162 +1,151 @@
-> Version publique anonymisée ; détails d’exploitation réservés au Pi.
+# Documentation actuelle — Atelier Rust
 
-# Documentation publique
+Actualisation du 30 octobre 2026. Les guides ci-dessous décrivent le produit Rust ; les rapports datés conservent leurs résultats historiques.
 
-**Règle actuelle du 22 octobre : production applicative uniquement sur prod-1 ;
-Pi limité au load balancer / reverse proxy HTTPS, VPN et DNS interne ;
-développement et recette sur des VM de lab distinctes.** Les anciennes règles
-de déploiement sur le Pi ou d'alignement applicatif Pi/prod-1 sont remplacées.
-Lire la [clarification et les points d'entrée corrigés](RAPPORT-PRODUCTION-UNIQUE-20261022.md).
+| Besoin | Référence |
+| --- | --- |
+| ARCHITECTURE.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/ARCHITECTURE.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/ARCHITECTURE.md) |
+| FLUX-RESEAU-RUST.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/FLUX-RESEAU-RUST.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/FLUX-RESEAU-RUST.md) |
+| CONFIGURATION-AGENTS-RUST.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/CONFIGURATION-AGENTS-RUST.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/CONFIGURATION-AGENTS-RUST.md) |
+| GUIDE-IMPLEMENTATION.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/GUIDE-IMPLEMENTATION.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/GUIDE-IMPLEMENTATION.md) |
+| PROCEDURE-CONTINUITE-RUN.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/PROCEDURE-CONTINUITE-RUN.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/PROCEDURE-CONTINUITE-RUN.md) |
+| PROCEDURE-REPRISE-ACTIVITE.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/PROCEDURE-REPRISE-ACTIVITE.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/PROCEDURE-REPRISE-ACTIVITE.md) |
+| GUIDE-REVUE-SITE-RUST.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/GUIDE-REVUE-SITE-RUST.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/GUIDE-REVUE-SITE-RUST.md) |
+| PLAN-DE-TEST.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/PLAN-DE-TEST.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/PLAN-DE-TEST.md) |
+| PASSATION.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/PASSATION.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/PASSATION.md) |
 
-**État courant au 22 octobre 2026 :** [architecture détaillée, passerelle et cibles de sites](ARCHITECTURE.md#état-courant-au-22-octobre-2026).
-Les rapports datés conservent les preuves des étapes précédentes, dont le
-[gel et la préparation de reprise du 16 octobre](RAPPORT-GEL-REDEPLOIEMENT-20261016.md).
+## Catalogues exhaustifs
 
-Pour les agents : [fiche courte de reprise](REPRISE-AGENTS.md), puis les seules
-références utiles à la mission.
+| Catalogue | Lien |
+| --- | --- |
+| CONFIGURATIONS-SOURCES.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/CONFIGURATIONS-SOURCES.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/CONFIGURATIONS-SOURCES.md) |
+| INVENTAIRE-PROGRAMMES.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PROGRAMMES.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PROGRAMMES.md) |
+| INVENTAIRE-PYTHON-BACKEND.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PYTHON-BACKEND.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PYTHON-BACKEND.md) |
+| INVENTAIRE-PYTHON-BRIDGE.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PYTHON-BRIDGE.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PYTHON-BRIDGE.md) |
+| INVENTAIRE-PYTHON-E2E.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PYTHON-E2E.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PYTHON-E2E.md) |
+| INVENTAIRE-PYTHON-INFRA.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PYTHON-INFRA.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PYTHON-INFRA.md) |
+| INVENTAIRE-PYTHON-PORTAL.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PYTHON-PORTAL.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PYTHON-PORTAL.md) |
+| INVENTAIRE-PYTHON-SCRIPTS.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PYTHON-SCRIPTS.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PYTHON-SCRIPTS.md) |
+| INVENTAIRE-PYTHON-STAGING.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PYTHON-STAGING.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-PYTHON-STAGING.md) |
+| INVENTAIRE-RUST.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-RUST.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-RUST.md) |
+| INVENTAIRE-SCRIPTS.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-SCRIPTS.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/catalogues-rust/INVENTAIRE-SCRIPTS.md) |
+| PLAN-DE-TEST.md | [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/PLAN-DE-TEST.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/PLAN-DE-TEST.md) |
 
-- Préparation de promotion multiblog vers prod-1 — 23 octobre 2026 : [https://github.com/yanisAitlamine/repo-partage-humains/blob/8316b2b0ea8d45cdce5d795be7bb65556e4a2362/documentation%20yanis/RAPPORT-PREPARATION-PROD1-MULTIBLOG-20261023.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/8316b2b0ea8d45cdce5d795be7bb65556e4a2362/documentation%20yanis/RAPPORT-PREPARATION-PROD1-MULTIBLOG-20261023.md). Sources intégrées et portail préparé ; activation en attente de l’accès n8n et du choix de cible WordPress.
+Le relevé comprend 464 programmes Python et 5832 fonctions applicatives, tests compris ; 30 fonctions Rust. Avec les outils du staging : 485 programmes Python et 6220 fonctions. Le catalogue général recense 620 programmes/scripts, 129 fichiers de configuration ou contrats et les 29 scénarios complets.
 
-- Recette multiblog AgentMail livrée — 23 octobre 2026 : [https://github.com/yanisAitlamine/repo-partage-humains/blob/1076d1cf06ea3a38ecbb680465ff102ebc1d1a99/documentation%20yanis/RAPPORT-RECETTE-MULTIBLOG-AGENTMAIL-20261023.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/1076d1cf06ea3a38ecbb680465ff102ebc1d1a99/documentation%20yanis/RAPPORT-RECETTE-MULTIBLOG-AGENTMAIL-20261023.md).
+Les adresses réelles, accès, emplacements de clés et preuves d’exploitation sont dans la documentation privée. Les liens de code utilisent une révision précise. Les états « installé », « source conservée », « test » et « administration » restent distincts.
 
-- [Parcours simplifié de reprise — 15 octobre 2026](RAPPORT-REPRISE-COURTE-20261015.md).
+## Archives historiques
 
-
-- [Portail : dépôt PDF privé et reprise de plusieurs sites — recette réelle du 18 octobre 2026](RAPPORT-PORTAIL-PDF-REFONTE-20261017.md).
-
-- [Héphaïstos : refonte de la forge digitale — 18 octobre 2026](RAPPORT-HEPHAISTOS-DESIGN-20261018.md).
-
-- [Héphaïstos : profil professionnel et sécurité du compte — 18 octobre 2026](RAPPORT-HEPHAISTOS-PROFIL-20261018.md).
-
-- [Gmail natif du laboratoire : connexion et recette autonome réussie — 21 octobre 2026](RAPPORT-GMAIL-NATIF-LAB-20261021.md).
-
-- Tests Atelier et conversations simulées — 28 octobre 2026 : [https://github.com/yanisAitlamine/repo-partage-humains/blob/rapport-tests-20261028/documentation%20yanis/RAPPORT-TESTS-ATELIER-20261028.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/rapport-tests-20261028/documentation%20yanis/RAPPORT-TESTS-ATELIER-20261028.md). 29 scénarios réels, 28 captures et vérifications distinctes du dépôt unique.
-
-## Comprendre le fonctionnement
-
-- [Guide détaillé des workflows, du mail à la livraison](WORKFLOWS-PIPELINE-PRINCIPAL.md) : réception, dialogue, décisions Telegram, maquette et livraison.
-- [Architecture complète, schémas et catalogue des fichiers](ARCHITECTURE.md) : machines, services, données et sauvegardes.
-
-- [Bridge n8n/OpenCode : référence technique complète](BRIDGE-N8N-OPENCODE-REFERENCE-TECHNIQUE.md) : routes HTTP, jobs, preuve d’artefact, fonctions, workflow, unité et tests.
-- [Worker Telegram : référence technique complète](WORKER-TELEGRAM-REFERENCE-TECHNIQUE.md) : poller, Gmail, validations, moteur de décision, reprise, fichiers, fonctions et tests.
-
-Les guides expliquent le fonctionnement documenté. Les rapports ci-dessous conservent l’historique daté des interventions.
-
-## Redéployer et restaurer
-
-- [Implémentation du site et du dashboard](GUIDE-IMPLEMENTATION.md) : fichiers nécessaires, effet des recettes et distinction code, workflows et données.
-- [Continuité](PROCEDURE-CONTINUITE-RUN.md) : diagnostic, redémarrage ciblé et fichiers de sauvegarde à récupérer.
-- [Reprise](PROCEDURE-REPRISE-ACTIVITE.md) : ordre de restauration sur une machine neuve et remise en service.
-- [Réécriture des procédures autour des commandes](RAPPORT-PROCEDURES-COMMANDES-20261015.md) : résultat et limites de la mise à jour.
-
-Les commandes propres à la production sont dans les guides privés correspondants.
-
-## Historique et procédures
-
-Les rapports conservent leurs observations et décisions à leur date. Une ancienne
-description du Pi comme serveur applicatif, lab ou production à aligner ne vaut
-pas consigne actuelle. La règle ci-dessus et l'architecture courante font référence.
-
-- [Synchronisation TLS du secours après migration Nginx — 22 octobre 2026](RAPPORT-SYNC-TLS-NGINX-SECOURS-20261022.md) : sender qualifié, paire reçue et servie vérifiée, données VPN inchangées et continuité contrôlée.
-
-- [Documentation détaillée de l’infrastructure — 22 octobre 2026](RAPPORT-DOCUMENTATION-INFRA-20261022.md) : machines, services, DNS/VPN/Nginx, LXC, stockage, parcours WordPress et limites ; rédaction sans nouvelle recette.
-
-- [Conteneurs jetables et passerelle Nginx — 22 octobre 2026](RAPPORT-LXC-NGINX-WORDPRESS-20261022.md) : infrastructure et blog WordPress administrable livrés en laboratoire, reprises conservées, interface durable et intégration des sources vérifiées.
-
-- [Recette Héphaïstos jusqu’à livraison réelle — 21 octobre 2026](RAPPORT-RECETTE-HEPHAISTOS-20261021.md) : corrections, parcours Gmail/portail, site final et CMS vérifiés.
-
-- [Drive privé vers maquette livrée par mail — 15 octobre 2026](RAPPORT-DRIVE-MAIL-MAQUETTE-20261015.md) : trente pages, images et produits, construction revue, validation Telegram et réception du lien.
-
-- [Alertes Telegram : étape et cause explicites — 15 octobre 2026](RAPPORT-ALERTES-TELEGRAM-20261015.md) : diagnostic précis, référence d’exécution et vérification du rendu sans envoi de test.
-
-- [Portail : tests end-to-end et correctifs — 15 octobre 2026](RAPPORT-PORTAIL-E2E-CORRECTIFS-20261015.md) : parcours réexécutable, erreurs de génération explicites et accord lié à la version exacte.
-
-- [Portail connecté à n8n et parcours client — 15 octobre 2026](RAPPORT-PORTAIL-N8N-20261015.md) : comptes, conversations réelles, maquettes privées versionnées et vérifications du service installé.
-
-- [Portail client indépendant en HTTPS privé — 15 octobre 2026](RAPPORT-PORTAIL-CLIENT-20261015.md) : portail autonome, contrôles, versionnement et passation agents.
-
-- [ARCHITECTURE.md](ARCHITECTURE.md)
-- [PASSATION.md](PASSATION.md)
-- [PROCEDURE-CONTINUITE-RUN.md](PROCEDURE-CONTINUITE-RUN.md)
-- [PROCEDURE-REPRISE-ACTIVITE.md](PROCEDURE-REPRISE-ACTIVITE.md)
-- [RAPPORT-01-installation-et-commandes.md](RAPPORT-01-installation-et-commandes.md)
-- [RAPPORT-02-partage-securise-par-ip-publique.md](RAPPORT-02-partage-securise-par-ip-publique.md)
-- [RAPPORT-03-mise-en-ligne-realisee.md](RAPPORT-03-mise-en-ligne-realisee.md)
-- [RAPPORT-04-arret-et-demarrage.md](RAPPORT-04-arret-et-demarrage.md)
-- [RAPPORT-05-mise-a-jour-et-assistant.md](RAPPORT-05-mise-a-jour-et-assistant.md)
-- [RAPPORT-06-domaine-duckdns-et-gmail.md](RAPPORT-06-domaine-duckdns-et-gmail.md)
-- [RAPPORT-07-neovim-deploiement-et-audit.md](RAPPORT-07-neovim-deploiement-et-audit.md)
-- [RAPPORT-08-agents-et-ansible.md](RAPPORT-08-agents-et-ansible.md)
-- [RAPPORT-09-openvpn.md](RAPPORT-09-openvpn.md)
-- [RAPPORT-10-n8n-opencode.md](RAPPORT-10-n8n-opencode.md)
-- [RAPPORT-11-git-et-reprise.md](RAPPORT-11-git-et-reprise.md)
-- [RAPPORT-12-https-prive-preparation.md](RAPPORT-12-https-prive-preparation.md)
-- [RAPPORT-13-https-prive-et-delegation.md](RAPPORT-13-https-prive-et-delegation.md)
-- [RAPPORT-14-consignes-agents.md](RAPPORT-14-consignes-agents.md)
-- [RAPPORT-15-rangement-et-controleur-kali.md](RAPPORT-15-rangement-et-controleur-kali.md)
-- [RAPPORT-16-dns-lan-et-inventaire-secrets.md](RAPPORT-16-dns-lan-et-inventaire-secrets.md)
-- [RAPPORT-17-opencode-cible-test.md](RAPPORT-17-opencode-cible-test.md)
-- [RAPPORT-18-prototype-demonstration-mail-et-prototype.md](RAPPORT-18-prototype-demonstration-mail-et-prototype.md)
-- [RAPPORT-19-mails-version-test-et-livraison.md](RAPPORT-19-mails-version-test-et-livraison.md)
-- [RAPPORT-20-invitation-contact-test.md](RAPPORT-20-invitation-contact-test.md)
-- [RAPPORT-21-compte-ilyes-et-swarm.md](RAPPORT-21-compte-ilyes-et-swarm.md)
-- [RAPPORT-22-diagnostic-alertes-telegram.md](RAPPORT-22-diagnostic-alertes-telegram.md)
-- [RAPPORT-23-acces-ssh-ilyes-et-coordination.md](RAPPORT-23-acces-ssh-ilyes-et-coordination.md)
-- [RAPPORT-24-relance-gmail-deux-heures.md](RAPPORT-24-relance-gmail-deux-heures.md)
-- [RAPPORT-25-capacites-annoncees-aux-clients.md](RAPPORT-25-capacites-annoncees-aux-clients.md)
-- [RAPPORT-26-premiere-reponse-et-verification-pdf.md](RAPPORT-26-premiere-reponse-et-verification-pdf.md)
-
-- [Rapport 27 — Architecture privée et rapports publics](RAPPORT-27-documentation-privee-et-rapports-publics.md)
-
-- [Rapport 28 — Quatre références privées et guide Ansible](RAPPORT-28-quatre-references-et-guide-ansible.md)
-
-- [Rapport 29 — Versionnement privé d’OpenVPN](RAPPORT-29-openvpn-versionnement-prive.md)
-- [Rapport 30 — Traitement des mails sur événements](RAPPORT-30-mails-sur-evenements.md)
-
-- [Rapport 31 — Telegram : blocages et maquettes](RAPPORT-31-telegram-blocages-et-maquettes.md)
-
-- [Rapport 32 — Maquette produite avant validation humaine](RAPPORT-32-pipeline-maquette-avant-validation.md)
-
-- [Rapport 33 — Ancien banc Gmail retiré et noms du pipeline](RAPPORT-33-ancien-banc-gmail-et-noms-pipeline.md)
-
-- [Rapport 34 — Permissions de coordination et reprise de construction](RAPPORT-34-blocage-coordination-construction.md)
-
-- [Rapport 35 — Lanceur manuel du cas club de foot](RAPPORT-35-lanceur-test-pipeline3-club-foot.md)
-
-- [Rapport 36 — Diagnostic complet, livraison vérifiée et reprise de l’agent Ilyes](RAPPORT-36-test-reel-maquette-et-validation.md)
-
-- [Rapport 37 — Revue native Telegram du laboratoire](RAPPORT-37-revue-laboratoire-telegram-native.md)
-- [Rapport 38 — Jev dans le parcours commercial réel](RAPPORT-38-jev-parcours-commercial-reel.md)
-
-- [Guide — Pipeline principal n8n](WORKFLOWS-PIPELINE-PRINCIPAL.md)
-- [Rapport 39 — Documentation des workflows](RAPPORT-39-documentation-workflows.md)
-
-- [Rapport 40 — Documentation claire et complète, publique et privée](RAPPORT-40-documentation-en-francais-clair.md)
-
-- [Rapport 41 — Reprise immédiate après Telegram et diagnostic](RAPPORT-41-reprise-telegram-et-diagnostic.md)
-
-- [Rapport 42 — Refonte des guides privés, continuité et reprise](RAPPORT-42-refonte-trois-guides-prives.md)
-
-- [Rapport 43 — Correctifs et pause de l’essai Gmail et Telegram](RAPPORT-43-correctifs-et-essai-gmail-telegram.md)
-
-- [Rapport 44 — Consolidation des documents et suppression des anciennes copies](RAPPORT-44-consolidation-documentation-et-retrait-humain.md)
-
-- [Rapport 46 — Références techniques du bridge et du worker, sources versionnées](RAPPORT-46-references-techniques-bridge-et-worker.md)
-
-- [Rapport 47 — Reprise du pipeline, validation humaine et livraison vérifiée](RAPPORT-47-reprise-pipeline-et-validation-maquette.md)
-
-- [Rapport 48 — Réponses humaines contrôlées, tests et rappels à six heures](RAPPORT-48-robustesse-reponses-et-rappels-six-heures.md)
-
-- [Préparation d'un accès VPN dédié à un serveur — 15 octobre](RAPPORT-VPN-SERVEUR-20261015.md)
-
-- [Livraison d’un site complet, captures et recette réelle — 15 octobre](RAPPORT-SITE-COMPLET-REVUE-VISUELLE-20261015.md)
-
-- [Jev et OpenAI Decisions : diagnostic et comparaison isolée — 16 octobre](RAPPORT-JEV-DECISIONS-20261016.md)
-
-- [OpenAI Decisions intégré et essais mail — 16 octobre](RAPPORT-MIGRATION-DECISIONS-TESTS-20261016.md) : analyse débloquée sur deux cibles, première maquette revue, seconde bloquée dans la coordination NOC.
-
-- [Deux pipelines mail vers maquette livrée — 16 octobre](RAPPORT-NOC-A-Z-TESTS-20261016.md) : correctifs de preuve et de navigation, deux revues finales réussies, recettes navigateur et mails reçus ; périmètre prototype TEST.
-
-- [Portail : parcours complet et images IA préparés — 16 octobre](PORTAIL-E2E-IMAGES-PREPARATION-20261016.md) : sources testées et release préparée ; activation et essais réels encore attendus.
-
-- [Sites sources dans le pipeline mail — 17 octobre](RAPPORT-SOURCES-WEB-PIPELINE-MAIL-20261017.md) : inspiration, refonte autorisee, captures Chromium, transfert des medias et nettoyage ; parcours client complet encore a essayer.
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/2026-10-18-hephaistos-activation-recette.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/2026-10-18-hephaistos-activation-recette.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/2026-10-18-hephaistos-parcours-commun.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/2026-10-18-hephaistos-parcours-commun.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/BRIDGE-N8N-OPENCODE-REFERENCE-TECHNIQUE.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/BRIDGE-N8N-OPENCODE-REFERENCE-TECHNIQUE.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/PORTAIL-E2E-IMAGES-PREPARATION-20261016.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/PORTAIL-E2E-IMAGES-PREPARATION-20261016.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-01-installation-et-commandes.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-01-installation-et-commandes.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-02-partage-securise-par-ip-publique.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-02-partage-securise-par-ip-publique.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-03-mise-en-ligne-realisee.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-03-mise-en-ligne-realisee.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-04-arret-et-demarrage.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-04-arret-et-demarrage.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-05-mise-a-jour-et-assistant.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-05-mise-a-jour-et-assistant.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-06-domaine-duckdns-et-gmail.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-06-domaine-duckdns-et-gmail.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-07-neovim-deploiement-et-audit.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-07-neovim-deploiement-et-audit.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-08-agents-et-ansible.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-08-agents-et-ansible.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-09-openvpn.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-09-openvpn.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-10-n8n-opencode.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-10-n8n-opencode.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-11-git-et-reprise.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-11-git-et-reprise.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-12-https-prive-preparation.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-12-https-prive-preparation.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-13-https-prive-et-delegation.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-13-https-prive-et-delegation.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-14-consignes-agents.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-14-consignes-agents.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-15-rangement-et-controleur-kali.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-15-rangement-et-controleur-kali.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-16-dns-lan-et-inventaire-secrets.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-16-dns-lan-et-inventaire-secrets.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-17-opencode-cible-test.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-17-opencode-cible-test.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-18-prototype-demonstration-mail-et-prototype.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-18-prototype-demonstration-mail-et-prototype.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-19-mails-version-test-et-livraison.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-19-mails-version-test-et-livraison.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-20-invitation-contact-test.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-20-invitation-contact-test.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-21-compte-ilyes-et-swarm.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-21-compte-ilyes-et-swarm.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-22-diagnostic-alertes-telegram.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-22-diagnostic-alertes-telegram.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-23-acces-ssh-ilyes-et-coordination.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-23-acces-ssh-ilyes-et-coordination.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-24-relance-gmail-deux-heures.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-24-relance-gmail-deux-heures.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-25-capacites-annoncees-aux-clients.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-25-capacites-annoncees-aux-clients.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-26-premiere-reponse-et-verification-pdf.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-26-premiere-reponse-et-verification-pdf.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-27-documentation-privee-et-rapports-publics.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-27-documentation-privee-et-rapports-publics.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-28-quatre-references-et-guide-ansible.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-28-quatre-references-et-guide-ansible.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-29-openvpn-versionnement-prive.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-29-openvpn-versionnement-prive.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-30-mails-sur-evenements.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-30-mails-sur-evenements.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-31-telegram-blocages-et-maquettes.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-31-telegram-blocages-et-maquettes.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-32-pipeline-maquette-avant-validation.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-32-pipeline-maquette-avant-validation.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-33-ancien-banc-gmail-et-noms-pipeline.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-33-ancien-banc-gmail-et-noms-pipeline.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-34-blocage-coordination-construction.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-34-blocage-coordination-construction.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-35-lanceur-test-pipeline3-club-foot.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-35-lanceur-test-pipeline3-club-foot.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-36-test-reel-maquette-et-validation.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-36-test-reel-maquette-et-validation.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-37-revue-laboratoire-telegram-native.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-37-revue-laboratoire-telegram-native.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-38-jev-parcours-commercial-reel.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-38-jev-parcours-commercial-reel.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-39-documentation-workflows.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-39-documentation-workflows.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-40-documentation-en-francais-clair.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-40-documentation-en-francais-clair.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-41-reprise-telegram-et-diagnostic.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-41-reprise-telegram-et-diagnostic.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-42-refonte-trois-guides-prives.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-42-refonte-trois-guides-prives.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-43-correctifs-et-essai-gmail-telegram.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-43-correctifs-et-essai-gmail-telegram.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-44-consolidation-documentation-et-retrait-humain.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-44-consolidation-documentation-et-retrait-humain.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-46-references-techniques-bridge-et-worker.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-46-references-techniques-bridge-et-worker.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-47-reprise-pipeline-et-validation-maquette.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-47-reprise-pipeline-et-validation-maquette.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-48-robustesse-reponses-et-rappels-six-heures.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-48-robustesse-reponses-et-rappels-six-heures.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-ACCES-ADMINISTRATEUR-20261016.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-ACCES-ADMINISTRATEUR-20261016.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-ACCES-LAB-HTTP-20261021.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-ACCES-LAB-HTTP-20261021.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-ALERTES-TELEGRAM-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-ALERTES-TELEGRAM-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-ARCHITECTURE-ET-RECETTE-PROD-20261021.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-ARCHITECTURE-ET-RECETTE-PROD-20261021.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-ATELIER-NATURE-20261021.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-ATELIER-NATURE-20261021.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-COUTS-CAMPAGNES-ATELIER-20261028.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-COUTS-CAMPAGNES-ATELIER-20261028.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-DOCUMENTATION-INFRA-20261022.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-DOCUMENTATION-INFRA-20261022.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-DOUBLE-ENVIRONNEMENT-20261019.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-DOUBLE-ENVIRONNEMENT-20261019.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-DRIVE-MAIL-MAQUETTE-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-DRIVE-MAIL-MAQUETTE-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-DRIVE-REPONSE-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-DRIVE-REPONSE-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-GEL-REDEPLOIEMENT-20261016.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-GEL-REDEPLOIEMENT-20261016.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-GMAIL-NATIF-LAB-20261021.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-GMAIL-NATIF-LAB-20261021.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-HEPHAISTOS-DESIGN-20261018.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-HEPHAISTOS-DESIGN-20261018.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-HEPHAISTOS-MAIL-POLICY-20261019.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-HEPHAISTOS-MAIL-POLICY-20261019.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-HEPHAISTOS-PROD-E2E-20261019.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-HEPHAISTOS-PROD-E2E-20261019.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-HEPHAISTOS-PROFIL-20261018.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-HEPHAISTOS-PROFIL-20261018.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-HEPHAISTOS-RECETTE-20261019.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-HEPHAISTOS-RECETTE-20261019.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-HEPHAISTOS-RECETTE-AUTONOME-20261020.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-HEPHAISTOS-RECETTE-AUTONOME-20261020.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-IDENTITE-HEBERGEMENT-20261020.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-IDENTITE-HEBERGEMENT-20261020.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-JEV-DECISIONS-20261016.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-JEV-DECISIONS-20261016.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-LAB-HEPHAISTOS-20261020.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-LAB-HEPHAISTOS-20261020.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-LXC-NGINX-WORDPRESS-20261022.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-LXC-NGINX-WORDPRESS-20261022.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-MIGRATION-DECISIONS-TESTS-20261016.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-MIGRATION-DECISIONS-TESTS-20261016.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-MIGRATION-PRODUCTION-AMD64-20261019.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-MIGRATION-PRODUCTION-AMD64-20261019.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-NOC-A-Z-TESTS-20261016.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-NOC-A-Z-TESTS-20261016.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-NOC-CIBLE-CLIENT-20261016.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-NOC-CIBLE-CLIENT-20261016.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-OBSERVATOIRE-AGENTS-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-OBSERVATOIRE-AGENTS-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-OBSERVATOIRE-ARCHIVE-CLAIR-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-OBSERVATOIRE-ARCHIVE-CLAIR-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-OBSERVATOIRE-LECTURES-DELEGATIONS-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-OBSERVATOIRE-LECTURES-DELEGATIONS-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-OBSERVATOIRE-PI-GRAPHES-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-OBSERVATOIRE-PI-GRAPHES-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-OPENAI-RECETTE-LAB-20261020.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-OPENAI-RECETTE-LAB-20261020.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-ACCES-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-ACCES-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-ACTIVATION-LECTEUR-20261016.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-ACTIVATION-LECTEUR-20261016.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-CHAT-PAR-SITE-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-CHAT-PAR-SITE-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-CLIC-CREATION-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-CLIC-CREATION-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-CLIENT-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-CLIENT-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-CONSTRUCTEUR-ISOLE-20261016.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-CONSTRUCTEUR-ISOLE-20261016.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-DELEGATION-DEPLOIEMENT-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-DELEGATION-DEPLOIEMENT-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-E2E-CORRECTIFS-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-E2E-CORRECTIFS-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-FUSIONS-MAIN-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-FUSIONS-MAIN-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-INSTALLATION-ET-TEST-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-INSTALLATION-ET-TEST-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-N8N-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-N8N-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-PARITE-MAIL-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-PARITE-MAIL-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-PDF-REFONTE-20261017.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-PDF-REFONTE-20261017.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-SUPPORT-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PORTAIL-SUPPORT-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PREPARATION-PROD1-MULTIBLOG-20261023.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PREPARATION-PROD1-MULTIBLOG-20261023.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PROCEDURES-COMMANDES-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PROCEDURES-COMMANDES-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PRODUCTION-UNIQUE-20261022.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-PRODUCTION-UNIQUE-20261022.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-RECETTE-HEPHAISTOS-20261021.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-RECETTE-HEPHAISTOS-20261021.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-RECETTE-MULTIBLOG-AGENTMAIL-20261023.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-RECETTE-MULTIBLOG-AGENTMAIL-20261023.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-RECETTE-MULTIBLOG-LAB-20261022.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-RECETTE-MULTIBLOG-LAB-20261022.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-REPRISE-COURTE-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-REPRISE-COURTE-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-SITE-COMPLET-REVUE-VISUELLE-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-SITE-COMPLET-REVUE-VISUELLE-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-SOURCES-WEB-PIPELINE-MAIL-20261017.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-SOURCES-WEB-PIPELINE-MAIL-20261017.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-SYNC-TLS-NGINX-SECOURS-20261022.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-SYNC-TLS-NGINX-SECOURS-20261022.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-TEST-01-ATELIER-20261028.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-TEST-01-ATELIER-20261028.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-TESTS-ATELIER-20261028.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-TESTS-ATELIER-20261028.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-VPN-ACTIVATION-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-VPN-ACTIVATION-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-VPN-SERVEUR-20261015.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/RAPPORT-VPN-SERVEUR-20261015.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/WORKER-TELEGRAM-REFERENCE-TECHNIQUE.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/WORKER-TELEGRAM-REFERENCE-TECHNIQUE.md)
+- [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/WORKFLOWS-PIPELINE-PRINCIPAL.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/WORKFLOWS-PIPELINE-PRINCIPAL.md)

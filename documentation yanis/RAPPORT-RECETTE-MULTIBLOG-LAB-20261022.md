@@ -1,3 +1,7 @@
+<!-- BEGIN RUST-DOCUMENTATION-20261030 -->
+> **Document historique.** Les faits et résultats ci-dessous restent ceux de leur date. La référence courante du projet Rust est [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md).
+<!-- END RUST-DOCUMENTATION-20261030 -->
+
 # Recette de migration de plusieurs blogs dans le lab
 
 État du 22 octobre 2026 après reprise autorisée : le document réellement corrompu est exclu. Le PDF et les quatre blogs ont été lus par le parcours natif, puis une analyse avec le moteur API prévu a réussi. Trois décisions du client fictif ont été confirmées par de vrais échanges Gmail. La lecture du mail suivant est de nouveau refusée par un quota du connecteur ; la recette est suspendue, sans maquette ni site livré.

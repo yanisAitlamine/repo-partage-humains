@@ -1,3 +1,7 @@
+<!-- BEGIN RUST-DOCUMENTATION-20261030 -->
+> **Document historique.** Les faits et résultats ci-dessous restent ceux de leur date. La référence courante du projet Rust est [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md).
+<!-- END RUST-DOCUMENTATION-20261030 -->
+
 # Rapport 36 — Incidents du pipeline mail–maquette : causes, corrections et livraison vérifiée
 
 Ce rapport a été complété le 14 octobre 2026 après le test réel demandé par Yanis et après son autorisation de lever le gel temporaire de l’agent d’Ilyes. Il rassemble les différents problèmes rencontrés, explique les choix de correction et distingue les preuves obtenues des points qui restent à vérifier. Les données de mails, le prompt du cas de test, les identifiants internes et les informations privées d’accès sont volontairement absents de cette version publique.

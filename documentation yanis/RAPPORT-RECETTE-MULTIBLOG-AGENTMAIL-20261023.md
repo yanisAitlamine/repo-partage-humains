@@ -1,3 +1,7 @@
+<!-- BEGIN RUST-DOCUMENTATION-20261030 -->
+> **Document historique.** Les faits et résultats ci-dessous restent ceux de leur date. La référence courante du projet Rust est [https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md](https://github.com/yanisAitlamine/repo-partage-humains/blob/main/documentation%20yanis/SOMMAIRE-PUBLIC.md).
+<!-- END RUST-DOCUMENTATION-20261030 -->
+
 # Recette de migration multiblog par courrier électronique
 
 État du 23 octobre 2026 : **quatrième tentative livrée par le parcours natif**. Une seule installation physique WordPress a servi à la livraison. Après correction du rendu et nouvel accord client par mail, le nouveau travail final a terminé ses contrôles ; le projet est livré. Les trois essais précédents sont fermés et le premier travail final échoué de la quatrième tentative garde son état d’échec.
